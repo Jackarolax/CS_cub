@@ -1,3 +1,6 @@
 minilibx/
 cub3D
 *.o
+
+# Mac
+.DS_Store
