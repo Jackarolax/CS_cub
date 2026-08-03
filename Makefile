@@ -6,7 +6,7 @@
 #    By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/08/02 13:02:01 by anematol          #+#    #+#              #
-#    Updated: 2026/08/02 16:11:09 by ssin             ###   ########.fr        #
+#    Updated: 2026/08/03 18:24:51 by ssin             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,11 +31,16 @@ MLX_REPO = https://github.com/42Paris/minilibx-linux.git
 
 CFLAGS = -Wall -Wextra -Werror
 
-CFILES =	main.c\
+CFILES =	main.c \
+					minilibx.c \
 
 OFILES =	main.o\
 
-INCLUDES = cub.h
+INCLUDES	= cub.h
+
+OBJ_DIR		= obj
+
+OBJ				= $(addprefix $(OBJ_DIR)/, $(notdir $(CFILES:.c=.o)))
 
 all: $(MLX_DIR)/libmlx.a $(NAME)
 
@@ -48,11 +53,17 @@ $(MLX_DIR)/libmlx.a: $(MLX_DIR)
 $(OFILES): $(CFILES) $(INCLUDES)
 		cc $(CFLAGS) -c $(CFILES)
 
-$(NAME): $(OFILES)
-		cc $(CFLAGS)  $(OFILES) -o $(NAME) $(MLX_FLAGS)
+$(NAME): $(OBJ)
+		cc $(OBJ) $(CFLAGS) -o $(NAME) $(MLX_FLAGS)
+
+$(OBJ_DIR)/%.o: %.c | $(OBJ_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(OBJ_DIR):
+	mkdir -p $(OBJ_DIR)
 
 clean:
-		rm -f $(OFILES)
+		rm -rf $(OBJ_DIR)
 
 fclean: clean
 		rm -f $(NAME)
