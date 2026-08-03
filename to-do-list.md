@@ -1,6 +1,10 @@
 ### Makefile
-- [ ] add obj/ folder to makefile
-- [ ] make mac
+- [X] add obj/ folder to makefile
+- [X] make mac
+- [ ] add libft
+
+## Minilibx
+- [ ] minilibx setup
 
 ### Parsing
 - [ ] add parsing map
