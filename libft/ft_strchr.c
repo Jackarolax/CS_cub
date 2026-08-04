@@ -1,0 +1,31 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strchr.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/14 18:21:17 by anematol          #+#    #+#             */
+/*   Updated: 2025/05/29 17:58:37 by anematol         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+char	*ft_strchr(const char *s, int c)
+{
+	unsigned char	*ptr_s;
+	unsigned char	uns_c;
+
+	ptr_s = (unsigned char *)s;
+	uns_c = (unsigned char)c;
+	while (*ptr_s != '\0')
+	{
+		if (*ptr_s == uns_c)
+			return ((char *)ptr_s);
+		ptr_s++;
+	}
+	if (uns_c == 0)
+		return ((char *)ptr_s);
+	return (NULL);
+}
