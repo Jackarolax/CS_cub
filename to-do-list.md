@@ -5,13 +5,20 @@
 
 ## Minilibx
 - [ ] minilibx setup
+- [ ] close window (x and ESC)
+- [ ] setup left and right arrow keys 
+- [ ] setup W, A, S, and D keys
 
 ### Parsing
-- [ ] add parsing map
-- [ ] adjust parsing to requirements:
-  - [ ] identifier_validation: NO, SO, WE, EA, F, C
-  - [ ] line_validation: can be separated by one or more empty lines between them
-  - [ ] char_validation: map
+- ⏳ add parsing map
+  - [ ] add validate_extension
+  - [ ] add validate_identifier
+    - [ ] validate_identifier: NO, SO, WE, EA, F, C
+    - [ ] validate_spaces: can be separated by one or more empty lines between them
+  - [ ] add validate_identifier_value
+    - [ ] 0 and 1 for map
+    - [ ] 0 and 1 for map
+  - [ ] add validate_map
 - [ ] if any misconfig, exit
 
 ### Execution

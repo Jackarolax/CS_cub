@@ -6,7 +6,7 @@
 #    By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/08/02 13:02:01 by anematol          #+#    #+#              #
-#    Updated: 2026/08/03 18:24:51 by ssin             ###   ########.fr        #
+#    Updated: 2026/08/04 18:01:28 by ssin             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,6 +33,7 @@ CFLAGS = -Wall -Wextra -Werror
 
 CFILES =	main.c \
 					minilibx.c \
+					parser.c \
 
 OFILES =	main.o\
 
