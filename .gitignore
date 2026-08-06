@@ -1,6 +1,8 @@
 minilibx/
 cub3D
 *.o
+maps/*
+!maps/*.cub
 
 # Mac
 .DS_Store
