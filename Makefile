@@ -6,7 +6,7 @@
 #    By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/08/02 13:02:01 by anematol          #+#    #+#              #
-#    Updated: 2026/08/03 18:24:51 by ssin             ###   ########.fr        #
+#    Updated: 2026/08/04 21:41:21 by anematol         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,15 +32,15 @@ MLX_REPO = https://github.com/42Paris/minilibx-linux.git
 CFLAGS = -Wall -Wextra -Werror
 
 CFILES =	main.c \
-					minilibx.c \
+			minilibx.c \
+			hook_functions.c\
 
-OFILES =	main.o\
 
 INCLUDES	= cub.h
 
 OBJ_DIR		= obj
 
-OBJ				= $(addprefix $(OBJ_DIR)/, $(notdir $(CFILES:.c=.o)))
+OBJ			= $(addprefix $(OBJ_DIR)/, $(notdir $(CFILES:.c=.o)))
 
 all: $(MLX_DIR)/libmlx.a $(NAME)
 
@@ -49,9 +49,6 @@ $(MLX_DIR):
 
 $(MLX_DIR)/libmlx.a: $(MLX_DIR)
 	$(MAKE) -C $(MLX_DIR) > /dev/null
-
-$(OFILES): $(CFILES) $(INCLUDES)
-		cc $(CFLAGS) -c $(CFILES)
 
 $(NAME): $(OBJ)
 		cc $(OBJ) $(CFLAGS) -o $(NAME) $(MLX_FLAGS)
