@@ -6,7 +6,7 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/02 13:01:50 by anematol          #+#    #+#             */
-/*   Updated: 2026/08/08 17:22:01 by anematol         ###   ########.fr       */
+/*   Updated: 2026/08/08 18:50:41 by anematol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,18 @@
 # include <unistd.h>
 # include <stdio.h> // remove
 # include <stdlib.h>
-
-# define DESTROY_NOTIFY 17
-# define KEY_PRESS 0
-# define XK_ESCAPE 53
+# ifndef DestroyNotify
+#  define DestroyNotify 17
+# endif
+# ifndef KeyPressMask
+#  define KeyPressMask 1
+# endif
+# ifndef KeyPress
+#  define KeyPress 0
+# endif
+# ifndef XK_Escape
+#  define XK_Escape 53
+# endif
 
 typedef struct	s_img {
 	void	*img;
