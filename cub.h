@@ -6,7 +6,7 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/02 13:01:50 by anematol          #+#    #+#             */
-/*   Updated: 2026/08/08 19:19:36 by ssin             ###   ########.fr       */
+/*   Updated: 2026/08/08 20:05:48 by ssin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@
 # define ID_C "C"
 
 # include "./minilibx/mlx.h"
+# include "./libft/libft.h"
+# include "./events.h"
 //# include <X11/X.h>
 //# include <X11/keysym.h>
 # include <fcntl.h>
@@ -35,17 +37,6 @@
 # include <stdlib.h>
 # include <fcntl.h>
 # include <stdio.h> // remove
-# include <stdlib.h>
-
-# define DESTROY_NOTIFY 17
-# define KEY_PRESS 0
-# define XK_ESCAPE 53
-
-#ifdef __APPLE__
-# define KEY_PRESS_MASK 0
-#else
-# define KEY_PRESS_MASK KeyPressMask
-#endif
 
 typedef struct	s_img {
 	void	*img;

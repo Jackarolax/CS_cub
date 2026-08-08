@@ -1,4 +1,5 @@
 minilibx/
+libft/libft.a
 cub3D
 *.o
 maps/*
