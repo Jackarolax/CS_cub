@@ -6,7 +6,7 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/03 18:20:30 by ssin              #+#    #+#             */
-/*   Updated: 2026/08/04 21:49:59 by anematol         ###   ########.fr       */
+/*   Updated: 2026/08/08 17:34:25 by anematol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,5 +55,6 @@ void	set_minilibx(t_mlx_data *env_p)
 	}
 	mlx_put_image_to_window(env_p->mlx, env_p->win, env_p->test_img.img, 0, 0);
 	mlx_hook(env_p->win, DestroyNotify, KeyPressMask, close_window, env_p);
+	mlx_hook(env_p->win, KeyPress, KeyPressMask, handle_key_press, env_p);
 	mlx_loop(env_p->mlx);
 }
