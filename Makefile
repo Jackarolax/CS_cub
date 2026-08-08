@@ -6,7 +6,7 @@
 #    By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/08/02 13:02:01 by anematol          #+#    #+#              #
-#    Updated: 2026/08/04 21:41:21 by anematol         ###   ########.fr        #
+#    Updated: 2026/08/08 20:15:36 by anematol         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,6 +34,8 @@ CFLAGS = -Wall -Wextra -Werror
 CFILES =	main.c \
 			minilibx.c \
 			hook_functions.c\
+			draw.c\
+			movement.c\
 
 
 INCLUDES	= cub.h
