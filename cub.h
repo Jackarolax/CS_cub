@@ -6,7 +6,7 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/02 13:01:50 by anematol          #+#    #+#             */
-/*   Updated: 2026/08/06 17:12:17 by ssin             ###   ########.fr       */
+/*   Updated: 2026/08/08 19:19:36 by ssin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@
 # define ID_C "C"
 
 # include "./minilibx/mlx.h"
+//# include <X11/X.h>
+//# include <X11/keysym.h>
 # include <fcntl.h>
 # include <unistd.h>
 # include <sys/types.h>
@@ -33,12 +35,23 @@
 # include <stdlib.h>
 # include <fcntl.h>
 # include <stdio.h> // remove
+# include <stdlib.h>
 
+# define DESTROY_NOTIFY 17
+# define KEY_PRESS 0
+# define XK_ESCAPE 53
+
+#ifdef __APPLE__
+# define KEY_PRESS_MASK 0
+#else
+# define KEY_PRESS_MASK KeyPressMask
 #endif
 
 typedef struct	s_img {
 	void	*img;
 	char	*addr;
+	int		width;
+	int		height;
 	int		bits_per_pixel;
 	int		line_length;
 	int		endian;
@@ -57,5 +70,19 @@ typedef struct  s_id {
   int   C_B;
 } t_id;
 
-void	set_minilibx();
+typedef struct s_mlx_data {
+	t_img			test_img;
+	void			*mlx;
+	void			*win;
+	int				width;
+	int				height;
+}				t_mlx_data;
+
+void	set_minilibx(t_mlx_data *env_p);
 void	parser(char *map);
+void	set_minilibx(t_mlx_data *env_p);
+int		close_window(void *param);
+int		handle_key_press(int keycode, void *param);
+void	destroy_everything_and_exit(t_mlx_data *env_p, int exit_code);
+
+#endif

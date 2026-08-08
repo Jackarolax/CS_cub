@@ -6,7 +6,7 @@
 #    By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/08/02 13:02:01 by anematol          #+#    #+#              #
-#    Updated: 2026/08/04 18:01:28 by ssin             ###   ########.fr        #
+#    Updated: 2026/08/08 19:10:55 by ssin             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,14 +34,13 @@ CFLAGS = -Wall -Wextra -Werror
 CFILES =	main.c \
 					minilibx.c \
 					parser.c \
-
-OFILES =	main.o\
+					hook_functions.c\
 
 INCLUDES	= cub.h
 
 OBJ_DIR		= obj
 
-OBJ				= $(addprefix $(OBJ_DIR)/, $(notdir $(CFILES:.c=.o)))
+OBJ			= $(addprefix $(OBJ_DIR)/, $(notdir $(CFILES:.c=.o)))
 
 all: $(MLX_DIR)/libmlx.a $(NAME)
 
@@ -50,9 +49,6 @@ $(MLX_DIR):
 
 $(MLX_DIR)/libmlx.a: $(MLX_DIR)
 	$(MAKE) -C $(MLX_DIR) > /dev/null
-
-$(OFILES): $(CFILES) $(INCLUDES)
-		cc $(CFLAGS) -c $(CFILES)
 
 $(NAME): $(OBJ)
 		cc $(OBJ) $(CFLAGS) -o $(NAME) $(MLX_FLAGS)
