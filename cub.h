@@ -6,7 +6,7 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/02 13:01:50 by anematol          #+#    #+#             */
-/*   Updated: 2026/08/08 20:05:48 by ssin             ###   ########.fr       */
+/*   Updated: 2026/08/11 18:50:31 by ssin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@
 # include "./minilibx/mlx.h"
 # include "./libft/libft.h"
 # include "./events.h"
-//# include <X11/X.h>
-//# include <X11/keysym.h>
+# include <X11/X.h>
+# include <X11/keysym.h>
 # include <fcntl.h>
 # include <unistd.h>
 # include <sys/types.h>

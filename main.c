@@ -6,7 +6,7 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/02 13:01:56 by anematol          #+#    #+#             */
-/*   Updated: 2026/08/08 19:14:21 by ssin             ###   ########.fr       */
+/*   Updated: 2026/08/11 18:49:37 by ssin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ void	destroy_everything_and_exit(t_mlx_data *env_p, int exit_code)
 		mlx_destroy_image(env_p->mlx, env_p->test_img.img);
 	if (env_p->win)
 		mlx_destroy_window(env_p->mlx, env_p->win);
-	/*if (env_p->mlx)
-		mlx_destroy_display(env_p->mlx);*/
+	if (env_p->mlx)
+		mlx_destroy_display(env_p->mlx);
 	free(env_p->mlx);
 	exit(exit_code);
 }
