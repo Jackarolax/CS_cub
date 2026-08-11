@@ -1,17 +1,29 @@
+### General
+- [ ] folder structure
+
 ### Makefile
 - [X] add obj/ folder to makefile
 - [X] make mac
-- [ ] add libft
+- [X] add libft
+- [ ] add get_next_line (?)
 
 ## Minilibx
-- [ ] minilibx setup
+- [X] minilibx setup
+- [X] close window (x and ESC)
+- [ ] setup left and right arrow keys
+- [ ] setup W, A, S, and D keys
 
 ### Parsing
-- [ ] add parsing map
-- [ ] adjust parsing to requirements:
-  - [ ] identifier_validation: NO, SO, WE, EA, F, C
-  - [ ] line_validation: can be separated by one or more empty lines between them
-  - [ ] char_validation: map
+- ⏳ add parsing map
+  - [X] add valid_extension
+  - [ ] add valid_identifier
+    - [ ] valid_identifier: NO, SO, WE, EA, F, C
+    - [ ] valid_spaces: can be separated by one or more empty lines between them
+  - [ ] add valid_identifier_value
+    - [ ] valid path for directions
+    - [ ] numbers for F and C
+  - [ ] add valid_map
+    - [ ] 0 and 1 for map
 - [ ] if any misconfig, exit
 
 ### Execution

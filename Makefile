@@ -6,7 +6,7 @@
 #    By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/08/02 13:02:01 by anematol          #+#    #+#              #
-#    Updated: 2026/08/04 21:41:21 by anematol         ###   ########.fr        #
+#    Updated: 2026/08/08 19:44:40 by ssin             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,12 +29,20 @@ MLX_DIR = ./minilibx
 
 MLX_REPO = https://github.com/42Paris/minilibx-linux.git
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
+
+CFLAGS += -I./includes -I./libft
+
+LIBFT_DIR = ./libft
+
+LIBFT = $(LIBFT_DIR)/libft.a
 
 CFILES =	main.c \
-			minilibx.c \
-			hook_functions.c\
+					minilibx.c \
+					parser.c \
+					hook_functions.c\
 
+OFILES =	main.o \
 
 INCLUDES	= cub.h
 
@@ -50,8 +58,11 @@ $(MLX_DIR):
 $(MLX_DIR)/libmlx.a: $(MLX_DIR)
 	$(MAKE) -C $(MLX_DIR) > /dev/null
 
-$(NAME): $(OBJ)
-		cc $(OBJ) $(CFLAGS) -o $(NAME) $(MLX_FLAGS)
+$(LIBFT):
+	$(MAKE) -C $(LIBFT_DIR)
+
+$(NAME): $(OBJ) $(LIBFT)
+		cc $(OBJ) $(CFLAGS) $(LIBFT) -o $(NAME) $(MLX_FLAGS)
 
 $(OBJ_DIR)/%.o: %.c | $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
