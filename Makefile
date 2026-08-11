@@ -29,14 +29,22 @@ MLX_DIR = ./minilibx
 
 MLX_REPO = https://github.com/42Paris/minilibx-linux.git
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
+
+CFLAGS += -I./includes -I./libft
+
+LIBFT_DIR = ./libft
+
+LIBFT = $(LIBFT_DIR)/libft.a
 
 CFILES =	main.c \
 			minilibx.c \
 			hook_functions.c\
 			draw.c\
 			movement.c\
+			parser.c\
 
+OFILES =	main.o \
 
 INCLUDES	= cub.h
 
@@ -52,8 +60,11 @@ $(MLX_DIR):
 $(MLX_DIR)/libmlx.a: $(MLX_DIR)
 	$(MAKE) -C $(MLX_DIR) > /dev/null
 
-$(NAME): $(OBJ)
-		cc $(OBJ) $(CFLAGS) -o $(NAME) $(MLX_FLAGS)
+$(LIBFT):
+	$(MAKE) -C $(LIBFT_DIR)
+
+$(NAME): $(OBJ) $(LIBFT)
+		cc $(OBJ) $(CFLAGS) $(LIBFT) -o $(NAME) $(MLX_FLAGS)
 
 $(OBJ_DIR)/%.o: %.c | $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
