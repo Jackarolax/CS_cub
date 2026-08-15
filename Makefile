@@ -1,15 +1,3 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2026/08/02 13:02:01 by anematol          #+#    #+#              #
-#    Updated: 2026/08/08 19:44:40 by ssin             ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 NAME = cub3D
 
 UNAME := $(shell uname)
@@ -46,7 +34,7 @@ OFILES =	main.o \
 
 INCLUDES	= cub.h
 
-OBJ_DIR		= obj
+OBJ_DIR		= build
 
 OBJ			= $(addprefix $(OBJ_DIR)/, $(notdir $(CFILES:.c=.o)))
 

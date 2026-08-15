@@ -10,18 +10,28 @@ CFLAGS = -Wextra -Werror -Wall
 
 NAME = libft.a
 
+GNL  = get_next_line
+
+SRC_GNL = $(GNL)/get_next_line.c $(GNL)/get_next_line_utils.c
+
+SRC			= $(CFILES) $(CFILESBONUS) $(SRC_GNL)
+
+OBJ_GNL = $(GNL)/get_next_line.o $(GNL)/get_next_line_utils.o
+
+OBJ			= $(OFILES) $(OFILESBONUS) $(OBJ_GNL)
+
+INC					= -I includes -I $(GNL)
+
+%.o: %.c
+    cc $(CFLAGS) $(INC) -c $< -o $@
+
 all: $(NAME)
 
-$(NAME):
-		cc $(CFLAGS) -c $(CFILES)
-		ar rc $(NAME) $(OFILES)
-
-bonus:
-		cc $(CFLAGS) -c $(CFILES) $(CFILESBONUS)
-		ar rc $(NAME) $(OFILES) $(OFILESBONUS)
+$(NAME): $(OBJ)
+		ar rc $(NAME) $(OBJ)
 
 clean:
-	rm -f $(OFILES) $(OFILESBONUS)
+	rm -f $(OBJ)
 
 fclean: clean
 	rm -f $(NAME)

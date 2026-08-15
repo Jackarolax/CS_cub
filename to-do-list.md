@@ -5,7 +5,7 @@
 - [X] add obj/ folder to makefile
 - [X] make mac
 - [X] add libft
-- [ ] add get_next_line (?)
+- [ ] add get_next_line
 
 ## Minilibx
 - [X] minilibx setup
