@@ -6,7 +6,7 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/02 13:01:50 by anematol          #+#    #+#             */
-/*   Updated: 2026/08/15 16:25:58 by ssin             ###   ########.fr       */
+/*   Updated: 2026/08/19 17:19:04 by ssin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # define ID_EA "EA"
 # define ID_F "F"
 # define ID_C "C"
+# define COORD_LENGTH 4
 
 # include "./minilibx/mlx.h"
 # include "./libft/libft.h"

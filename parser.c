@@ -6,7 +6,7 @@
 /*   By: ssin <ssin@student.42berlin.de>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/04 17:58:58 by ssin              #+#    #+#             */
-/*   Updated: 2026/08/15 18:17:28 by ssin             ###   ########.fr       */
+/*   Updated: 2026/08/19 17:17:16 by ssin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,16 +86,14 @@ static void	valid_ceiling_floor(t_id *id_p, char **tokens)
 	}
 }
 
-static void	check_dup(char *id, char *token)
+static void	check_dup(t_id *id_p, char *token)
 {
-	if (id)
+	if (token)
 	{
-		if (ft_strncmp(token, ID_NO, 2) == VALID ||
-			ft_strncmp(token, ID_SO, 2) == VALID ||
-			ft_strncmp(token, ID_WE, 2) == VALID ||
-			ft_strncmp(token, ID_EA, 2) == VALID ||
-			ft_strncmp(token, ID_F, 1) == VALID ||
-			ft_strncmp(token, ID_C, 1) == VALID)
+		if (id_p->NO != NULL &&
+			id_p->SO != NULL &&
+			id_p->WE != NULL &&
+			id_p->EA != NULL)
 		{
 			perror("Duplicated identifier");
 			exit(1); // call destroy_everything_and_exit()
@@ -103,7 +101,64 @@ static void	check_dup(char *id, char *token)
 	}
 }
 
-static int	valid_identifier(int map_fd, t_id *id_p)
+static void	fill_coordinates(t_id *id_p, char **tokens)
+{
+	// os identifiers estão sendo preenchidos com "\n"
+	// make a clean before saving inside id_p->[coord]
+	if (ft_strncmp(tokens[0], ID_NO, 2) == VALID)
+		id_p->NO = ft_strdup(tokens[1]);
+	else if (ft_strncmp(tokens[0], ID_SO, 2) == VALID)
+		id_p->SO = ft_strdup(tokens[1]);
+	else if (ft_strncmp(tokens[0], ID_WE, 2) == VALID)
+		id_p->WE = ft_strdup(tokens[1]);
+	else if (ft_strncmp(tokens[0], ID_EA, 2) == VALID)
+		id_p->EA = ft_strdup(tokens[1]);
+}
+
+static void	check_coordinate(t_id *id_p, char **tokens)
+{
+	size_t i;
+	const char *coordinates[] = {
+		ID_NO,
+		ID_SO,
+		ID_EA,
+		ID_WE
+	};
+	const char *color_key[] = {
+		ID_F,
+		ID_C
+	};
+
+	i = 0;
+	while (i < COORD_LENGTH) {
+		if (tokens && ft_strncmp(tokens[0], coordinates[i], 2) == VALID) {
+			check_dup(id_p, tokens[0]);
+			// check_file(); // check if it's a valid path, and if has permission to handle error and not save garbage
+			fill_coordinates(id_p, tokens);
+			break ;
+		}
+		if (tokens && ft_strncmp(tokens[0], color_key[i], 1) == VALID)
+			valid_ceiling_floor(id_p, tokens);
+		i++;
+	}
+}
+
+static	int	ids_are_complete(t_id *id_p)
+{
+	if (id_p)
+		if (id_p->NO && id_p->SO && id_p->WE && id_p->EA && id_p->F_R != -1 && id_p->C_R != -1)
+			return (1);
+	return (0); // call destroy_everything_and_exit()
+}
+
+static void	valid_map(t_id *id_p, char *line, char **tokens)
+{
+	(void)id_p;
+	(void)line;
+	printf("validating... %s\n", *tokens);
+}
+
+static int	valid_file(int map_fd, t_id *id_p)
 {
 	char	*line;
 	char	**tokens;
@@ -117,42 +172,27 @@ static int	valid_identifier(int map_fd, t_id *id_p)
 	}
 	while (line)
 	{
-		tokens = ft_split(line, ' ');
-		if (!id_p->NO && ft_strncmp(tokens[0], ID_NO, 2) == VALID)
-		{
-			check_dup(id_p->NO, tokens[0]);
-			// check_file(); // check if it's a valid path, and if has permission to handle error and not save garbage
-			id_p->NO = ft_strdup(tokens[1]);
-		}
-		else if (!id_p->SO && ft_strncmp(tokens[0], ID_SO, 2) == VALID)
-		{
-			check_dup(id_p->SO, tokens[0]);
-			id_p->SO = ft_strdup(tokens[1]);
-		}
-		else if (!id_p->WE && ft_strncmp(tokens[0], ID_WE, 2) == VALID)
-		{
-			check_dup(id_p->WE, tokens[0]);
-			id_p->WE = ft_strdup(tokens[1]);
-		}
-		else if (!id_p->EA && ft_strncmp(tokens[0], ID_EA, 2) == VALID)
-		{
-			check_dup(id_p->EA, tokens[0]);
-			id_p->EA = ft_strdup(tokens[1]);
-		}
-		else if (id_p->C_R && ft_strncmp(tokens[0], ID_C, 1) == VALID)
+		tokens = ft_split(line, ' '); // considerar vários espaços entre identificador e valor (ft_trim combinado com is_space)
+		if (!id_p->NO || !id_p->SO || !id_p->WE || !id_p->EA ||
+			id_p->F_R  == -1 || id_p->C_R  == -1)
+			check_coordinate(id_p, tokens);
+		// improve this else if
+		else if (((id_p->F_R  != -1) && ft_strncmp(tokens[0], ID_F, 1) == VALID) ||
+			((id_p->C_R  != -1) && ft_strncmp(tokens[0], ID_C, 1) == VALID))
 		{
 			perror("Duplicated identifier");
 			exit(1);
 		}
-		else if ((!id_p->F_R && ft_strncmp(tokens[0], ID_F, 1) == VALID) ||
-			(!id_p->C_R && ft_strncmp(tokens[0], ID_C, 1) == VALID))
-			valid_ceiling_floor(id_p, tokens);
-		else if ((ft_strncmp(tokens[0], "0", 1) == VALID) ||
-				(ft_strncmp(tokens[0], "1", 1) == VALID))
-			printf("map\n");
+		else if ((ft_strncmp(tokens[0], ID_NO, 2) && ft_strncmp(tokens[0], ID_SO, 2) && ft_strncmp(tokens[0], ID_WE, 2) && ft_strncmp(tokens[0], ID_EA, 2) && ft_strncmp(tokens[0], ID_F, 1) && ft_strncmp(tokens[0], ID_C, 1)) &&
+			ids_are_complete(id_p))
+			valid_map(id_p, line, tokens);
+		/*else if ((ft_strncmp(tokens[0], "0", 1) == VALID) ||
+				(ft_strncmp(tokens[0], "1", 1) == VALID))*/
 		else if ((ft_strncmp(tokens[0], "\n", 1) == VALID) ||
-				(tokens[0][0] == 32))
-			printf("new line / space\n");
+				(tokens[0][0] == 32) ||
+			(ft_strncmp(tokens[0], "0", 1) == VALID) ||
+			(ft_strncmp(tokens[0], "1", 1) == VALID))
+			printf("new line / space / map\n");
 		else
 		{
 			perror("Not valid identifier");
@@ -214,8 +254,7 @@ void	parser(char *map_name_p)
 			exit(1);
 		}
 		// check if the file contains all the identifiers before starting the map
-		valid_identifier(map_fd, &identifiers);
-		// valid_map();
+		valid_file(map_fd, &identifiers);
 	}
 
 	// check if identifiers are not NULL or -1
