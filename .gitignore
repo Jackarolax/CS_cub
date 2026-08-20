@@ -1,7 +1,9 @@
 minilibx/
+libft/libft.a
 cub3D
 *.o
-*.a
+maps/*
+!maps/*.cub
 
 # Mac
 .DS_Store

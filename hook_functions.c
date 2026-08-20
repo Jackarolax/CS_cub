@@ -26,7 +26,7 @@ int	handle_key_press(int keycode, void *param)
 	t_mlx_data	*env_p;
 
 	env_p = (t_mlx_data *)param;
-	if (keycode == XK_Escape)
+	if (keycode == XK_ESCAPE)
 		close_window(param);
 	if (keycode == XK_W || keycode == XK_w)
 		env_p->mv_fwd_pressed = 1;

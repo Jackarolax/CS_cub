@@ -6,7 +6,7 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/02 13:01:56 by anematol          #+#    #+#             */
-/*   Updated: 2026/08/20 19:55:00 by anematol         ###   ########.fr       */
+/*   Updated: 2026/08/20 20:18:48 by anematol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,16 +51,20 @@ int main(int ac, char **av)
 {
 	t_mlx_data	env;
 	// add param validation
-	printf("%i\n", ac);
-	if (ac == 2)
-		printf("%s\n", av[1]);
+	if (ac == 1 || !av[1])
+	{
+		perror("Map is missing");
+		exit(1);
+	}
+
+	parser(av[1]);
 
 	init_env(&env);
 	env.height = 800;
 	env.width = 1080;
 	set_minilibx(&env);
-
 	// parser
+
 	// execution
 	return (0);
 }

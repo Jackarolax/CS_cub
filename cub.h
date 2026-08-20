@@ -6,28 +6,43 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/02 13:01:50 by anematol          #+#    #+#             */
-/*   Updated: 2026/08/20 20:02:27 by anematol         ###   ########.fr       */
+/*   Updated: 2026/08/20 20:18:14 by anematol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB_H
 # define CUB_H
+
+# define SIZE 1000
+# define EXTENSION ".cub"
+# define CUB 0
+# define VALID 0
+# define ERROR -1
+# define ID_NO "NO"
+# define ID_SO "SO"
+# define ID_WE "WE"
+# define ID_EA "EA"
+# define ID_F "F"
+# define ID_C "C"
+
 # include "./minilibx/mlx.h"
 # include "./libft/libft.h"
+# include "./events.h"
 # include <X11/X.h>
 # include <X11/keysym.h>
 # include <fcntl.h>
 # include <unistd.h>
-# include <stdio.h> // remove
+# include <sys/types.h>
+# include <sys/uio.h>
 # include <stdlib.h>
+
 # include <math.h>
 # ifndef M_PI
 #  define M_PI 3.14159265358979323846
 # endif
 
-# define DESTROY_NOTIFY 17
-# define KEY_PRESS 0
-# define XK_ESCAPE 53
+# include <fcntl.h>
+# include <stdio.h> // remove
 
 
 # define MINI_PLAYER_CENTER_POINT 25
@@ -48,6 +63,18 @@ typedef struct	s_coords {
 	int	x;
 	int	y;
 }				t_coords;
+typedef struct  s_id {
+  char  *NO;
+  char  *SO;
+  char  *WE;
+  char  *EA;
+  int   F_R;
+  int   F_G;
+  int   F_B;
+  int   C_R;
+  int   C_G;
+  int   C_B;
+} t_id;
 
 typedef struct s_mlx_data {
 	t_img			test_img;
@@ -69,6 +96,8 @@ typedef struct s_mlx_data {
 	double			turning_speed;
 }				t_mlx_data;
 
+void	set_minilibx(t_mlx_data *env_p);
+void	parser(char *map);
 void	set_minilibx(t_mlx_data *env_p);
 int		close_window(void *param);
 int		handle_key_press(int keycode, void *param);
