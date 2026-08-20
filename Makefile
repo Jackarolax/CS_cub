@@ -6,7 +6,7 @@
 #    By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/08/02 13:02:01 by anematol          #+#    #+#              #
-#    Updated: 2026/08/08 19:44:40 by ssin             ###   ########.fr        #
+#    Updated: 2026/08/08 20:15:36 by anematol         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,9 +38,11 @@ LIBFT_DIR = ./libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
 CFILES =	main.c \
-					minilibx.c \
-					parser.c \
-					hook_functions.c\
+			minilibx.c \
+			hook_functions.c\
+			draw.c\
+			movement.c\
+			parser.c\
 
 OFILES =	main.o \
 
