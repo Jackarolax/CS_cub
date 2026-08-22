@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2026/08/02 13:02:01 by anematol          #+#    #+#              #
+#    Updated: 2026/08/22 13:32:39 by ssin             ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 NAME = cub3D
 
 UNAME := $(shell uname)
@@ -26,9 +38,11 @@ LIBFT_DIR = ./libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
 CFILES =	main.c \
-					minilibx.c \
-					parser.c \
-					hook_functions.c\
+			minilibx.c \
+			hook_functions.c\
+			draw.c\
+			movement.c\
+			parser.c\
 
 OFILES =	main.o \
 
