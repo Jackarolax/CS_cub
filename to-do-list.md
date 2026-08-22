@@ -21,7 +21,7 @@
     - [ ] valid_spaces: can be separated by one or more empty lines between them
   - [ ] add valid_identifier_value
     - [ ] valid path for directions
-    - [C] numbers for F and C
+    - [X] numbers for F and C
   - [ ] add valid_map
     - [ ] 0 and 1 for map
 - [ ] if any misconfig, exit
