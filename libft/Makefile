@@ -23,12 +23,12 @@ OBJ			= $(OFILES) $(OFILESBONUS) $(OBJ_GNL)
 INC					= -I includes -I $(GNL)
 
 %.o: %.c
-    cc $(CFLAGS) $(INC) -c $< -o $@
+	cc $(CFLAGS) $(INC) -c $< -o $@
 
 all: $(NAME)
 
 $(NAME): $(OBJ)
-		ar rc $(NAME) $(OBJ)
+	ar rc $(NAME) $(OBJ)
 
 clean:
 	rm -f $(OBJ)

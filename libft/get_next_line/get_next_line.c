@@ -6,37 +6,11 @@
 /*   By: ssin <ssin@student.42berlin.de>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 16:00:38 by ssin              #+#    #+#             */
-/*   Updated: 2025/07/11 17:04:55 by ssin             ###   ########.fr       */
+/*   Updated: 2026/08/25 21:39:40 by ssin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-static char	*ft_substr(char *s, unsigned int start, size_t len)
-{
-	size_t	n;
-	size_t	s_len;
-	char	*substr;
-
-	if (!s)
-		return (NULL);
-	n = 0;
-	s_len = ft_strlen(s);
-	if (start >= s_len)
-		return (ft_strdup(""));
-	if (len > s_len - start)
-		len = s_len - start;
-	substr = malloc(len + 1);
-	if (!substr)
-		return (NULL);
-	while (n < len)
-	{
-		substr[n] = s[start + n];
-		n++;
-	}
-	substr[n] = '\0';
-	return (substr);
-}
 
 static void	free_memo(char **ptr)
 {

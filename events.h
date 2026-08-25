@@ -19,6 +19,7 @@
 
 #  define DESTROY_NOTIFY DestroyNotify
 #  define KEY_PRESS KeyPress
+#  define KEY_RELEASE KeyRelease
 #  define KEY_PRESS_MASK KeyPressMask
 #  define XK_ESCAPE XK_Escape
 # define XK_W   XK_w
