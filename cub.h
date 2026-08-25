@@ -6,7 +6,7 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/02 13:01:50 by anematol          #+#    #+#             */
-/*   Updated: 2026/08/22 13:32:59 by ssin             ###   ########.fr       */
+/*   Updated: 2026/08/25 20:44:45 by ssin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ typedef struct	s_coords {
 	int	x;
 	int	y;
 }				t_coords;
+
 typedef struct  s_id {
   char  *NO;
   char  *SO;
@@ -95,10 +96,11 @@ typedef struct s_mlx_data {
 	double			moving_speed;
 	double			player_diretion;
 	double			turning_speed;
+  t_id        *identifiers;
 }				t_mlx_data;
 
 void	set_minilibx(t_mlx_data *env_p);
-void	parser(char *map);
+void	parser(char *map, t_mlx_data *env);
 void	set_minilibx(t_mlx_data *env_p);
 int		close_window(void *param);
 int		handle_key_press(int keycode, void *param);

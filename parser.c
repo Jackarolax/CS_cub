@@ -6,13 +6,13 @@
 /*   By: ssin <ssin@student.42berlin.de>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/04 17:58:58 by ssin              #+#    #+#             */
-/*   Updated: 2026/08/22 12:54:50 by ssin             ###   ########.fr       */
+/*   Updated: 2026/08/25 20:46:00 by ssin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub.h"
 
-static char	**valid_id_content(char **tokens)
+static char	**valid_id_content(t_mlx_data *env_p, char **tokens)
 {
 	int	i;
 	// content has 3 parts?
@@ -24,7 +24,8 @@ static char	**valid_id_content(char **tokens)
 		tokens[3])
 	{
 		perror("Invalid C / F content");
-		exit(1); // call destroy_everything_and_exit()
+		destroy_everything_and_exit(env_p, 1);
+
 	}
 
 	i = 0;
@@ -44,90 +45,93 @@ static char	**valid_id_content(char **tokens)
 		if (tokens[i][f] && tokens[i][f] != '\n' && !ft_isdigit(tokens[i][f]))
 		{
 			perror("Invalid C / F content");
-			exit(5);// call destroy_everything_and_exit() 
+			destroy_everything_and_exit(env_p, 1);
 		}
 		i++;
 	}
 	return (tokens);
 }
 
-static void	valid_ceiling_floor(t_id *id_p, char **tokens)
+static void	valid_ceiling_floor(t_mlx_data *env_p, char **tokens)
 {
 	char	**x;
 	int		i;
 
-	x = valid_id_content(tokens);
+	// check if the end of tokens is a valid_char(tokens), otherwise
+	// or simply just check if x[3] exists
+	x = valid_id_content(env_p, tokens);
 	i = 0;
 	while (x[i])
 	{
 		if (ft_atoi(x[i]) < 0 || ft_atoi(x[i]) > 255)
 		{
 			perror("Invalid C / F content");
-			exit(1); // call destroy_everything_and_exit()
+			destroy_everything_and_exit(env_p, 1);
 		}
 		i++;
 	}
 	if (x && ft_strncmp(tokens[0], ID_F, 1) == VALID)
 	{	
-		id_p->F_R = ft_atoi(x[0]);
-		id_p->F_G = ft_atoi(x[1]);
-		id_p->F_B = ft_atoi(x[2]);
+		env_p->identifiers->F_R = ft_atoi(x[0]);
+		env_p->identifiers->F_G = ft_atoi(x[1]);
+		env_p->identifiers->F_B = ft_atoi(x[2]);
 	}
 	else if (x && ft_strncmp(tokens[0], ID_C, 1) == VALID)
 	{
-		id_p->C_R = ft_atoi(x[0]);
-		id_p->C_G = ft_atoi(x[1]);
-		id_p->C_B = ft_atoi(x[2]);
+		env_p->identifiers->C_R = ft_atoi(x[0]);
+		env_p->identifiers->C_G = ft_atoi(x[1]);
+		env_p->identifiers->C_B = ft_atoi(x[2]);
 	}
 	else
 	{
 		perror("Invalid C / F");
-		exit(1); // call destroy_everything_and_exit()
+		destroy_everything_and_exit(env_p, 1);
 	}
 }
 
-static void	check_dup(t_id *id_p, char *token)
+static void	check_dup(t_mlx_data *env_p, char *token)
 {
-	if (token && id_p->NO && ft_strncmp(ID_NO, token, 2) == VALID)
+	if (token && env_p->identifiers->NO && ft_strncmp(ID_NO, token, 2) == VALID)
 	{
 		perror("Duplicated NO");
-		exit(1); // call destroy_everything_and_exit()
+		destroy_everything_and_exit(env_p, 1);
 	}
-	if (token && id_p->SO && ft_strncmp(ID_SO, token, 2) == VALID)
+	if (token && env_p->identifiers->SO && ft_strncmp(ID_SO, token, 2) == VALID)
 	{
 		perror("Duplicated SO");
-		exit(1); // call destroy_everything_and_exit()
+		destroy_everything_and_exit(env_p, 1);
 	}
-	if (token && id_p->WE && ft_strncmp(ID_WE, token, 2) == VALID)
+	if (token && env_p->identifiers->WE && ft_strncmp(ID_WE, token, 2) == VALID)
 	{
 		perror("Duplicated WE");
-		exit(1); // call destroy_everything_and_exit()
+		destroy_everything_and_exit(env_p, 1);
 	}
-	if (token && id_p->EA && ft_strncmp(ID_EA, token, 2) == VALID)
+	if (token && env_p->identifiers->EA && ft_strncmp(ID_EA, token, 2) == VALID)
 	{
 		perror("Duplicated EA");
-		exit(1); // call destroy_everything_and_exit()
+		destroy_everything_and_exit(env_p, 1);
 	}
 }
 
-static void	check_FC_dup(t_id *id_p, char *token)
+static void	check_FC_dup(t_mlx_data *env_p, char *token)
 {
-	if (token && id_p->F_R != -1 && ft_strncmp(ID_F, token, 2) == VALID)
+	if (token && env_p->identifiers->F_R != -1 && ft_strncmp(ID_F, token, 2) == VALID)
 	{
 		perror("Duplicated F");
-		exit(1); // call destroy_everything_and_exit()
+		destroy_everything_and_exit(env_p, 1);
 	}
-	if (token && id_p->C_R != -1 && ft_strncmp(ID_C, token, 2) == VALID)
+	if (token && env_p->identifiers->C_R != -1 && ft_strncmp(ID_C, token, 2) == VALID)
 	{
 		perror("Duplicated C");
-		exit(1); // call destroy_everything_and_exit()
+		destroy_everything_and_exit(env_p, 1);
 	}
 }
 
 
 static void	fill_coordinates(t_id *id_p, char **tokens)
 {
-	// the identifiers are filled with "\n"
+	// check if the end of tokens[1] is a valid_char(tokens[1])
+	// or simply just check if tokens[2] exists
 	// make a clean before saving inside id_p->[coord]
 	if (ft_strncmp(tokens[0], ID_NO, 2) == VALID)
 		id_p->NO = ft_strdup(tokens[1]);
@@ -139,19 +143,19 @@ static void	fill_coordinates(t_id *id_p, char **tokens)
 		id_p->EA = ft_strdup(tokens[1]);
 }
 
-static void	check_file_permissions(t_id *id_p, char **tokens)
+static void	check_file_permissions(t_mlx_data *env_p, char **tokens)
 {
 	if (!tokens[0] || !tokens[1] || tokens[2])
 	{
 		perror("Check identifiers");
-		exit(1); // call destroy_everything_and_exit()
+		destroy_everything_and_exit(env_p, 1);
 	}
 	// check if the file exists and has permission to read
 	else
-		fill_coordinates(id_p, tokens);
+		fill_coordinates(env_p->identifiers, tokens);
 }
 
-static void	check_coordinate(t_id *id_p, char **tokens)
+static void	check_coordinate(t_mlx_data *env_p, char **tokens)
 {
 	size_t i;
 	const char *coordinates[] = {
@@ -170,13 +174,13 @@ static void	check_coordinate(t_id *id_p, char **tokens)
 	i = 0;
 	while (i < COORD_LENGTH) {
 		if (tokens && ft_strncmp(tokens[0], coordinates[i], 2) == VALID) {
-			check_dup(id_p, tokens[0]);
-			check_file_permissions(id_p, tokens);
+			check_dup(env_p, tokens[0]);
+			check_file_permissions(env_p, tokens);
 			break ;
 		}
 		else if (tokens && color_key[i] && ft_strncmp(tokens[0], color_key[i], 1) == VALID) {
-			check_FC_dup(id_p, tokens[0]);
-			valid_ceiling_floor(id_p, tokens);
+			check_FC_dup(env_p, tokens[0]);
+			valid_ceiling_floor(env_p, tokens);
 		}
 		i++;
 	}
@@ -192,6 +196,17 @@ static	int	complete_ids(t_id *id_p)
 			return (1);
 	return (0); // call destroy_everything_and_exit()
 }
+
+/*static int	check_map(char *line)
+{
+	while (*line)
+	{
+		printf("%c", line[0]);
+		line++;
+	}
+	return (0);
+}
+*/
 
 static int valid_char(char *token)
 {
@@ -223,7 +238,7 @@ static int valid_id(char *token)
 	return (0);
 }
 
-static int	valid_file(int map_fd, t_id *id_p)
+static int	valid_file(int map_fd, t_mlx_data *env_p)
 {
 	char	*line;
 	char	**tokens;
@@ -233,26 +248,26 @@ static int	valid_file(int map_fd, t_id *id_p)
 	if (line == NULL)
 	{
 		perror("Empty file");
-		exit(1); // call destroy_everything_and_exit()
+		destroy_everything_and_exit(env_p, 1);
 	}
 	while (line)
 	{
 		tokens = ft_split(line, ' ');
 		if (tokens[0])
 		{
-			if (!complete_ids(id_p))
-				check_coordinate(id_p, tokens);
-			else if (complete_ids(id_p) && valid_id(tokens[0]))
+			if (!complete_ids(env_p->identifiers))
+				check_coordinate(env_p, tokens);
+			else if (complete_ids(env_p->identifiers) && valid_id(tokens[0]))
 			{
 				perror("Duplicated identifiers");
-				exit(1); // call destroy_everything_and_exit()
+				destroy_everything_and_exit(env_p, 1);
 			}
-			else if (complete_ids(id_p) && (valid_char(tokens[0]) || valid_map_content(tokens)))
+			else if (complete_ids(env_p->identifiers) && (valid_char(tokens[0]) || valid_map_content(tokens)))
 				printf("%s", line);
 			else
 			{
 				perror("Check identifiers");
-				exit(1); // call destroy_everything_and_exit()
+				destroy_everything_and_exit(env_p, 1);
 			}
 		}
 		line = get_next_line(map_fd);
@@ -260,66 +275,50 @@ static int	valid_file(int map_fd, t_id *id_p)
 	return (0);
 }
 
-static int	valid_extension(char *map_name_p)
+static int	valid_extension(t_mlx_data *env_p, char *map_name_p)
 {
 	if (!map_name_p)
 	{
 		perror("Invalid map extension");
-		exit (1); // call destroy_everything_and_exit()
+		destroy_everything_and_exit(env_p, 1);
 	}
 
 	char	*ext = ft_strrchr(map_name_p, '.');
 	if (!ext || (ft_strncmp(EXTENSION, ext, 5) != CUB))
 	{
 		perror("Invalid map extension");
-		exit (1); // call destroy_everything_and_exit()
+		destroy_everything_and_exit(env_p, 1);
 	}
 
 	return (1);
 }
 
-static void	init_identifiers(t_id *identifiers_p)
-{
-	identifiers_p->NO = NULL;
-	identifiers_p->SO = NULL;
-	identifiers_p->WE = NULL;
-	identifiers_p->EA = NULL;
-	identifiers_p->F_R = -1;
-	identifiers_p->F_G = -1;
-	identifiers_p->F_B = -1;
-	identifiers_p->C_R = -1;
-	identifiers_p->C_G = -1;
-	identifiers_p->C_B = -1;
-}
-
-void	parser(char *map_name_p)
+void	parser(char *map_name_p, t_mlx_data *env_p)
 {
 	int		map_fd;
-	t_id	identifiers;
 
-	init_identifiers(&identifiers);
 	map_fd = 0;
-	if (valid_extension(map_name_p))
+	if (valid_extension(env_p, map_name_p))
 	{
 		map_fd = open(map_name_p, O_RDONLY);
 		if (map_fd == ERROR)
 		{
 			perror("Could not open file");
-			exit(1); // call destroy_everything_and_exit()
+			destroy_everything_and_exit(env_p, 1);
 		}
 		// check if the file contains all the identifiers before starting the map
-		valid_file(map_fd, &identifiers);
+		valid_file(map_fd, env_p);
 	}
 
 	// check if identifiers are not NULL or -1
-	printf("%s\n", identifiers.NO);
-	printf("%s\n", identifiers.SO);
-	printf("%s\n", identifiers.WE);
-	printf("%s\n", identifiers.EA);
-	printf("%d\n", identifiers.F_R);
-	printf("%d\n", identifiers.F_G);
-	printf("%d\n", identifiers.F_B);
-	printf("%d\n", identifiers.C_R);
-	printf("%d\n", identifiers.C_G);
-	printf("%d\n", identifiers.C_B);
+	printf("%s\n", env_p->identifiers->NO);
+	printf("%s\n", env_p->identifiers->SO);
+	printf("%s\n", env_p->identifiers->WE);
+	printf("%s\n", env_p->identifiers->EA);
+	printf("%d\n", env_p->identifiers->F_R);
+	printf("%d\n", env_p->identifiers->F_G);
+	printf("%d\n", env_p->identifiers->F_B);
+	printf("%d\n", env_p->identifiers->C_R);
+	printf("%d\n", env_p->identifiers->C_G);
+	printf("%d\n", env_p->identifiers->C_B);
 }
