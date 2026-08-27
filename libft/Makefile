@@ -12,11 +12,11 @@ NAME = libft.a
 
 GNL  = get_next_line
 
-SRC_GNL = $(GNL)/get_next_line.c $(GNL)/get_next_line_utils.c
+SRC_GNL = $(GNL)/get_next_line.c
 
 SRC			= $(CFILES) $(CFILESBONUS) $(SRC_GNL)
 
-OBJ_GNL = $(GNL)/get_next_line.o $(GNL)/get_next_line_utils.o
+OBJ_GNL = $(GNL)/get_next_line.o
 
 OBJ			= $(OFILES) $(OFILESBONUS) $(OBJ_GNL)
 
