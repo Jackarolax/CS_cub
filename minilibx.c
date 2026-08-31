@@ -6,7 +6,7 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/03 18:20:30 by ssin              #+#    #+#             */
-/*   Updated: 2026/08/20 20:02:35 by anematol         ###   ########.fr       */
+/*   Updated: 2026/08/22 13:35:37 by ssin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,9 @@ void	set_minilibx(t_mlx_data *env_p)
 	//draw_rotated_triangle(env_p);
 	mlx_put_image_to_window(env_p->mlx, env_p->win, env_p->test_img.img,
 		(int) env_p->player_x, (int) env_p->player_y);
-	mlx_hook(env_p->win, DestroyNotify, KeyPressMask, close_window, env_p);
-	mlx_hook(env_p->win, KeyPress, KeyPressMask, handle_key_press, env_p);
-	mlx_hook(env_p->win, KeyRelease, KeyReleaseMask, handle_key_release, env_p);
+	mlx_hook(env_p->win, DESTROY_NOTIFY, KEY_PRESS_MASK, close_window, env_p);
+	mlx_hook(env_p->win, KEY_PRESS, KEY_PRESS_MASK, handle_key_press, env_p);
+	mlx_hook(env_p->win, KEY_RELEASE, KEY_PRESS_MASK, handle_key_release, env_p);
 	mlx_loop_hook(env_p->mlx, update_game, env_p);
 	mlx_loop(env_p->mlx);
 }

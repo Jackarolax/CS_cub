@@ -6,7 +6,7 @@
 #    By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/08/02 13:02:01 by anematol          #+#    #+#              #
-#    Updated: 2026/08/08 20:15:36 by anematol         ###   ########.fr        #
+#    Updated: 2026/08/27 19:38:33 by ssin             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,7 +48,7 @@ OFILES =	main.o \
 
 INCLUDES	= cub.h
 
-OBJ_DIR		= obj
+OBJ_DIR		= build
 
 OBJ			= $(addprefix $(OBJ_DIR)/, $(notdir $(CFILES:.c=.o)))
 
@@ -74,9 +74,11 @@ $(OBJ_DIR):
 
 clean:
 		rm -rf $(OBJ_DIR)
+		$(MAKE) -C $(LIBFT_DIR) clean
 
 fclean: clean
 		rm -f $(NAME)
+		$(MAKE) -C $(LIBFT_DIR) fclean
 
 re: fclean all
 

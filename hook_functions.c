@@ -6,7 +6,7 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/04 21:25:59 by anematol          #+#    #+#             */
-/*   Updated: 2026/08/08 22:13:57 by anematol         ###   ########.fr       */
+/*   Updated: 2026/08/22 13:40:23 by ssin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,17 +28,17 @@ int	handle_key_press(int keycode, void *param)
 	env_p = (t_mlx_data *)param;
 	if (keycode == XK_ESCAPE)
 		close_window(param);
-	if (keycode == XK_W || keycode == XK_w)
+	if (keycode == XK_W)
 		env_p->mv_fwd_pressed = 1;
-	if (keycode == XK_S || keycode == XK_s)
+	if (keycode == XK_S)
 		env_p->mv_bck_pressed = 1;
-	if (keycode == XK_A || keycode == XK_a)
+	if (keycode == XK_A)
 		env_p->mv_r_pressed = 1;
-	if (keycode == XK_D || keycode == XK_d)
+	if (keycode == XK_D)
 		env_p->mv_l_pressed = 1;
-	if (keycode == XK_Right)
+	if (keycode == KEY_RIGHT)
 		env_p->look_r_pressed = 1;
-	if (keycode == XK_Left)
+	if (keycode == KEY_LEFT)
 		env_p->look_l_pressed = 1;
 	return (0);
 
@@ -49,17 +49,17 @@ int	handle_key_release(int keycode, void *param)
 	t_mlx_data	*env_p;
 
 	env_p = (t_mlx_data *)param;
-	if (keycode == XK_W || keycode == XK_w)
+	if (keycode == XK_W)
 		env_p->mv_fwd_pressed = 0;
-	if (keycode == XK_S || keycode == XK_s)
+	if (keycode == XK_S)
 		env_p->mv_bck_pressed = 0;
-	if (keycode == XK_A || keycode == XK_a)
+	if (keycode == XK_A)
 		env_p->mv_r_pressed = 0;
-	if (keycode == XK_D || keycode == XK_d)
+	if (keycode == XK_D)
 		env_p->mv_l_pressed = 0;
-	if (keycode == XK_Right)
+	if (keycode == KEY_RIGHT)
 		env_p->look_r_pressed = 0;
-	if (keycode == XK_Left)
+	if (keycode == KEY_LEFT)
 		env_p->look_l_pressed = 0;
 	return (0);
 }
