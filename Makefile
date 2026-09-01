@@ -6,7 +6,7 @@
 #    By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/08/02 13:02:01 by anematol          #+#    #+#              #
-#    Updated: 2026/08/27 19:38:33 by ssin             ###   ########.fr        #
+#    Updated: 2026/09/01 18:25:20 by ssin             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,6 +32,8 @@ MLX_REPO = https://github.com/42Paris/minilibx-linux.git
 CFLAGS = -Wall -Wextra -Werror -g
 
 CFLAGS += -I./includes -I./libft
+
+SANITIZE_FLAGS := -fsanitize=address,undefined -fno-omit-frame-pointer
 
 LIBFT_DIR = ./libft
 
@@ -71,6 +73,9 @@ $(OBJ_DIR)/%.o: %.c | $(OBJ_DIR)
 
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
+
+sanitize:
+	$(MAKE) CFLAGS="$(CFLAGS) $(SANITIZE_FLAGS)" re
 
 clean:
 		rm -rf $(OBJ_DIR)
