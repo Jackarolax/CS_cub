@@ -6,7 +6,7 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/02 13:01:56 by anematol          #+#    #+#             */
-/*   Updated: 2026/08/25 20:42:51 by ssin             ###   ########.fr       */
+/*   Updated: 2026/09/03 16:50:15 by ssin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,14 @@ void	destroy_everything_and_exit(t_mlx_data *env_p, int exit_code)
 		mlx_destroy_window(env_p->mlx, env_p->win);
 	if (env_p->mlx)
 		mlx_destroy_display(env_p->mlx);
+	if (env_p->identifiers->NO)
+		free(env_p->identifiers->NO);
+	if (env_p->identifiers->SO)
+		free(env_p->identifiers->SO);
+	if (env_p->identifiers->WE)
+		free(env_p->identifiers->WE);
+	if (env_p->identifiers->EA)
+		free(env_p->identifiers->EA);
 	free(env_p->identifiers);
 	free(env_p->mlx);
 	exit(exit_code);
@@ -75,7 +83,6 @@ int main(int ac, char **av)
 		perror("Map is missing");
 		exit(1);
 	}
-
 
 	init_env(&env);
 	parser(av[1], &env);
