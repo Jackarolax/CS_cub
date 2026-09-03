@@ -6,11 +6,11 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/02 13:01:56 by anematol          #+#    #+#             */
-/*   Updated: 2026/09/03 16:50:15 by ssin             ###   ########.fr       */
+/*   Updated: 2026/09/03 19:47:42 by ssin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub.h"
+#include "../include/cub.h"
 
 static void	init_identifiers(t_id *identifiers_p)
 {
@@ -26,7 +26,7 @@ static void	init_identifiers(t_id *identifiers_p)
 	identifiers_p->C_B = -1;
 }
 
-void	init_env(t_mlx_data *env_p)
+static void	init_env(t_mlx_data *env_p)
 {
 	env_p->identifiers = ft_calloc(1, sizeof(t_id));
 	if (!env_p->identifiers)
@@ -59,8 +59,6 @@ void	destroy_everything_and_exit(t_mlx_data *env_p, int exit_code)
 		mlx_destroy_image(env_p->mlx, env_p->background_img.img);
 	if (env_p->win)
 		mlx_destroy_window(env_p->mlx, env_p->win);
-	if (env_p->mlx)
-		mlx_destroy_display(env_p->mlx);
 	if (env_p->identifiers->NO)
 		free(env_p->identifiers->NO);
 	if (env_p->identifiers->SO)

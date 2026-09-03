@@ -6,7 +6,7 @@
 #    By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/08/02 13:02:01 by anematol          #+#    #+#              #
-#    Updated: 2026/09/01 18:25:20 by ssin             ###   ########.fr        #
+#    Updated: 2026/09/03 19:52:38 by ssin             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ else
                 -lmlx -lXext -lX11 -lm -lbsd
 endif
 
-#SRC_DIR = ./src
+SRC_DIR = ./src
 
 MLX_DIR = ./minilibx
 
@@ -39,16 +39,20 @@ LIBFT_DIR = ./libft
 
 LIBFT = $(LIBFT_DIR)/libft.a
 
-CFILES =	main.c \
-			minilibx.c \
-			hook_functions.c\
-			draw.c\
-			movement.c\
-			parser.c\
+CFILES =	src/main.c \
+			src/minilibx.c \
+			src/hook_functions.c\
+			src/draw.c\
+			src/movement.c\
+			src/parser/parser.c\
+			src/parser/parser_colors.c\
+			src/parser/parser_coordinates.c\
+			src/parser/parser_helpers.c\
+			src/parser/parser_map.c\
 
 OFILES =	main.o \
 
-INCLUDES	= cub.h
+INCLUDES	= include/cub.h
 
 OBJ_DIR		= build
 
@@ -67,6 +71,8 @@ $(LIBFT):
 
 $(NAME): $(OBJ) $(LIBFT)
 		cc $(OBJ) $(CFLAGS) $(LIBFT) -o $(NAME) $(MLX_FLAGS)
+
+vpath %.c $(SRC_DIR) $(SRC_DIR)/parser
 
 $(OBJ_DIR)/%.o: %.c | $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@

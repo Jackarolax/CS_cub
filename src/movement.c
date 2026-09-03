@@ -6,13 +6,13 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/08 20:15:51 by anematol          #+#    #+#             */
-/*   Updated: 2026/08/08 22:33:06 by anematol         ###   ########.fr       */
+/*   Updated: 2026/09/03 19:46:32 by ssin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub.h"
+#include "../include/cub.h"
 
-double	calculate_new_x(t_mlx_data *env_p)
+static double	calculate_new_x(t_mlx_data *env_p)
 {
 	double new_x;
 
@@ -28,7 +28,7 @@ double	calculate_new_x(t_mlx_data *env_p)
 	return (new_x);
 }
 
-double	calculate_new_y(t_mlx_data *env_p)
+static double	calculate_new_y(t_mlx_data *env_p)
 {
 	double	new_y;
 
@@ -43,8 +43,6 @@ double	calculate_new_y(t_mlx_data *env_p)
 		new_y += env_p->moving_speed * sin(env_p->player_diretion - M_PI / 2);
 	return (new_y);
 }
-
-
 
 void	move_player(t_mlx_data *env_p)
 {

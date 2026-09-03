@@ -6,27 +6,13 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/08 20:05:46 by anematol          #+#    #+#             */
-/*   Updated: 2026/08/20 20:04:57 by anematol         ###   ########.fr       */
+/*   Updated: 2026/09/03 19:50:10 by ssin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub.h"
+#include "../include/cub.h"
 
-void	ft_bzero(void *s, size_t n)
-{
-	size_t			i;
-	unsigned char	*ptr;
-
-	ptr = (unsigned char *)s;
-	i = 0;
-	while (i < n)
-	{
-		ptr[i] = 0;
-		i++;
-	}
-}
-
-void reset_img(t_img image)
+static void reset_img(t_img image)
 {
 	char *pixels;
 	int total_size;
@@ -88,15 +74,15 @@ void	draw_rotated_triangle(t_mlx_data *env_p)
 }
 
 // Get pixel color from sprite
-int	get_img_pixel(t_img image, int x, int y)
+/*static int	get_img_pixel(t_img image, int x, int y)
 {
 	char	*pixel;
 
 	pixel = image.addr + (y * image.line_length + x * (image.bpp / 8));
 	return (*(int *)pixel);
-}
+}*/
 
-void	put_img_inside_img(t_img small_image, t_img large_image,
+/*static void	put_img_inside_img(t_img small_image, t_img large_image,
 						int x, int y)
 {
 	int	i;
@@ -120,7 +106,7 @@ void	put_img_inside_img(t_img small_image, t_img large_image,
 		}
 		i++;
 	}
-}
+}*/
 
 int	draw_to_window(t_mlx_data	*env_p)
 {
