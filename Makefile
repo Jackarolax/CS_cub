@@ -6,7 +6,7 @@
 #    By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/08/02 13:02:01 by anematol          #+#    #+#              #
-#    Updated: 2026/08/08 20:15:36 by anematol         ###   ########.fr        #
+#    Updated: 2026/09/05 13:18:49 by anematol         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,6 +43,7 @@ CFILES =	main.c \
 			draw.c\
 			movement.c\
 			parser.c\
+			movement_collision_checking.c\
 
 OFILES =	main.o \
 

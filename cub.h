@@ -6,7 +6,7 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/02 13:01:50 by anematol          #+#    #+#             */
-/*   Updated: 2026/08/20 20:18:14 by anematol         ###   ########.fr       */
+/*   Updated: 2026/09/05 13:18:55 by anematol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,13 @@
 # include <fcntl.h>
 # include <stdio.h> // remove
 
+# define MOVING_SPEED 1
+# define TURNING_SPEED 0.5
 
 # define MINI_PLAYER_CENTER_POINT 25
 # define MINI_PLAYER_EDGE_POINT MINI_PLAYER_CENTER_POINT * 2
-# define MINI_PLAYER_WIDTH MINI_PLAYER_CENTER_POINT / 5
+# define MINI_PLAYER_WIDTH 20
+# define MINI_PLAYER_LENGTH 40
 
 typedef struct	s_img {
 	void	*img;
@@ -77,23 +80,26 @@ typedef struct  s_id {
 } t_id;
 
 typedef struct s_mlx_data {
-	t_img			test_img;
-	t_img			background_img;
-	void			*mlx;
-	void			*win;
-	int				width;
-	int				height;
-	int				mv_fwd_pressed;
-	int				mv_bck_pressed;
-	int				mv_l_pressed;
-	int				mv_r_pressed;
-	int				look_l_pressed;
-	int				look_r_pressed;
-	double			player_x;
-	double			player_y;
-	double			moving_speed;
-	double			player_diretion;
-	double			turning_speed;
+	t_img	player_img;
+	t_img	background_img;
+	t_img	buffer_img;
+	void	*mlx;
+	void	*win;
+	int		width;
+	int		height;
+	int		mv_fwd_pressed;
+	int		mv_bck_pressed;
+	int		mv_l_pressed;
+	int		mv_r_pressed;
+	int		look_l_pressed;
+	int		look_r_pressed;
+	double	player_x;
+	double	player_y;
+	double	player_direction;
+	char	**map;
+	int		map_height;
+	int		map_width;
+	int		block_size;
 }				t_mlx_data;
 
 void	set_minilibx(t_mlx_data *env_p);
@@ -110,5 +116,12 @@ void	pixel_put(t_img img, int x, int y, int color);
 void	draw_line(t_img img, t_coords begin, t_coords end, int color);
 t_coords	rotate_point(t_coords point, t_coords center, double angle);
 void	draw_rotated_triangle(t_mlx_data *env_p);
+void	draw_square(t_img img, t_coords start_point, int len, int color);
+void	draw_obstacles(t_mlx_data *env_p);
+int		check_collision(t_mlx_data *env_p, int check_x, int check_y);
+int		collision_position_x(t_mlx_data *env_p, int new_x);
+int		collision_position_y(t_mlx_data *env_p, int new_y);
+int		touching_x(t_mlx_data *env_p);
+int		touching_y(t_mlx_data *env_p);
 
 #endif
