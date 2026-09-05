@@ -75,7 +75,7 @@ void	set_minilibx(t_mlx_data *env_p)
 		(int) env_p->player_x, (int) env_p->player_y);
 	mlx_hook(env_p->win, DESTROY_NOTIFY, KEY_PRESS_MASK, close_window, env_p);
 	mlx_hook(env_p->win, KEY_PRESS, KEY_PRESS_MASK, handle_key_press, env_p);
-	mlx_hook(env_p->win, KEY_RELEASE, KEY_PRESS_MASK, handle_key_release, env_p);
+	mlx_hook(env_p->win, KEY_RELEASE, KEY_RELEASE_MASK, handle_key_release, env_p);
 	mlx_loop_hook(env_p->mlx, update_game, env_p);
 	mlx_loop(env_p->mlx);
 }
