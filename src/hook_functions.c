@@ -6,11 +6,11 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/04 21:25:59 by anematol          #+#    #+#             */
-/*   Updated: 2026/08/31 20:51:25 by ssin             ###   ########.fr       */
+/*   Updated: 2026/09/03 18:21:17 by ssin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub.h"
+#include "../include/cub.h"
 
 int	close_window(void *param)
 {

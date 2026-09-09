@@ -6,11 +6,11 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/02 13:01:56 by anematol          #+#    #+#             */
-/*   Updated: 2026/09/03 16:50:15 by ssin             ###   ########.fr       */
+/*   Updated: 2026/09/08 19:09:35 by ssin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub.h"
+#include "../include/cub.h"
 
 static void	init_identifiers(t_id *identifiers_p)
 {
@@ -26,7 +26,7 @@ static void	init_identifiers(t_id *identifiers_p)
 	identifiers_p->C_B = -1;
 }
 
-void	init_env(t_mlx_data *env_p)
+static void	init_env(t_mlx_data *env_p)
 {
 	env_p->identifiers = ft_calloc(1, sizeof(t_id));
 	if (!env_p->identifiers)
