@@ -6,7 +6,7 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/02 13:01:56 by anematol          #+#    #+#             */
-/*   Updated: 2026/09/10 17:26:21 by ssin             ###   ########.fr       */
+/*   Updated: 2026/09/10 17:42:09 by ssin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,9 @@ static void	init_identifiers(t_id *identifiers_p)
 static void	init_env(t_mlx_data *env_p)
 {
 	env_p->identifiers = ft_calloc(1, sizeof(t_id));
-	env_p->map_info = ft_calloc(1, sizeof(t_id));
-	if (!env_p->identifiers || !env_p->map_info)
+	if (!env_p->identifiers)
 		exit(1);
 	init_identifiers(env_p->identifiers);
-	init_map_info(env_p->map_info);
 	env_p->mlx = NULL;
 	env_p->win = NULL;
 	env_p->width = 0;

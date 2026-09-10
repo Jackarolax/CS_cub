@@ -6,7 +6,7 @@
 /*   By: ssin <ssin@student.42berlin.de>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/04 17:58:58 by ssin              #+#    #+#             */
-/*   Updated: 2026/09/03 19:53:27 by ssin             ###   ########.fr       */
+/*   Updated: 2026/09/10 17:40:46 by ssin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	valid_file(int map_fd, t_mlx_data *env_p)
 		{
 			if (!complete_ids(env_p->identifiers))
 				check_coordinate(env_p, tokens);
-			else if (complete_ids(env_p->identifiers) && (valid_char(tokens[0]) || valid_map_content(tokens)))
+			else if (complete_ids(env_p->identifiers) && (valid_char(tokens[0]) || valid_map_content(*tokens)))
 				printf("%s", line);
 			else
 				call_error(env_p, "Check identifiers");

@@ -6,7 +6,7 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/02 13:01:50 by anematol          #+#    #+#             */
-/*   Updated: 2026/09/10 17:26:01 by ssin             ###   ########.fr       */
+/*   Updated: 2026/09/10 17:42:23 by ssin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,6 @@ typedef struct s_mlx_data {
 	double			player_diretion;
 	double			turning_speed;
   t_id        *identifiers;
-  t_map_info  *map_info;
 }				t_mlx_data;
 
 /* minilibx */
