@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cub.h"
+#include "../../include/cub.h"
 
 char	**filter_color(t_mlx_data *env_p, char **tokens)
 {

@@ -10,29 +10,32 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cub.h"
+#include "../../include/cub.h"
 
 char	*fill_coordinates(t_id *id_p, char **tokens)
 {
-	if (ft_strncmp(tokens[0], ID_NO, 2) == VALID)
+	if (ft_strlen(tokens[0]) == 2)
 	{
-		id_p->NO = ft_strtrim(tokens[1], " \t\n");
-		return (id_p->NO);
-	}
-	else if (ft_strncmp(tokens[0], ID_SO, 2) == VALID)
-	{
-		id_p->SO = ft_strtrim(tokens[1], " \t\n");
-		return (id_p->SO);
-	}
-	else if (ft_strncmp(tokens[0], ID_WE, 2) == VALID)
-	{
-		id_p->WE = ft_strtrim(tokens[1], " \t\n");
-		return (id_p->WE);
-	}
-	else if (ft_strncmp(tokens[0], ID_EA, 2) == VALID)
-	{
-		id_p->EA = ft_strtrim(tokens[1], " \t\n");
-		return (id_p->EA);
+		if (ft_strncmp(tokens[0], ID_NO, 2) == VALID)
+		{
+			id_p->NO = ft_strtrim(tokens[1], " \t\n");
+			return (id_p->NO);
+		}
+		else if (ft_strncmp(tokens[0], ID_SO, 2) == VALID)
+		{
+			id_p->SO = ft_strtrim(tokens[1], " \t\n");
+			return (id_p->SO);
+		}
+		else if (ft_strncmp(tokens[0], ID_WE, 2) == VALID)
+		{
+			id_p->WE = ft_strtrim(tokens[1], " \t\n");
+			return (id_p->WE);
+		}
+		else if (ft_strncmp(tokens[0], ID_EA, 2) == VALID)
+		{
+			id_p->EA = ft_strtrim(tokens[1], " \t\n");
+			return (id_p->EA);
+		}
 	}
 	return (NULL);
 }
@@ -56,12 +59,15 @@ void	check_coordinate(t_mlx_data *env_p, char **tokens)
 		check_dup(env_p, tokens[0]);
 		check_file_permissions(env_p, tokens);
 	}
-	else if (tokens && (ft_strncmp(tokens[0], ID_F, 1) == VALID
+	else if (tokens && ft_strlen(tokens[0]) == 1
+			&& (ft_strncmp(tokens[0], ID_F, 1) == VALID
 			|| ft_strncmp(tokens[0], ID_C, 1) == VALID))
 	{
 		check_fc_dup(env_p, tokens[0]);
 		valid_ceiling_floor(env_p, tokens);
 	}
+	else if (!valid_char(tokens[0]) && !valid_map_content(*tokens))
+		call_error(env_p, "Not a valid identifier");
 }
 
 void	check_dup(t_mlx_data *env_p, char *token)
@@ -110,4 +116,3 @@ char	**valid_id_content(t_mlx_data *env_p, char **tokens)
 	}
 	return (colors);
 }
-

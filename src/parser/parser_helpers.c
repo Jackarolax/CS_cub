@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cub.h"
+#include "../../include/cub.h"
 
 void	check_file_permissions(t_mlx_data *env_p, char **tokens)
 {
@@ -24,6 +24,11 @@ void	check_file_permissions(t_mlx_data *env_p, char **tokens)
 	else
 	{
 		path = fill_coordinates(env_p->identifiers, tokens);
+		if (!path)
+		{
+			perror("Not a valid identifier");
+			destroy_everything_and_exit(env_p, 1);
+		}
 		if (path && access(path, F_OK | R_OK) == -1)
 		{
 			perror("Could not open sprite file");
