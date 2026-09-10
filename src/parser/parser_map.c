@@ -10,12 +10,17 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cub.h"
+#include "../../include/cub.h"
 
-int valid_map_content(char **tokens)
+int valid_map_content(char *letter)
 {
-	if (ft_strncmp(tokens[0], "0", 1) == VALID
-		|| ft_strncmp(tokens[0], "1", 1) == VALID)
+	if (ft_strncmp(letter, "0", 1) == VALID
+		|| ft_strncmp(letter, "1", 1) == VALID
+		|| ft_strncmp(letter, " ", 1) == VALID
+		|| ft_strncmp(letter, "N", 1) == VALID
+		|| ft_strncmp(letter, "S", 1) == VALID
+		|| ft_strncmp(letter, "W", 1) == VALID
+		|| ft_strncmp(letter, "E", 1) == VALID)
 		return (1);
 	return (0);
 }

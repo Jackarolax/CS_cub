@@ -6,11 +6,20 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/02 13:01:56 by anematol          #+#    #+#             */
-/*   Updated: 2026/09/10 17:26:21 by ssin             ###   ########.fr       */
+/*   Updated: 2026/09/10 17:26:54 by ssin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub.h"
+
+static void	init_map_info(t_map_info *info)
+{
+	info->map = NULL;
+	info->map_height = 0;
+	info->map_width = 0;
+	info->player_x_start = 0;
+	info->player_y_start = 0;
+}
 
 static void	init_identifiers(t_id *identifiers_p)
 {
@@ -61,8 +70,6 @@ void	destroy_everything_and_exit(t_mlx_data *env_p, int exit_code)
 		mlx_destroy_image(env_p->mlx, env_p->background_img.img);
 	if (env_p->win)
 		mlx_destroy_window(env_p->mlx, env_p->win);
-	if (env_p->mlx)
-		mlx_destroy_display(env_p->mlx);
 	if (env_p->identifiers->NO)
 		free(env_p->identifiers->NO);
 	if (env_p->identifiers->SO)

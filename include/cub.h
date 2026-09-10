@@ -6,7 +6,7 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/02 13:01:50 by anematol          #+#    #+#             */
-/*   Updated: 2026/09/10 17:26:01 by ssin             ###   ########.fr       */
+/*   Updated: 2026/09/10 17:27:00 by ssin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,6 @@
 # include "../minilibx/mlx.h"
 # include "../libft/libft.h"
 # include "./events.h"
-# include <X11/X.h>
-# include <X11/keysym.h>
 # include <fcntl.h>
 # include <unistd.h>
 # include <sys/types.h>
@@ -63,6 +61,14 @@ typedef struct	s_coords {
 	int	x;
 	int	y;
 }				t_coords;
+
+typedef struct	s_map_info {
+	char **map;
+	size_t	map_height;
+	size_t	map_width;
+	size_t	player_x_start;
+	size_t	player_y_start;
+} t_map_info;
 
 typedef struct  s_id {
   char  *NO;
