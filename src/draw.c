@@ -6,11 +6,11 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/08 20:05:46 by anematol          #+#    #+#             */
-/*   Updated: 2026/09/13 13:30:36 by anematol         ###   ########.fr       */
+/*   Updated: 2026/09/13 13:57:22 by anematol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub.h"
+#include "../include/cub.h"
 
 t_coords	give_coords(int x, int y)
 {
@@ -167,7 +167,7 @@ void	draw_rotated_triangle(t_mlx_data *env_p)
 }
 
 // Get pixel color from sprite
-int	get_img_pixel(t_img image, int x, int y)
+static int	get_img_pixel(t_img image, int x, int y)
 {
 	char	*pixel;
 

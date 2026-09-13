@@ -6,11 +6,11 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/05 14:20:00 by anematol          #+#    #+#             */
-/*   Updated: 2026/08/22 13:22:44 by anematol         ###   ########.fr       */
+/*   Updated: 2026/09/13 13:53:37 by anematol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub.h"
+#include "../include/cub.h"
 
 int	check_collision(t_mlx_data *env_p, int check_x, int check_y)
 {

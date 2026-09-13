@@ -6,7 +6,7 @@
 #    By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/08/02 13:02:01 by anematol          #+#    #+#              #
-#    Updated: 2026/09/10 00:03:51 by anematol         ###   ########.fr        #
+#    Updated: 2026/09/13 13:49:59 by anematol         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ else
                 -lmlx -lXext -lX11 -lm -lbsd
 endif
 
-#SRC_DIR = ./src
+SRC_DIR = ./src
 
 MLX_DIR = ./minilibx
 
@@ -33,24 +33,30 @@ CFLAGS = -Wall -Wextra -Werror -g
 
 CFLAGS += -I./includes -I./libft
 
+SANITIZE_FLAGS := -fsanitize=address,undefined -fno-omit-frame-pointer
+
 LIBFT_DIR = ./libft
 
 LIBFT = $(LIBFT_DIR)/libft.a
 
-CFILES =	main.c \
-			minilibx.c \
-			hook_functions.c\
-			draw.c\
-			movement.c\
-			parser.c\
-			movement_collision_checking.c\
-			raycasting.c\
+CFILES =	src/main.c \
+			src/minilibx.c \
+			src/hook_functions.c\
+			src/draw.c\
+			src/movement.c\
+			src/movement_collision_checking.c\
+			src/raycasting.c\
+			src/parser/parser.c\
+			src/parser/parser_colors.c\
+			src/parser/parser_coordinates.c\
+			src/parser/parser_helpers.c\
+			src/parser/parser_map.c\
 
 OFILES =	main.o \
 
-INCLUDES	= cub.h
+INCLUDES	= include/cub.h
 
-OBJ_DIR		= obj
+OBJ_DIR		= build
 
 OBJ			= $(addprefix $(OBJ_DIR)/, $(notdir $(CFILES:.c=.o)))
 
@@ -68,17 +74,24 @@ $(LIBFT):
 $(NAME): $(OBJ) $(LIBFT)
 		cc $(OBJ) $(CFLAGS) $(LIBFT) -o $(NAME) $(MLX_FLAGS)
 
+vpath %.c $(SRC_DIR) $(SRC_DIR)/parser
+
 $(OBJ_DIR)/%.o: %.c | $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
 
+sanitize:
+	$(MAKE) CFLAGS="$(CFLAGS) $(SANITIZE_FLAGS)" re
+
 clean:
 		rm -rf $(OBJ_DIR)
+		$(MAKE) -C $(LIBFT_DIR) clean
 
 fclean: clean
 		rm -f $(NAME)
+		$(MAKE) -C $(LIBFT_DIR) fclean
 
 re: fclean all
 

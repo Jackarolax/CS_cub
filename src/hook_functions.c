@@ -6,11 +6,11 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/04 21:25:59 by anematol          #+#    #+#             */
-/*   Updated: 2026/08/08 22:13:57 by anematol         ###   ########.fr       */
+/*   Updated: 2026/09/03 18:21:17 by ssin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub.h"
+#include "../include/cub.h"
 
 int	close_window(void *param)
 {
@@ -36,9 +36,9 @@ int	handle_key_press(int keycode, void *param)
 		env_p->mv_r_pressed = 1;
 	if (keycode == XK_D || keycode == XK_d)
 		env_p->mv_l_pressed = 1;
-	if (keycode == XK_Right)
+	if (keycode == KEY_RIGHT)
 		env_p->look_r_pressed = 1;
-	if (keycode == XK_Left)
+	if (keycode == KEY_LEFT)
 		env_p->look_l_pressed = 1;
 	return (0);
 
@@ -57,9 +57,9 @@ int	handle_key_release(int keycode, void *param)
 		env_p->mv_r_pressed = 0;
 	if (keycode == XK_D || keycode == XK_d)
 		env_p->mv_l_pressed = 0;
-	if (keycode == XK_Right)
+	if (keycode == KEY_RIGHT)
 		env_p->look_r_pressed = 0;
-	if (keycode == XK_Left)
+	if (keycode == KEY_LEFT)
 		env_p->look_l_pressed = 0;
 	return (0);
 }

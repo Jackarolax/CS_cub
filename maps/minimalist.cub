@@ -1,10 +1,10 @@
-NO ./Makefile
-SO ./Makefile
-WE ./Makefile
-EA ./Makefile
+NO ./include/cub.h
+SO ./include/cub.h
+WE ./include/cub.h
+EA ./include/cub.h
 
-F 220,100,0
-C 225,30,0
+F 220,100,10
+C 225,30,2
 
          111111111111111111111111
          1000000000110000000000001

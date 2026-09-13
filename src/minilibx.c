@@ -6,11 +6,11 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/03 18:20:30 by ssin              #+#    #+#             */
-/*   Updated: 2026/09/13 13:17:30 by anematol         ###   ########.fr       */
+/*   Updated: 2026/09/13 13:57:14 by anematol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub.h"
+#include "../include/cub.h"
 
 // add sprites function
 
@@ -101,9 +101,9 @@ void	set_minilibx(t_mlx_data *env_p)
 	draw_obstacles(env_p);
 	mlx_put_image_to_window(env_p->mlx, env_p->win, env_p->player_img.img,
 		(int) env_p->player_x, (int) env_p->player_y);
-	mlx_hook(env_p->win, DestroyNotify, KeyPressMask, close_window, env_p);
-	mlx_hook(env_p->win, KeyPress, KeyPressMask, handle_key_press, env_p);
-	mlx_hook(env_p->win, KeyRelease, KeyReleaseMask, handle_key_release, env_p);
+	mlx_hook(env_p->win, DESTROY_NOTIFY, KEY_PRESS_MASK, close_window, env_p);
+	mlx_hook(env_p->win, KEY_PRESS, KEY_PRESS_MASK, handle_key_press, env_p);
+	mlx_hook(env_p->win, KEY_RELEASE, KEY_RELEASE_MASK, handle_key_release, env_p);
 	mlx_loop_hook(env_p->mlx, update_game, env_p);
 	mlx_loop(env_p->mlx);
 }

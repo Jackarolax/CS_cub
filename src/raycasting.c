@@ -6,11 +6,12 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/09 23:47:11 by anematol          #+#    #+#             */
-/*   Updated: 2026/09/10 00:16:22 by anematol         ###   ########.fr       */
+/*   Updated: 2026/09/13 13:53:28 by anematol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub.h"
+#include "../include/cub.h"
+
 int	check_ray_collision(t_mlx_data *env_p, int check_x, int check_y)
 {
 	int	tile_x;
