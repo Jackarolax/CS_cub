@@ -33,6 +33,8 @@ static int	valid_file(int map_fd, t_mlx_data *env_p)
 			else
 				call_error(env_p, "Check identifiers");
 		}
+		free_str_array(tokens);
+		free(line);
 		line = get_next_line(map_fd);
 	}
 	return (0);

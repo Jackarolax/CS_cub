@@ -120,6 +120,7 @@ void	check_file_permissions(t_mlx_data *env_p, char **tokens);
 int	complete_ids(t_id *id_p);
 int valid_char(char *token);
 void	call_error(t_mlx_data *env_p, char *message);
+void	free_str_array(char **str);
 
 int valid_map_content(char *tokens);
 

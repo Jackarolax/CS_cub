@@ -33,7 +33,7 @@ char	**filter_color(t_mlx_data *env_p, char **tokens)
 	}
 	if (!colors || !colors[0] || !colors[1] || !colors[2] || colors[3])
 	{
-		free(colors);
+		free_str_array(colors);
 		perror("Invalid C / F content");
 		destroy_everything_and_exit(env_p, 1);
 	}
@@ -94,4 +94,5 @@ void	valid_ceiling_floor(t_mlx_data *env_p, char **tokens)
 		i++;
 	}
 	fill_color(env_p, colors, tokens);
+	free_str_array(colors);
 }
