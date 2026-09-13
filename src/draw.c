@@ -6,7 +6,7 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/08 20:05:46 by anematol          #+#    #+#             */
-/*   Updated: 2026/09/13 13:57:22 by anematol         ###   ########.fr       */
+/*   Updated: 2026/09/13 16:15:51 by anematol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -255,18 +255,18 @@ int	draw_to_window(t_mlx_data	*env_p)
 
 
 	reset_img(env_p->background_img);
-	draw_fov(env_p->background_img, env_p, 90);
-	//reset_img(env_p->player_img);
-	//draw_rotated_triangle(env_p);
-	//draw_obstacles(env_p);
-	//draw_ray(env_p->background_img, env_p, 0);
-	//double i = 0.1;
-	//while (i < 45)
-	//{
-	//	draw_ray(env_p->background_img, env_p, i);
-	//	draw_ray(env_p->background_img, env_p, -i);
-	//	i += 0.1;
-	//}
+	//draw_fov(env_p->background_img, env_p, 90);
+	reset_img(env_p->player_img);
+	draw_rotated_triangle(env_p);
+	draw_obstacles(env_p);
+	draw_ray(env_p->background_img, env_p, 0);
+	double i = 0.1;
+	while (i < 45)
+	{
+		draw_ray(env_p->background_img, env_p, i);
+		draw_ray(env_p->background_img, env_p, -i);
+		i += 0.1;
+	}
 	//copy_background_to_buffer(env_p);
 	//put_img_inside_img(env_p->player_img, env_p->buffer_img, (int) env_p->player_x, (int) env_p->player_y);
 	mlx_put_image_to_window(env_p->mlx, env_p->win, env_p->background_img.img, 0, 0);

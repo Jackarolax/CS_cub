@@ -6,7 +6,7 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/03 18:20:30 by ssin              #+#    #+#             */
-/*   Updated: 2026/09/13 13:57:14 by anematol         ###   ########.fr       */
+/*   Updated: 2026/09/13 16:14:59 by anematol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,34 +43,95 @@ t_coords	rotate_point(t_coords point, t_coords center, double angle)
 	return (new_point);
 }
 
+void	set_player_position_from_i_j(t_mlx_data *env_p, int i, int j)
+{
+	env_p->player_x = j * env_p->block_size +
+					(env_p->block_size / 2) - MINI_PLAYER_CENTER_POINT;
+	env_p->player_y = i * env_p->block_size +
+					(env_p->block_size / 2) - MINI_PLAYER_CENTER_POINT;
+	if (env_p->map[i][j] == 'E')
+		env_p->player_direction = 0 * M_PI / 2;
+	else if (env_p->map[i][j] == 'S')
+		env_p->player_direction = 1 * M_PI / 2;
+	else if (env_p->map[i][j] == 'W')
+		env_p->player_direction = 2 * M_PI / 2;
+	else if (env_p->map[i][j] == 'N')
+		env_p->player_direction = 3 * M_PI / 2;
+
+}
+
+
+//the map has to be initialized before calling this function
+//assumes there is only one player position character (N, E, S, W)
+void	set_player_position(t_mlx_data *env_p)
+{
+	int	i;
+	int	j;
+
+	if (!env_p->map)
+		destroy_everything_and_exit(env_p, 1);
+	i = 0;
+	while(env_p->map[i])
+	{
+		j = 0;
+		while(env_p->map[i][j])
+		{
+			if (env_p->map[i][j] == 'N'
+				|| env_p->map[i][j] == 'E'
+				|| env_p->map[i][j] == 'S'
+				|| env_p->map[i][j] == 'W')
+				return (set_player_position_from_i_j(env_p, i, j));
+
+			j++;
+		}
+		i++;
+	}
+	destroy_everything_and_exit(env_p, 1);
+}
+
+
 void	set_minilibx(t_mlx_data *env_p)
 {
 
 	env_p->mlx = mlx_init();
 
 	// draw triangle
-	env_p->player_x = 910.0;
-	env_p->player_y = 210.0;
-	env_p->player_direction = 2 * M_PI / 4;
+	//env_p->player_x = 910.0;
+	//env_p->player_y = 210.0;
+	//env_p->player_direction = 2 * M_PI / 4;
 	env_p->block_size = 100;
-	env_p->map = malloc(15 * sizeof(char*));
-	env_p->map[0] = ft_strdup("111111111111111111111111111111111");
-	env_p->map[1] = ft_strdup("111111111000000000110000000000001");
-	env_p->map[2] = ft_strdup("111111111011000001110000000000001");
-	env_p->map[3] = ft_strdup("111111111001000000000000000000001");
-	env_p->map[4] = ft_strdup("111111111011000001110000000000001");
-	env_p->map[5] = ft_strdup("100000000011000001110111111111111");
-	env_p->map[6] = ft_strdup("111101111111110111000000100011111");
-	env_p->map[7] = ft_strdup("111101111111110111010100100011111");
-	env_p->map[8] = ft_strdup("110000001101010111000000100011111");
-	env_p->map[9] = ft_strdup("100000000000000011000000100011111");
-	env_p->map[10] = ft_strdup("100000000000000011010100100011111");
-	env_p->map[11] = ft_strdup("11000001110101011111011110N011111");
-	env_p->map[12] = ft_strdup("11110111 1110101 1011110100011111");
-	env_p->map[13] = ft_strdup("11111111 1111111 1111111111111111");
-	env_p->map[14] = NULL;
-	env_p->map_height = 14;
-	env_p->map_width = 35;
+	//env_p->map = malloc(15 * sizeof(char*));
+	//env_p->map[0] = ft_strdup("111111111111111111111111111111111");
+	//env_p->map[1] = ft_strdup("111111111000000000110000000000001");
+	//env_p->map[2] = ft_strdup("111111111011000001110000000000001");
+	//env_p->map[3] = ft_strdup("1111111110E1000000000000000000001");
+	//env_p->map[4] = ft_strdup("111111111011000001110000000000001");
+	//env_p->map[5] = ft_strdup("100000000011000001110111111111111");
+	//env_p->map[6] = ft_strdup("111101111111110111000000100011111");
+	//env_p->map[7] = ft_strdup("111101111111110111010100100011111");
+	//env_p->map[8] = ft_strdup("110000001101010111000000100011111");
+	//env_p->map[9] = ft_strdup("100000000000000011000000100011111");
+	//env_p->map[10] = ft_strdup("100000000000000011010100100011111");
+	//env_p->map[11] = ft_strdup("11000001110101011111011110N011111");
+	//env_p->map[12] = ft_strdup("11110111 1110101 1011110100011111");
+	//env_p->map[13] = ft_strdup("11111111 1111111 1111111111111111");
+	//env_p->map[14] = NULL;
+	//env_p->map_height = 14;
+	//env_p->map_width = 33;
+	env_p->map = malloc(9 * sizeof(char*));
+	env_p->map[0] = ft_strdup("1111111111");
+	env_p->map[1] = ft_strdup("1000100001");
+	env_p->map[2] = ft_strdup("1000010101");
+	env_p->map[3] = ft_strdup("1000010101");
+	env_p->map[4] = ft_strdup("1011110101");
+	env_p->map[5] = ft_strdup("1000N11101");
+	env_p->map[6] = ft_strdup("1010000001");
+	env_p->map[7] = ft_strdup("1111111111");
+	env_p->map[8] = NULL;
+	env_p->map_height = 8;
+	env_p->map_width = 10;
+
+	set_player_position(env_p);
 	env_p->width = env_p->map_width * env_p->block_size;
 	env_p->height = env_p->map_height * env_p->block_size;
 	env_p->win = mlx_new_window(env_p->mlx, env_p->win_width,

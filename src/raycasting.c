@@ -6,7 +6,7 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/09 23:47:11 by anematol          #+#    #+#             */
-/*   Updated: 2026/09/13 13:53:28 by anematol         ###   ########.fr       */
+/*   Updated: 2026/09/13 15:59:23 by anematol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,22 +39,31 @@ t_vector	give_vector(double x, double y)
 //to the current player direction plus the given degree_angle
 t_vector	get_ray_vector(t_mlx_data *env_p, double degree_angle)
 {
-	double	vector_x;
-	double	vector_y;
-	double	delta_x;
-	double	delta_y;
+	t_vector	vector;
+	t_vector	delta;
 
-	vector_x = cos(env_p->player_direction + (degree_angle / 180 * M_PI));
-	vector_y = sin(env_p->player_direction + (degree_angle / 180 * M_PI));
-	delta_x = vector_x;
-	delta_y = vector_y;
-	while (!check_ray_collision(env_p,(int) (vector_x + env_p->player_x + MINI_PLAYER_CENTER_POINT),
-										(int) (vector_y + env_p->player_y + MINI_PLAYER_CENTER_POINT)))
+	vector.x = cos(env_p->player_direction + (degree_angle / 180 * M_PI));
+	vector.y = sin(env_p->player_direction + (degree_angle / 180 * M_PI));
+	delta.x = vector.x;
+	delta.y = vector.y;
+	while (!check_ray_collision(env_p,(int) (vector.x + env_p->player_x + MINI_PLAYER_CENTER_POINT),
+										(int) (vector.y + env_p->player_y + MINI_PLAYER_CENTER_POINT)))
 	{
-		vector_x += delta_x;
-		vector_y += delta_y;
+		vector.x += delta.x;
+		vector.y += delta.y;
 	}
-	return (give_vector(vector_x, vector_y));
+	if (sqrt(vector.x * vector.x + vector.y * vector.y) < (2 * (double)env_p->block_size))
+	{
+		vector.x -=	delta.x;
+		vector.y -= delta.y;
+		while (!check_ray_collision(env_p,(int) (vector.x + env_p->player_x + MINI_PLAYER_CENTER_POINT),
+										(int) (vector.y + env_p->player_y + MINI_PLAYER_CENTER_POINT)))
+		{
+			vector.x += 0.1 * delta.x;
+			vector.y += 0.1 * delta.y;
+		}
+	}
+	return (vector);
 }
 
 double	get_ray_len(t_mlx_data *env_p, double degree_angle)
