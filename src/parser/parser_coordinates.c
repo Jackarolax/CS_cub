@@ -6,7 +6,7 @@
 /*   By: ssin <ssin@student.42berlin.de>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/03 19:01:30 by ssin              #+#    #+#             */
-/*   Updated: 2026/09/03 19:14:07 by ssin             ###   ########.fr       */
+/*   Updated: 2026/09/13 12:08:46 by ssin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	check_coordinate(t_mlx_data *env_p, char **tokens)
 		check_fc_dup(env_p, tokens[0]);
 		valid_ceiling_floor(env_p, tokens);
 	}
-	else if (!valid_char(tokens[0]) && !valid_map_content(*tokens))
+	else if (!valid_space_nline(tokens[0]) && !valid_map_content(*tokens))
 		call_error(env_p, "Not a valid identifier");
 }
 

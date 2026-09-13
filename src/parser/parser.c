@@ -6,7 +6,7 @@
 /*   By: ssin <ssin@student.42berlin.de>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/04 17:58:58 by ssin              #+#    #+#             */
-/*   Updated: 2026/09/03 19:53:27 by ssin             ###   ########.fr       */
+/*   Updated: 2026/09/13 17:13:47 by ssin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static int	check_map(t_mlx_data *env_p, char *line, int i)
 	size = ft_strlen(line) - 1;
 	if (size > env_p->map_info->map_width)
 		env_p->map_info->map_width = size;
-	env_p->map_info->map = realloc(env_p->map_info->map, sizeof(char *) * (i + 1));
+	env_p->map_info->map = realloc(env_p->map_info->map, sizeof(char *) * (size + 2));
 	if (!env_p->map_info->map)
 		call_error(env_p, "Memory allocation failed");
 	if (line[size] == '\n')
@@ -53,10 +53,11 @@ static int	valid_file(int map_fd, t_mlx_data *env_p)
 		{
 			if (!complete_ids(env_p->identifiers))
 				check_coordinate(env_p, tokens);
-			else if (complete_ids(env_p->identifiers) && (valid_char(tokens[0]) || valid_map_content(*tokens)))
+			else if (complete_ids(env_p->identifiers) && (valid_space_nline(tokens[0]) || valid_map_content(*tokens)))
 			{
 				check_map(env_p, line, i);
-				if (!valid_char(tokens[0]))
+				env_p->map_info->last_row = i;
+				if (!valid_space_nline(tokens[0]))
 					i++;
 			}
 			else
@@ -70,24 +71,102 @@ static int	valid_file(int map_fd, t_mlx_data *env_p)
 	return (0);
 }
 
-static void	valid_map(t_mlx_data *env_p)
+void	is_close_to_space_char(t_map_info *map_p, size_t i, size_t j)
 {
-	int	i;
+	if (ft_strncmp(&map_p->map[i][j + 1], " ", 1) == VALID
+		|| (j > 0 && ft_strncmp(&map_p->map[i][j - 1], " ", 1) == VALID)
+		|| ft_strncmp(&map_p->map[i + 1][j], " ", 1) == VALID
+		|| (i > 0 && ft_strncmp(&map_p->map[i - 1][j], " ", 1) == VALID)
+		|| ft_strncmp(&map_p->map[i][j + 1], "\0", 1) == VALID
+		|| (j > 0 && ft_strncmp(&map_p->map[i][j - 1], "\0", 1) == VALID)
+		|| ft_strncmp(&map_p->map[i + 1][j], "\0", 1) == VALID
+		|| (i > 0 && ft_strncmp(&map_p->map[i - 1][j], "\0", 1) == VALID))
+	{
+		perror("Walkable cell close to edge [Check Map]");
+		exit(1);
+	}
+}
+
+int	check_walkable_cels(t_map_info *map_p, size_t i)
+{
+	size_t	j;
+
+	j = 0;
+	while (map_p->map[i][j])
+	{
+		if (i > map_p->map_height || j > map_p->map_width)
+			return (1);
+		if (ft_strncmp(&map_p->map[i][j], "0", 1) == VALID)
+			is_close_to_space_char(map_p, i, j);
+		j++;
+	}
+	return (0);
+}
+
+static void	standardize_map(t_mlx_data *env_p)
+{
+	size_t	i;
+	size_t	j;
+	size_t	line_len;
 
 	i = 0;
 	while (env_p->map_info->map[i])
 	{
+		j = 0;
+		// replace spaces with 1's at the beginning of the line
+		while (env_p->map_info->map[i][j] && ft_strncmp(&env_p->map_info->map[i][j], " ", 1) == VALID)
+		{
+			env_p->map_info->map[i][j] = '1';
+			j++;
+		}
+		line_len = ft_strlen(env_p->map_info->map[i]);
+		if (line_len < env_p->map_info->map_width)
+		{
+			env_p->map_info->map[i] = realloc(env_p->map_info->map[i], sizeof(char) * (env_p->map_info->map_width + 1));
+			// replace the spaces with 1's at the end of the line
+			while (line_len < env_p->map_info->map_width)
+			{
+				env_p->map_info->map[i][line_len] = '1';
+				line_len++;
+			}
+			env_p->map_info->map[i][line_len] = '\0';
+		}
+		i++;
+	}
+	// just to print and check, remove later
+	i = 0;
+	while (env_p->map_info->map[i] && i < env_p->map_info->last_row)
+	{
 		printf("%s\n", env_p->map_info->map[i]);
 		i++;
 	}
+}
+
+static void	valid_map(t_mlx_data *env_p)
+{
+	size_t	i;
+
+	i = 0;
+	if (valid_first_last_rows(env_p->map_info->map[0])
+		|| valid_first_last_rows(env_p->map_info->map[env_p->map_info->last_row]))
+		call_error(env_p, "Check map's first/last rows");
+	//	i++;
+	while (env_p->map_info->map[i] && i < env_p->map_info->last_row)
+	{
+		check_walkable_cels(env_p->map_info, i);
+		i++;
+	}
+
+	standardize_map(env_p);
 	/*
 	check first/last rows
 	↓
-	check first/last chars
+	check_walkable_cels
 	↓
 	check internal walls
 	↓
 	check characters (0, 1, N, S, E, W, ...)
+	check the surroundings of the player (?)
 	*/
 }
 
