@@ -6,7 +6,7 @@
 #    By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/08/02 13:02:01 by anematol          #+#    #+#              #
-#    Updated: 2026/09/05 13:18:49 by anematol         ###   ########.fr        #
+#    Updated: 2026/09/10 00:03:51 by anematol         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,6 +44,7 @@ CFILES =	main.c \
 			movement.c\
 			parser.c\
 			movement_collision_checking.c\
+			raycasting.c\
 
 OFILES =	main.o \
 

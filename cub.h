@@ -6,7 +6,7 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/02 13:01:50 by anematol          #+#    #+#             */
-/*   Updated: 2026/09/05 13:18:55 by anematol         ###   ########.fr       */
+/*   Updated: 2026/09/10 00:26:51 by anematol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,13 @@
 # define MINI_PLAYER_WIDTH 20
 # define MINI_PLAYER_LENGTH 40
 
+
+#define WHITE 0xFFFFFFFF
+#define RED 0x00FF0000
+#define GREEN 0x0000FF00
+#define BLUE 0x000000FF
+
+
 typedef struct	s_img {
 	void	*img;
 	char	*addr;
@@ -66,6 +73,12 @@ typedef struct	s_coords {
 	int	x;
 	int	y;
 }				t_coords;
+
+typedef struct	s_vector {
+	double	x;
+	double	y;
+}				t_vector;
+
 typedef struct  s_id {
   char  *NO;
   char  *SO;
@@ -123,5 +136,9 @@ int		collision_position_x(t_mlx_data *env_p, int new_x);
 int		collision_position_y(t_mlx_data *env_p, int new_y);
 int		touching_x(t_mlx_data *env_p);
 int		touching_y(t_mlx_data *env_p);
+t_coords	give_coords(int x, int y);
+t_vector	give_vector(double x, double y);
+t_vector	get_ray_vector(t_mlx_data *env_p, double degree_angle);
+double	get_ray_len(t_mlx_data *env_p, double degree_angle);
 
 #endif

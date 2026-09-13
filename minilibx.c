@@ -6,7 +6,7 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/03 18:20:30 by ssin              #+#    #+#             */
-/*   Updated: 2026/09/05 13:18:53 by anematol         ###   ########.fr       */
+/*   Updated: 2026/09/09 23:45:16 by anematol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ t_coords	rotate_point(t_coords point, t_coords center, double angle)
 	delta_point.x = point.x - center.x;
 	delta_point.y = point.y - center.y;
 
-	// Rotate
+	// Rotate need to understand the math behind that better
 	new_delta.x = delta_point.x * cos(angle) - delta_point.y * sin(angle);
 	new_delta.y = delta_point.x * sin(angle) + delta_point.y * cos(angle);
 
@@ -77,16 +77,16 @@ void	set_minilibx(t_mlx_data *env_p)
 	env_p->player_direction = 2 * M_PI / 4;
 	env_p->block_size = 100;
 	env_p->map = malloc(8 * sizeof(char*));
-	env_p->map[0] = ft_strdup("11111");
-	env_p->map[1] = ft_strdup("10101");
-	env_p->map[2] = ft_strdup("10001");
-	env_p->map[3] = ft_strdup("10001");
-	env_p->map[4] = ft_strdup("10001");
-	env_p->map[5] = ft_strdup("10001");
-	env_p->map[6] = ft_strdup("11011");
+	env_p->map[0] = ft_strdup("111111111111");
+	env_p->map[1] = ft_strdup("101011111101");
+	env_p->map[2] = ft_strdup("100000000001");
+	env_p->map[3] = ft_strdup("100011111101");
+	env_p->map[4] = ft_strdup("100010000101");
+	env_p->map[5] = ft_strdup("100010000001");
+	env_p->map[6] = ft_strdup("110111111111");
 	env_p->map[7] = NULL;
 	env_p->map_height = 7;
-	env_p->map_width = 5;
+	env_p->map_width = 12;
 	//draw_rotated_triangle(env_p);
 	draw_obstacles(env_p);
 	mlx_put_image_to_window(env_p->mlx, env_p->win, env_p->player_img.img,

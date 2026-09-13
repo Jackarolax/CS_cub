@@ -82,7 +82,7 @@ int main(int ac, char **av)
 
 	init_env(&env);
 	env.height = 800;
-	env.width = 1080;
+	env.width = 1200;
 	set_minilibx(&env);
 	// parser
 
