@@ -6,7 +6,7 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/08 20:05:46 by anematol          #+#    #+#             */
-/*   Updated: 2026/09/13 12:26:20 by anematol         ###   ########.fr       */
+/*   Updated: 2026/09/13 13:30:36 by anematol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,13 +180,17 @@ void	draw_ray(t_img image, t_mlx_data *env_p, double degree_angle)
 	t_vector	ray_vector;
 
 	ray_vector = get_ray_vector(env_p, degree_angle);
-	draw_line(image, give_coords((int) env_p->player_x + MINI_PLAYER_CENTER_POINT, (int) env_p->player_y + MINI_PLAYER_CENTER_POINT),
-		give_coords((int)(ray_vector.x + env_p->player_x + MINI_PLAYER_CENTER_POINT), (int) (ray_vector.y + env_p->player_y + MINI_PLAYER_CENTER_POINT)), 0x00FF0000);
+	draw_line(image,
+		give_coords((int) env_p->player_x + MINI_PLAYER_CENTER_POINT,
+		(int) env_p->player_y + MINI_PLAYER_CENTER_POINT),
+		give_coords((int)(ray_vector.x + env_p->player_x + MINI_PLAYER_CENTER_POINT),
+		(int) (ray_vector.y + env_p->player_y + MINI_PLAYER_CENTER_POINT)),
+		0x00FF0000);
 }
 void	draw_fov_line(t_img image, t_mlx_data *env_p, int x, int line_len)
 {
-	draw_line(image, give_coords(x, (env_p->height / 2) - (line_len / 2)),
-			give_coords(x, (env_p->height / 2) + (line_len / 2)), BLUE + GREEN);//BLUE*(10 * (int)((double)env_p->height / (double)line_len)) + RED*( (int)(10 *(double)line_len / (double)env_p->height)));//WHITE - RED + RED *((line_len < env_p->height) * (int)(255 *(double)line_len / (double)env_p->height)));
+	draw_line(image, give_coords(x, (env_p->win_height / 2) - (line_len / 2)),
+			give_coords(x, (env_p->win_height / 2) + (line_len / 2)), BLUE + GREEN);
 }
 
 
@@ -196,21 +200,19 @@ void	draw_fov(t_img image, t_mlx_data *env_p, int degree_fov)
 	int	x;
 	int	line_len;
 
-	//draw_ray(env_p->background_img, env_p, 0);
-	x = env_p->width / 2;
-	line_len = (50 * env_p->height) / get_ray_len(env_p, 0);
+	x = env_p->win_width / 2;
+	line_len = (50 * env_p->win_height) / get_ray_len(env_p, 0);
 	draw_fov_line(image, env_p, x, line_len);
-	i = 0.1;
+	i = 0.07;
 	while ((int) i < degree_fov / 2)
 	{
-		x = (env_p->width / 2) + (int)((double)(env_p->width / 2) * ((double)i / ((double)degree_fov / 2.0)));
-		line_len = (50 * env_p->height) / get_ray_len(env_p, i);
+		x = (env_p->win_width / 2) + (int)((double)(env_p->win_width / 2) * (i / ((double)degree_fov / 2.0)));
+		line_len = (50 * env_p->win_height) / get_ray_len(env_p, i);
 		draw_fov_line(image, env_p, x, line_len);
-		x = (env_p->width / 2) - (int)((double)(env_p->width / 2) * ((double)i / ((double)degree_fov / 2.0)));
-		line_len = (50 * env_p->height) / get_ray_len(env_p, -i);
+		x = (env_p->win_width / 2) - (int)((double)(env_p->win_width / 2) * (i / ((double)degree_fov / 2.0)));
+		line_len = (50 * env_p->win_height) / get_ray_len(env_p, -i);
 		draw_fov_line(image, env_p, x, line_len);
-		//draw_ray(env_p->background_img, env_p, -i);
-		i = i + 0.1;
+		i = i + 0.07;
 	}
 }
 
@@ -258,12 +260,12 @@ int	draw_to_window(t_mlx_data	*env_p)
 	//draw_rotated_triangle(env_p);
 	//draw_obstacles(env_p);
 	//draw_ray(env_p->background_img, env_p, 0);
-	//int i = 1;
+	//double i = 0.1;
 	//while (i < 45)
 	//{
 	//	draw_ray(env_p->background_img, env_p, i);
 	//	draw_ray(env_p->background_img, env_p, -i);
-	//	i++;
+	//	i += 0.1;
 	//}
 	//copy_background_to_buffer(env_p);
 	//put_img_inside_img(env_p->player_img, env_p->buffer_img, (int) env_p->player_x, (int) env_p->player_y);

@@ -6,7 +6,7 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/02 13:01:56 by anematol          #+#    #+#             */
-/*   Updated: 2026/09/05 13:19:45 by anematol         ###   ########.fr       */
+/*   Updated: 2026/09/13 12:48:52 by anematol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,8 @@ int main(int ac, char **av)
 	parser(av[1]);
 
 	init_env(&env);
-	env.height = 800;
-	env.width = 1200;
+	env.win_height = 800;
+	env.win_width = 1200;
 	set_minilibx(&env);
 	// parser
 

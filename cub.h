@@ -6,7 +6,7 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/02 13:01:50 by anematol          #+#    #+#             */
-/*   Updated: 2026/09/10 00:26:51 by anematol         ###   ########.fr       */
+/*   Updated: 2026/09/13 12:48:15 by anematol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,8 @@ typedef struct s_mlx_data {
 	t_img	buffer_img;
 	void	*mlx;
 	void	*win;
+	int		win_width;
+	int		win_height;
 	int		width;
 	int		height;
 	int		mv_fwd_pressed;
