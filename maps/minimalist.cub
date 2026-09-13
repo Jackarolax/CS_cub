@@ -1,7 +1,7 @@
-NO ./cub.h
-SO ./cub.h
-WE ./cub.h
-EA ./cub.h
+NO ./include/cub.h
+SO ./include/cub.h
+WE ./include/cub.h
+EA ./include/cub.h
 
 F 220,100,10
 C 225,30,2

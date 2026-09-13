@@ -6,7 +6,7 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/02 13:01:50 by anematol          #+#    #+#             */
-/*   Updated: 2026/09/08 19:08:50 by ssin             ###   ########.fr       */
+/*   Updated: 2026/09/10 17:42:23 by ssin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,8 +120,9 @@ void	check_file_permissions(t_mlx_data *env_p, char **tokens);
 int	complete_ids(t_id *id_p);
 int valid_char(char *token);
 void	call_error(t_mlx_data *env_p, char *message);
+void	free_str_array(char **str);
 
-int valid_map_content(char **tokens);
+int valid_map_content(char *tokens);
 
 /* movement */
 void	move_player(t_mlx_data *env_p);
