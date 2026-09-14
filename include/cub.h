@@ -6,7 +6,7 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/02 13:01:50 by anematol          #+#    #+#             */
-/*   Updated: 2026/09/13 15:48:17 by anematol         ###   ########.fr       */
+/*   Updated: 2026/09/14 00:21:33 by anematol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@
 # include <fcntl.h>
 # include <stdio.h> // remove
 
-# define MOVING_SPEED 1
-# define TURNING_SPEED 0.5
+# define MOVING_SPEED 2
+# define TURNING_SPEED 2
 
 # define MINI_PLAYER_CENTER_POINT 25
 # define MINI_PLAYER_EDGE_POINT MINI_PLAYER_CENTER_POINT * 2
@@ -94,29 +94,31 @@ typedef struct  s_id {
 } t_id;
 
 typedef struct s_mlx_data {
-	t_img	player_img;
-	t_img	background_img;
-	t_img	buffer_img;
-	void	*mlx;
-	void	*win;
-	int		win_width;
-	int		win_height;
-	int		width;
-	int		height;
-	int		mv_fwd_pressed;
-	int		mv_bck_pressed;
-	int		mv_l_pressed;
-	int		mv_r_pressed;
-	int		look_l_pressed;
-	int		look_r_pressed;
-	double	player_x;
-	double	player_y;
-	double	player_direction;
-	char	**map;
-	int		map_height;
-	int		map_width;
-	int		block_size;
-	t_id	*identifiers;
+	t_img		player_img;
+	t_img		sprite_img;
+	t_img		background_img;
+	t_img		buffer_img;
+	void		*mlx;
+	void		*win;
+	int			win_width;
+	int			win_height;
+	int			width;
+	int			height;
+	int			mv_fwd_pressed;
+	int			mv_bck_pressed;
+	int			mv_l_pressed;
+	int			mv_r_pressed;
+	int			look_l_pressed;
+	int			look_r_pressed;
+	double		player_x;
+	double		player_y;
+	double		player_direction;
+	t_vector	ray_vector;
+	char		**map;
+	int			map_height;
+	int			map_width;
+	int			block_size;
+	t_id		*identifiers;
 }				t_mlx_data;
 
 /* minilibx */
@@ -171,6 +173,8 @@ int		touching_y(t_mlx_data *env_p);
 t_coords	give_coords(int x, int y);
 t_vector	give_vector(double x, double y);
 t_vector	get_ray_vector(t_mlx_data *env_p, double degree_angle);
-double	get_ray_len(t_mlx_data *env_p, double degree_angle);
+double		get_ray_len(t_mlx_data *env_p, double degree_angle);
+t_coords	get_exact_collision_point(t_mlx_data *env_p, t_vector ray_vector);
+double get_wall_x(t_mlx_data *env_p);
 
 #endif

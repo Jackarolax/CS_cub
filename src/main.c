@@ -6,7 +6,7 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/02 13:01:56 by anematol          #+#    #+#             */
-/*   Updated: 2026/09/13 13:54:47 by anematol         ###   ########.fr       */
+/*   Updated: 2026/09/14 00:27:48 by anematol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ static void	init_env(t_mlx_data *env_p)
 	env_p->player_x = 0.0;
 	env_p->player_y = 0.0;
 	env_p->player_direction = 0.0;
+	env_p->ray_vector.x = 0.0;
+	env_p->ray_vector.y = 0.0;
 	env_p->map = NULL;
 	env_p->map_height = 0;
 	env_p->map_width = 0;

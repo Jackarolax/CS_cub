@@ -6,7 +6,7 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/03 18:20:30 by ssin              #+#    #+#             */
-/*   Updated: 2026/09/13 16:14:59 by anematol         ###   ########.fr       */
+/*   Updated: 2026/09/14 08:58:50 by anematol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,37 @@ void	pixel_put(t_img img, int x, int y, int color)
 	dst = img.addr + (y * img.line_length + x * (img.bpp / 8));
 	*(unsigned int*)dst = color;
 }
+
+// Load sprite into env from XPM file
+void	load_sprite(t_mlx_data *env_p, t_img *image_p, char *path)
+{
+	int	width;
+	int	height;
+
+	image_p->img = mlx_xpm_file_to_image(env_p->mlx, path, &width,
+			&height);
+	if (!image_p->img)
+	{
+		printf("Error: Could not load sprite %s\n", path);
+		destroy_everything_and_exit(env_p, 1);
+		exit(1);
+		return ;
+	}
+	//	if (check_width != image_p->width || check_height != image_p->height)
+	//	{
+	//		printf("Error: Sprite %s has
+	//incorrect dimensions (expected %dx%d, got %dx%d)\n",
+	//			path, image_p->width, image_p->height, check_width, check_height);
+	//		destroy_everything_and_exit(env_p, 1);
+	//		exit(1);
+	//		return ;
+	//	}
+	image_p->width = width;
+	image_p->height = height;
+	image_p->addr = mlx_get_data_addr(image_p->img, &image_p->bpp,
+			&image_p->line_length, &image_p->endian);
+}
+
 
 t_coords	rotate_point(t_coords point, t_coords center, double angle)
 {
@@ -157,7 +188,7 @@ void	set_minilibx(t_mlx_data *env_p)
 	env_p->buffer_img.addr = mlx_get_data_addr(env_p->buffer_img.img,
 		&env_p->buffer_img.bpp, &env_p->buffer_img.line_length,
 		&env_p->buffer_img.endian);
-
+	load_sprite(env_p, &env_p->sprite_img, "./minilibx/test/open.xpm");
 	//draw_rotated_triangle(env_p);
 	draw_obstacles(env_p);
 	mlx_put_image_to_window(env_p->mlx, env_p->win, env_p->player_img.img,
