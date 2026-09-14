@@ -63,41 +63,44 @@ static int	valid_file(int map_fd, t_mlx_data *env_p)
 			else
 				call_error(env_p, "Check file content");
 		}
+		free_str_array(tokens);
+		free(line);
 		line = get_next_line(map_fd);
 	}
+	if (!env_p->map_info->map)
+		call_error(env_p, "Check file content");
 	env_p->map_info->map[i] = NULL;
 	env_p->map_info->map_height = i;
-	free(tokens);
 	return (0);
 }
 
-void	is_close_to_space_char(t_map_info *map_p, size_t i, size_t j)
+static void	cell_is_close_to_edge(t_mlx_data *env_p, size_t i, size_t j)
 {
-	if (ft_strncmp(&map_p->map[i][j + 1], " ", 1) == VALID
-		|| (j > 0 && ft_strncmp(&map_p->map[i][j - 1], " ", 1) == VALID)
-		|| ft_strncmp(&map_p->map[i + 1][j], " ", 1) == VALID
-		|| (i > 0 && ft_strncmp(&map_p->map[i - 1][j], " ", 1) == VALID)
-		|| ft_strncmp(&map_p->map[i][j + 1], "\0", 1) == VALID
-		|| (j > 0 && ft_strncmp(&map_p->map[i][j - 1], "\0", 1) == VALID)
-		|| ft_strncmp(&map_p->map[i + 1][j], "\0", 1) == VALID
-		|| (i > 0 && ft_strncmp(&map_p->map[i - 1][j], "\0", 1) == VALID))
+	if (ft_strncmp(&env_p->map_info->map[i][j + 1], " ", 1) == VALID
+		|| (j > 0 && ft_strncmp(&env_p->map_info->map[i][j - 1], " ", 1) == VALID)
+		|| ft_strncmp(&env_p->map_info->map[i + 1][j], " ", 1) == VALID
+		|| (i > 0 && ft_strncmp(&env_p->map_info->map[i - 1][j], " ", 1) == VALID)
+		|| ft_strncmp(&env_p->map_info->map[i][j + 1], "\0", 1) == VALID
+		|| (j > 0 && ft_strncmp(&env_p->map_info->map[i][j - 1], "\0", 1) == VALID)
+		|| ft_strncmp(&env_p->map_info->map[i + 1][j], "\0", 1) == VALID
+		|| (i > 0 && ft_strncmp(&env_p->map_info->map[i - 1][j], "\0", 1) == VALID))
 	{
 		perror("Walkable cell close to edge [Check Map]");
-		exit(1);
+		destroy_everything_and_exit(env_p, 1);
 	}
 }
 
-int	check_walkable_cels(t_map_info *map_p, size_t i)
+static int	check_walkable_cels(t_mlx_data *env_p, size_t i)
 {
 	size_t	j;
 
 	j = 0;
-	while (map_p->map[i][j])
+	while (env_p->map_info->map[i][j])
 	{
-		if (i > map_p->map_height || j > map_p->map_width)
+		if (i > env_p->map_info->map_height || j > env_p->map_info->map_width)
 			return (1);
-		if (ft_strncmp(&map_p->map[i][j], "0", 1) == VALID)
-			is_close_to_space_char(map_p, i, j);
+		if (ft_strncmp(&env_p->map_info->map[i][j], "0", 1) == VALID)
+			cell_is_close_to_edge(env_p, i, j);
 		j++;
 	}
 	return (0);
@@ -153,7 +156,7 @@ static void	valid_map(t_mlx_data *env_p)
 	//	i++;
 	while (env_p->map_info->map[i] && i < env_p->map_info->last_row)
 	{
-		check_walkable_cels(env_p->map_info, i);
+		check_walkable_cels(env_p, i);
 		i++;
 	}
 

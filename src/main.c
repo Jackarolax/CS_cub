@@ -6,7 +6,7 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/02 13:01:56 by anematol          #+#    #+#             */
-/*   Updated: 2026/09/10 17:26:54 by ssin             ###   ########.fr       */
+/*   Updated: 2026/09/10 17:42:09 by ssin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ static void	init_map_info(t_map_info *info)
 	info->map_width = 0;
 	info->player_x_start = 0;
 	info->player_y_start = 0;
+	info->last_row = 0;
 }
 
 static void	init_identifiers(t_id *identifiers_p)
@@ -38,7 +39,7 @@ static void	init_identifiers(t_id *identifiers_p)
 static void	init_env(t_mlx_data *env_p)
 {
 	env_p->identifiers = ft_calloc(1, sizeof(t_id));
-	env_p->map_info = ft_calloc(1, sizeof(t_id));
+	env_p->map_info = ft_calloc(1, sizeof(t_map_info));
 	if (!env_p->identifiers || !env_p->map_info)
 		exit(1);
 	init_identifiers(env_p->identifiers);
@@ -70,6 +71,8 @@ void	destroy_everything_and_exit(t_mlx_data *env_p, int exit_code)
 		mlx_destroy_image(env_p->mlx, env_p->background_img.img);
 	if (env_p->win)
 		mlx_destroy_window(env_p->mlx, env_p->win);
+	if (env_p->mlx)
+		mlx_destroy_display(env_p->mlx);
 	if (env_p->identifiers->NO)
 		free(env_p->identifiers->NO);
 	if (env_p->identifiers->SO)
@@ -78,8 +81,15 @@ void	destroy_everything_and_exit(t_mlx_data *env_p, int exit_code)
 		free(env_p->identifiers->WE);
 	if (env_p->identifiers->EA)
 		free(env_p->identifiers->EA);
-	free(env_p->identifiers);
-	free(env_p->mlx);
+	if (env_p->identifiers)
+		free(env_p->identifiers);
+	if (env_p->map_info)
+	{
+		free_str_array(env_p->map_info->map);
+		free(env_p->map_info);
+	}
+	if (env_p->mlx)
+		free(env_p->mlx);
 	exit(exit_code);
 }
 

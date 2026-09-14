@@ -29,6 +29,8 @@
 # include "../minilibx/mlx.h"
 # include "../libft/libft.h"
 # include "./events.h"
+# include <X11/X.h>
+# include <X11/keysym.h>
 # include <fcntl.h>
 # include <unistd.h>
 # include <sys/types.h>
@@ -68,7 +70,7 @@ typedef struct	s_map_info {
 	size_t	map_width;
 	size_t	player_x_start;
 	size_t	player_y_start;
-  size_t  last_row;
+	size_t  last_row;
 } t_map_info;
 
 typedef struct  s_id {
@@ -103,7 +105,7 @@ typedef struct s_mlx_data {
 	double			player_diretion;
 	double			turning_speed;
   t_id        *identifiers;
-  t_map_info  *map_info;
+  t_map_info        *map_info;
 }				t_mlx_data;
 
 /* minilibx */
@@ -128,6 +130,7 @@ void	check_file_permissions(t_mlx_data *env_p, char **tokens);
 int	complete_ids(t_id *id_p);
 int valid_space_nline(char *token);
 void	call_error(t_mlx_data *env_p, char *message);
+void	free_str_array(char **str);
 
 int valid_map_content(char *tokens);
 int	valid_first_last_rows(char *row);
