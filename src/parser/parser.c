@@ -6,7 +6,7 @@
 /*   By: ssin <ssin@student.42berlin.de>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/04 17:58:58 by ssin              #+#    #+#             */
-/*   Updated: 2026/09/13 17:13:47 by ssin             ###   ########.fr       */
+/*   Updated: 2026/09/17 18:07:10 by ssin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,33 +71,57 @@ static int	valid_file(int map_fd, t_mlx_data *env_p)
 	return (0);
 }
 
-void	is_close_to_space_char(t_map_info *map_p, size_t i, size_t j)
+void	is_close_to_space_char(t_mlx_data *env_p, size_t i, size_t j)
 {
-	if (ft_strncmp(&map_p->map[i][j + 1], " ", 1) == VALID
-		|| (j > 0 && ft_strncmp(&map_p->map[i][j - 1], " ", 1) == VALID)
-		|| ft_strncmp(&map_p->map[i + 1][j], " ", 1) == VALID
-		|| (i > 0 && ft_strncmp(&map_p->map[i - 1][j], " ", 1) == VALID)
-		|| ft_strncmp(&map_p->map[i][j + 1], "\0", 1) == VALID
-		|| (j > 0 && ft_strncmp(&map_p->map[i][j - 1], "\0", 1) == VALID)
-		|| ft_strncmp(&map_p->map[i + 1][j], "\0", 1) == VALID
-		|| (i > 0 && ft_strncmp(&map_p->map[i - 1][j], "\0", 1) == VALID))
-	{
-		perror("Walkable cell close to edge [Check Map]");
-		exit(1);
-	}
+	if (ft_strncmp(&env_p->map_info->map[i][j + 1], " ", 1) == VALID
+		|| (j > 0 && ft_strncmp(&env_p->map_info->map[i][j - 1], " ", 1) == VALID)
+		|| ft_strncmp(&env_p->map_info->map[i + 1][j], " ", 1) == VALID
+		|| (i > 0 && ft_strncmp(&env_p->map_info->map[i - 1][j], " ", 1) == VALID)
+		|| ft_strncmp(&env_p->map_info->map[i][j + 1], "\0", 1) == VALID
+		|| (j > 0 && ft_strncmp(&env_p->map_info->map[i][j - 1], "\0", 1) == VALID)
+		|| ft_strncmp(&env_p->map_info->map[i + 1][j], "\0", 1) == VALID
+		|| (i > 0 && ft_strncmp(&env_p->map_info->map[i - 1][j], "\0", 1) == VALID))
+		call_error(env_p, "Check map edge");
 }
 
-int	check_walkable_cels(t_map_info *map_p, size_t i)
+int	valid_player_id(char *string)
+{
+	if (ft_strncmp(string, "N", 1) == VALID
+		|| ft_strncmp(string, "S", 1) == VALID
+		|| ft_strncmp(string, "E", 1) == VALID
+		|| ft_strncmp(string, "W", 1) == VALID)
+		return (1);
+	return (0);
+}
+
+static int	player_exists(t_mlx_data *env_p)
+{
+	if (env_p->player_x && env_p->player_y)
+		return (1);
+	return (0);
+}
+
+int	check_walkable_cels(t_mlx_data *env_p, size_t i)
 {
 	size_t	j;
 
 	j = 0;
-	while (map_p->map[i][j])
+	while (env_p->map_info->map[i][j])
 	{
-		if (i > map_p->map_height || j > map_p->map_width)
+		if (i > env_p->map_info->map_height || j > env_p->map_info->map_width)
 			return (1);
-		if (ft_strncmp(&map_p->map[i][j], "0", 1) == VALID)
-			is_close_to_space_char(map_p, i, j);
+		if (ft_strncmp(&env_p->map_info->map[i][j], "0", 1) == VALID
+			|| valid_player_id(&env_p->map_info->map[i][j]))
+		{
+			if (valid_player_id(&env_p->map_info->map[i][j]))
+			{
+				if (player_exists(env_p))
+					call_error(env_p, "More than 1 player position");
+				env_p->player_x = i;
+				env_p->player_y = j;
+			}
+			is_close_to_space_char(env_p, i, j);
+		}
 		j++;
 	}
 	return (0);
@@ -150,24 +174,15 @@ static void	valid_map(t_mlx_data *env_p)
 	if (valid_first_last_rows(env_p->map_info->map[0])
 		|| valid_first_last_rows(env_p->map_info->map[env_p->map_info->last_row]))
 		call_error(env_p, "Check map's first/last rows");
-	//	i++;
 	while (env_p->map_info->map[i] && i < env_p->map_info->last_row)
 	{
-		check_walkable_cels(env_p->map_info, i);
+		check_walkable_cels(env_p, i);
 		i++;
 	}
+	if (!player_exists(env_p))
+		call_error(env_p, "Set player position");
 
 	standardize_map(env_p);
-	/*
-	check first/last rows
-	↓
-	check_walkable_cels
-	↓
-	check internal walls
-	↓
-	check characters (0, 1, N, S, E, W, ...)
-	check the surroundings of the player (?)
-	*/
 }
 
 static int	valid_extension(t_mlx_data *env_p, char *map_name_p)
