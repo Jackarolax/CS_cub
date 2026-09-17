@@ -62,3 +62,19 @@ void	call_error(t_mlx_data *env_p, char *message)
 	perror(message);
 	destroy_everything_and_exit(env_p, 1);
 }
+
+void	free_str_array(char **str)
+{
+	char	**str_start;
+
+	str_start = str;
+	if (str)
+	{
+		while (*str)
+		{
+			free(*str);
+			str++;
+		}
+		free(str_start);
+	}
+}

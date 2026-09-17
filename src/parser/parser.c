@@ -6,7 +6,7 @@
 /*   By: ssin <ssin@student.42berlin.de>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/04 17:58:58 by ssin              #+#    #+#             */
-/*   Updated: 2026/09/17 18:07:10 by ssin             ###   ########.fr       */
+/*   Updated: 2026/09/17 18:17:11 by ssin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,15 +63,18 @@ static int	valid_file(int map_fd, t_mlx_data *env_p)
 			else
 				call_error(env_p, "Check file content");
 		}
+		free_str_array(tokens);
+		free(line);
 		line = get_next_line(map_fd);
 	}
+	if (!env_p->map_info->map)
+		call_error(env_p, "Check file content");
 	env_p->map_info->map[i] = NULL;
 	env_p->map_info->map_height = i;
-	free(tokens);
 	return (0);
 }
 
-void	is_close_to_space_char(t_mlx_data *env_p, size_t i, size_t j)
+static void	cell_is_close_to_edge(t_mlx_data *env_p, size_t i, size_t j)
 {
 	if (ft_strncmp(&env_p->map_info->map[i][j + 1], " ", 1) == VALID
 		|| (j > 0 && ft_strncmp(&env_p->map_info->map[i][j - 1], " ", 1) == VALID)
@@ -101,7 +104,7 @@ static int	player_exists(t_mlx_data *env_p)
 	return (0);
 }
 
-int	check_walkable_cels(t_mlx_data *env_p, size_t i)
+static int	check_walkable_cels(t_mlx_data *env_p, size_t i)
 {
 	size_t	j;
 
@@ -120,7 +123,7 @@ int	check_walkable_cels(t_mlx_data *env_p, size_t i)
 				env_p->player_x = i;
 				env_p->player_y = j;
 			}
-			is_close_to_space_char(env_p, i, j);
+			cell_is_close_to_edge(env_p, i, j);
 		}
 		j++;
 	}
