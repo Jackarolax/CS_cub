@@ -6,7 +6,7 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/02 13:01:50 by anematol          #+#    #+#             */
-/*   Updated: 2026/09/10 17:42:23 by ssin             ###   ########.fr       */
+/*   Updated: 2026/09/13 13:42:11 by anematol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,20 @@
 # include <fcntl.h>
 # include <stdio.h> // remove
 
+# define MOVING_SPEED 1
+# define TURNING_SPEED 0.5
+
 # define MINI_PLAYER_CENTER_POINT 25
 # define MINI_PLAYER_EDGE_POINT MINI_PLAYER_CENTER_POINT * 2
-# define MINI_PLAYER_WIDTH MINI_PLAYER_CENTER_POINT / 5
+# define MINI_PLAYER_WIDTH 20
+# define MINI_PLAYER_LENGTH 40
+
+
+#define WHITE 0xFFFFFFFF
+#define RED 0x00FF0000
+#define GREEN 0x0000FF00
+#define BLUE 0x000000FF
+
 
 typedef struct	s_img {
 	void	*img;
@@ -64,6 +75,11 @@ typedef struct	s_coords {
 	int	y;
 }				t_coords;
 
+typedef struct	s_vector {
+	double	x;
+	double	y;
+}				t_vector;
+
 typedef struct  s_id {
   char  *NO;
   char  *SO;
@@ -78,24 +94,29 @@ typedef struct  s_id {
 } t_id;
 
 typedef struct s_mlx_data {
-	t_img			test_img;
-	t_img			background_img;
-	void			*mlx;
-	void			*win;
-	int				width;
-	int				height;
-	int				mv_fwd_pressed;
-	int				mv_bck_pressed;
-	int				mv_l_pressed;
-	int				mv_r_pressed;
-	int				look_l_pressed;
-	int				look_r_pressed;
-	double			player_x;
-	double			player_y;
-	double			moving_speed;
-	double			player_diretion;
-	double			turning_speed;
-  t_id        *identifiers;
+	t_img	player_img;
+	t_img	background_img;
+	t_img	buffer_img;
+	void	*mlx;
+	void	*win;
+	int		win_width;
+	int		win_height;
+	int		width;
+	int		height;
+	int		mv_fwd_pressed;
+	int		mv_bck_pressed;
+	int		mv_l_pressed;
+	int		mv_r_pressed;
+	int		look_l_pressed;
+	int		look_r_pressed;
+	double	player_x;
+	double	player_y;
+	double	player_direction;
+	char	**map;
+	int		map_height;
+	int		map_width;
+	int		block_size;
+	t_id	*identifiers;
 }				t_mlx_data;
 
 /* minilibx */
@@ -140,5 +161,16 @@ void	destroy_everything_and_exit(t_mlx_data *env_p, int exit_code);
 int		draw_to_window(t_mlx_data	*env_p);
 void	draw_line(t_img img, t_coords begin, t_coords end, int color);
 void	draw_rotated_triangle(t_mlx_data *env_p);
+void	draw_square(t_img img, t_coords start_point, int len, int color);
+void	draw_obstacles(t_mlx_data *env_p);
+int		check_collision(t_mlx_data *env_p, int check_x, int check_y);
+int		collision_position_x(t_mlx_data *env_p, int new_x);
+int		collision_position_y(t_mlx_data *env_p, int new_y);
+int		touching_x(t_mlx_data *env_p);
+int		touching_y(t_mlx_data *env_p);
+t_coords	give_coords(int x, int y);
+t_vector	give_vector(double x, double y);
+t_vector	get_ray_vector(t_mlx_data *env_p, double degree_angle);
+double	get_ray_len(t_mlx_data *env_p, double degree_angle);
 
 #endif
