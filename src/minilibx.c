@@ -6,7 +6,7 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/03 18:20:30 by ssin              #+#    #+#             */
-/*   Updated: 2026/09/20 16:40:02 by anematol         ###   ########.fr       */
+/*   Updated: 2026/09/20 19:14:52 by anematol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ t_coords	rotate_point(t_coords point, t_coords center, double angle)
 	delta_point.x = point.x - center.x;
 	delta_point.y = point.y - center.y;
 
+	// Rotate need to understand the math behind that better
 	// Rotate need to understand the math behind that better
 	new_delta.x = delta_point.x * cos(angle) - delta_point.y * sin(angle);
 	new_delta.y = delta_point.x * sin(angle) + delta_point.y * cos(angle);

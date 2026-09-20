@@ -6,12 +6,21 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/08 20:05:46 by anematol          #+#    #+#             */
-/*   Updated: 2026/09/20 18:30:08 by anematol         ###   ########.fr       */
+/*   Updated: 2026/09/20 19:12:26 by anematol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub.h"
 
+t_coords	give_coords(int x, int y)
+{
+	t_coords	coords;
+	coords.x = x;
+	coords.y = y;
+	return (coords);
+}
+
+void reset_img(t_img image)
 t_coords	give_coords(int x, int y)
 {
 	t_coords	coords;
@@ -44,7 +53,8 @@ void	draw_line(t_img img, t_coords begin, t_coords end, int color)
 	delta_y = (double) (end.y - begin.y);
 	line_len = sqrt((delta_x * delta_x) + (delta_y * delta_y));
 	i = 0.0;
-	while (i <= line_len)
+	while (i <= line_len && begin.x + (int) (delta_x * i / line_len) <= img.width
+						&& begin.y + (delta_y * i / line_len) <= img.height)
 	{
 		if (begin.x + (int) (delta_x * i / line_len) <= img.width
 			&& begin.y + (delta_y * i / line_len) <= img.height
@@ -218,6 +228,7 @@ void	draw_rotated_triangle(t_mlx_data *env_p)
 }
 
 // Get pixel color from sprite
+static int	get_img_pixel(t_img image, int x, int y)
 static int	get_img_pixel(t_img image, int x, int y)
 {
 	char	*pixel;
