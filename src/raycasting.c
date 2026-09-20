@@ -6,7 +6,7 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/09 23:47:11 by anematol          #+#    #+#             */
-/*   Updated: 2026/09/14 00:56:03 by anematol         ###   ########.fr       */
+/*   Updated: 2026/09/14 09:09:00 by anematol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,9 +124,9 @@ char	get_wall_collision_side(t_mlx_data *env_p)
 	else if (ray_vector.x < 0.0 && (wall_collision_pos.x % env_p->block_size) == 0)
 		return ('W');
 	else if (ray_vector.y >= 0.0 && (wall_collision_pos.y % env_p->block_size) == 0)
-		return ('N');
-	else if (ray_vector.y < 0.0 &&(wall_collision_pos.y % env_p->block_size) == 0)
 		return ('S');
+	else if (ray_vector.y < 0.0 &&(wall_collision_pos.y % env_p->block_size) == 0)
+		return ('N');
 	else
 		return (0);
 }

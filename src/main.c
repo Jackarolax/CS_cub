@@ -6,7 +6,7 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/02 13:01:56 by anematol          #+#    #+#             */
-/*   Updated: 2026/09/14 00:27:48 by anematol         ###   ########.fr       */
+/*   Updated: 2026/09/20 16:39:50 by anematol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ static void	init_env(t_mlx_data *env_p)
 	env_p->player_img.img = NULL;
 	env_p->background_img.img = NULL;
 	env_p->buffer_img.img = NULL;
+	env_p->sprite_n_img.img = NULL;
 	env_p->mv_fwd_pressed = 0;
 	env_p->mv_bck_pressed = 0;
 	env_p->mv_l_pressed = 0;
@@ -76,13 +77,14 @@ void	destroy_everything_and_exit(t_mlx_data *env_p, int exit_code)
 		mlx_destroy_image(env_p->mlx, env_p->background_img.img);
 	if (env_p->buffer_img.img)
 		mlx_destroy_image(env_p->mlx, env_p->buffer_img.img);
+	if (env_p->sprite_n_img.img)
+		mlx_destroy_image(env_p->mlx, env_p->sprite_n_img.img);
 	if (env_p->win)
 		mlx_destroy_window(env_p->mlx, env_p->win);
 	if (env_p->mlx)
 		mlx_destroy_display(env_p->mlx);
 	if (env_p->map)
 		free_map(env_p);
-
 	if (env_p->identifiers->NO)
 		free(env_p->identifiers->NO);
 	if (env_p->identifiers->SO)
@@ -109,8 +111,8 @@ int main(int ac, char **av)
 
 	init_env(&env);
 	parser(av[1], &env);
-	env.win_height = 800;
-	env.win_width = 1080;
+	env.win_height = WIN_HEIGHT;
+	env.win_width = WIN_WIDTH;
 	set_minilibx(&env);
 	// parser
 

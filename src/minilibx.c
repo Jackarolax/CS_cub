@@ -6,7 +6,7 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/03 18:20:30 by ssin              #+#    #+#             */
-/*   Updated: 2026/09/14 08:58:50 by anematol         ###   ########.fr       */
+/*   Updated: 2026/09/20 16:40:02 by anematol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,12 +125,7 @@ void	set_minilibx(t_mlx_data *env_p)
 {
 
 	env_p->mlx = mlx_init();
-
-	// draw triangle
-	//env_p->player_x = 910.0;
-	//env_p->player_y = 210.0;
-	//env_p->player_direction = 2 * M_PI / 4;
-	env_p->block_size = 100;
+	env_p->block_size = BLOCK_SIZE;
 	//env_p->map = malloc(15 * sizeof(char*));
 	//env_p->map[0] = ft_strdup("111111111111111111111111111111111");
 	//env_p->map[1] = ft_strdup("111111111000000000110000000000001");
@@ -188,8 +183,7 @@ void	set_minilibx(t_mlx_data *env_p)
 	env_p->buffer_img.addr = mlx_get_data_addr(env_p->buffer_img.img,
 		&env_p->buffer_img.bpp, &env_p->buffer_img.line_length,
 		&env_p->buffer_img.endian);
-	load_sprite(env_p, &env_p->sprite_img, "./minilibx/test/open.xpm");
-	//draw_rotated_triangle(env_p);
+	load_sprite(env_p, &env_p->sprite_n_img, "./minilibx/test/open30.xpm");
 	draw_obstacles(env_p);
 	mlx_put_image_to_window(env_p->mlx, env_p->win, env_p->player_img.img,
 		(int) env_p->player_x, (int) env_p->player_y);
