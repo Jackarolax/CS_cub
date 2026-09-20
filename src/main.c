@@ -6,24 +6,12 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/02 13:01:56 by anematol          #+#    #+#             */
-/*   Updated: 2026/09/20 19:13:59 by anematol         ###   ########.fr       */
+/*   Updated: 2026/09/20 19:25:52 by anematol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub.h"
 
-void	free_map(t_mlx_data *env_p)
-{
-	int	i;
-
-	i = 0;
-	while (env_p->map[i])
-	{
-		free(env_p->map[i]);
-		i++;
-	}
-	free(env_p->map);
-}
 void	free_map(t_mlx_data *env_p)
 {
 	int	i;
@@ -86,8 +74,6 @@ void	destroy_everything_and_exit(t_mlx_data *env_p, int exit_code)
 {
 	if (env_p->player_img.img)
 		mlx_destroy_image(env_p->mlx, env_p->player_img.img);
-	if (env_p->player_img.img)
-		mlx_destroy_image(env_p->mlx, env_p->player_img.img);
 	if (env_p->background_img.img)
 		mlx_destroy_image(env_p->mlx, env_p->background_img.img);
 	if (env_p->buffer_img.img)
@@ -109,8 +95,6 @@ void	destroy_everything_and_exit(t_mlx_data *env_p, int exit_code)
 	if (env_p->identifiers->EA)
 		free(env_p->identifiers->EA);
 	free(env_p->identifiers);
-	if (env_p->mlx)
-		free(env_p->mlx);
 	if (env_p->mlx)
 		free(env_p->mlx);
 	exit(exit_code);
