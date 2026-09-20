@@ -33,7 +33,7 @@ int valid_map_content(char *letter)
 {
 	if (ft_strncmp(letter, "0", 1) == VALID
 		|| ft_strncmp(letter, "1", 1) == VALID
-		|| ft_strncmp(letter, " ", 1) == VALID
+		//|| ft_strncmp(letter, " ", 1) == VALID
 		|| valid_player_id(letter))
 		return (1);
 	return (0);

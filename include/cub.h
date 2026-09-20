@@ -65,15 +65,18 @@ typedef struct	s_coords {
 }				t_coords;
 
 typedef struct	s_map_info {
+	int		map_fd;
 	char **map;
 	size_t	map_height;
 	size_t	map_width;
-	size_t	player_x_start;
-	size_t	player_y_start;
+	int		player_x_start;
+	int		player_y_start;
 	size_t  last_row;
 } t_map_info;
 
 typedef struct  s_id {
+	char	*line_start;
+	char	**tokens;
   char  *NO;
   char  *SO;
   char  *WE;
@@ -122,11 +125,12 @@ void	check_fc_dup(t_mlx_data *env_p, char *token);
 void	valid_ceiling_floor(t_mlx_data *env_p, char **tokens);
 
 char	*fill_coordinates(t_id *id_p, char **tokens);
-void	check_coordinate(t_mlx_data *env_p, char **tokens);
-void	check_dup(t_mlx_data *env_p, char *token);
+char	*check_coordinate(t_mlx_data *env_p, char **tokens);
+char	*duplicate_id(t_mlx_data *env_p, char *token, int size);
+char	*duplicate_player(t_mlx_data *env_p);
 char	**valid_id_content(t_mlx_data *env_p, char **tokens);
 
-void	check_file_permissions(t_mlx_data *env_p, char **tokens);
+char	*check_file_permissions(t_mlx_data *env_p, char **tokens);
 int	complete_ids(t_id *id_p);
 int valid_space_nline(char *token);
 void	call_error(t_mlx_data *env_p, char *message);

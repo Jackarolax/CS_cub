@@ -12,11 +12,25 @@
 
 #include "../../include/cub.h"
 
+static int	is_player_id(char player)
+{
+	if (player == 'N'
+		|| player == 'S'
+		|| player == 'W'
+		|| player == 'E')
+		return (1);
+	return (0);
+}
+
 static int	check_map(t_mlx_data *env_p, char *line, int i)
 {
+	char	*msg;
+	size_t	size;
+	int	j;
+
+	j = 0;
 	if (ft_strncmp(line, "\n", 1) == VALID || ft_strncmp(line, "\0", 1) == VALID)
 		return (0);
-	size_t	size;
 
 	size = ft_strlen(line) - 1;
 	if (size > env_p->map_info->map_width)
@@ -27,12 +41,51 @@ static int	check_map(t_mlx_data *env_p, char *line, int i)
 	if (line[size] == '\n')
 	{
 		env_p->map_info->map[i] = ft_substr(line, 0, size);
-		while (*line && valid_map_content(&*line))
-			line++;
-		if (*line != '\n' && *line != '\0')
-			call_error(env_p, "Check map");
+		while (line[j])
+		{
+			if (!valid_space_nline(&line[j]) && !valid_map_content(&line[j]))
+				call_error(env_p, "Check map");
+			if (is_player_id(line[j]))
+			{
+				if ((msg = duplicate_player(env_p)))
+					call_error(env_p, msg);
+				env_p->map_info->player_x_start = i;
+				env_p->map_info->player_y_start = j;
+			}
+			j++;
+		}
 	}
 	return (0);
+}
+
+static void	clean_memo(t_mlx_data *env_p, char **tokens, char **line)
+{
+	free_str_array(tokens);
+	env_p->identifiers->tokens = NULL;
+	env_p->identifiers->line_start = NULL;
+	free(*line);
+	*line = NULL;
+}
+
+static void	validate_coord_map(t_mlx_data *env_p, char **tokens, char *line, int *i)
+{
+	char	*exit_msg;
+
+	env_p->identifiers->tokens = tokens;
+	if (!complete_ids(env_p->identifiers))
+	{
+		if ((exit_msg = check_coordinate(env_p, tokens)))
+			call_error(env_p, exit_msg);
+	}
+	else if (complete_ids(env_p->identifiers) && (valid_space_nline(&tokens[0][*i]) || valid_map_content(*tokens)))
+	{
+		check_map(env_p, line, *i);
+		env_p->map_info->last_row = *i;
+		if (!valid_space_nline(&tokens[0][*i]))
+			(*i)++;
+	}
+	else
+		call_error(env_p, "Check file content");
 }
 
 static int	valid_file(int map_fd, t_mlx_data *env_p)
@@ -49,22 +102,10 @@ static int	valid_file(int map_fd, t_mlx_data *env_p)
 	while (line)
 	{
 		tokens = ft_split(line, ' ');
+		env_p->identifiers->line_start = line;
 		if (tokens[0])
-		{
-			if (!complete_ids(env_p->identifiers))
-				check_coordinate(env_p, tokens);
-			else if (complete_ids(env_p->identifiers) && (valid_space_nline(tokens[0]) || valid_map_content(*tokens)))
-			{
-				check_map(env_p, line, i);
-				env_p->map_info->last_row = i;
-				if (!valid_space_nline(tokens[0]))
-					i++;
-			}
-			else
-				call_error(env_p, "Check file content");
-		}
-		free_str_array(tokens);
-		free(line);
+			validate_coord_map(env_p, tokens, line, &i);
+		clean_memo(env_p, tokens, &line);
 		line = get_next_line(map_fd);
 	}
 	if (!env_p->map_info->map)
@@ -210,7 +251,7 @@ void	parser(char *map_name_p, t_mlx_data *env_p)
 {
 	int	map_fd;
 
-	map_fd = 0;
+	map_fd = -1;
 	if (valid_extension(env_p, map_name_p))
 	{
 		map_fd = open(map_name_p, O_RDONLY);
@@ -219,6 +260,7 @@ void	parser(char *map_name_p, t_mlx_data *env_p)
 			perror("Could not open file");
 			destroy_everything_and_exit(env_p, 1);
 		}
+		env_p->map_info->map_fd = map_fd;
 		valid_file(map_fd, env_p);
 		valid_map(env_p);
 	}

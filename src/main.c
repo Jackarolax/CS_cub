@@ -14,16 +14,19 @@
 
 static void	init_map_info(t_map_info *info)
 {
+	info->map_fd = -1;
 	info->map = NULL;
 	info->map_height = 0;
 	info->map_width = 0;
-	info->player_x_start = 0;
-	info->player_y_start = 0;
+	info->player_x_start = -1;
+	info->player_y_start = -1;
 	info->last_row = 0;
 }
 
 static void	init_identifiers(t_id *identifiers_p)
 {
+	identifiers_p->line_start = NULL;
+	identifiers_p->tokens = NULL;
 	identifiers_p->SO = NULL;
 	identifiers_p->WE = NULL;
 	identifiers_p->NO = NULL;
@@ -73,6 +76,10 @@ void	destroy_everything_and_exit(t_mlx_data *env_p, int exit_code)
 		mlx_destroy_window(env_p->mlx, env_p->win);
 	if (env_p->mlx)
 		mlx_destroy_display(env_p->mlx);
+	if (env_p->identifiers->line_start)
+		free(env_p->identifiers->line_start);
+	if (env_p->identifiers->tokens)
+		free_str_array(env_p->identifiers->tokens);
 	if (env_p->identifiers->NO)
 		free(env_p->identifiers->NO);
 	if (env_p->identifiers->SO)
