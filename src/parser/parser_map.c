@@ -6,7 +6,7 @@
 /*   By: ssin <ssin@student.42berlin.de>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/03 19:05:01 by ssin              #+#    #+#             */
-/*   Updated: 2026/09/17 18:10:02 by ssin             ###   ########.fr       */
+/*   Updated: 2026/09/22 09:32:07 by ssin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int valid_map_content(char *letter)
 	if (ft_strncmp(letter, "0", 1) == VALID
 		|| ft_strncmp(letter, "1", 1) == VALID
 		//|| ft_strncmp(letter, " ", 1) == VALID
-		|| valid_player_id(letter))
+		|| is_player_id(*letter))
 		return (1);
 	return (0);
 }

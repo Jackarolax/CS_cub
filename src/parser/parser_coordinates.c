@@ -6,7 +6,7 @@
 /*   By: ssin <ssin@student.42berlin.de>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/03 19:01:30 by ssin              #+#    #+#             */
-/*   Updated: 2026/09/13 12:08:46 by ssin             ###   ########.fr       */
+/*   Updated: 2026/09/22 10:10:29 by ssin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,13 +62,12 @@ char	*check_coordinate(t_mlx_data *env_p, char **tokens)
 		return (check_file_permissions(env_p, tokens));
 	}
 	else if (tokens && ft_strlen(tokens[0]) == 1
-			&& (ft_strncmp(tokens[0], ID_F, 1) == VALID
-			|| ft_strncmp(tokens[0], ID_C, 1) == VALID))
+			&& (tokens[0][0] == 'F' || tokens[0][0] == ID_C))
 	{
 		check_fc_dup(env_p, tokens[0]);
 		valid_ceiling_floor(env_p, tokens);
 	}
-	else if (!valid_space_nline(tokens[0]) && !valid_map_content(*tokens))
+	else if (!valid_space_nline(tokens[0][0]) && !valid_map_content(*tokens))
 		return ("Not a valid identifier");
 	return (NULL);
 }
