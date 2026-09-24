@@ -6,7 +6,7 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/09 23:47:11 by anematol          #+#    #+#             */
-/*   Updated: 2026/09/20 19:15:49 by anematol         ###   ########.fr       */
+/*   Updated: 2026/09/24 22:39:04 by anematol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,28 @@ t_coords	get_exact_collision_point(t_mlx_data *env_p, t_vector ray_vector)
 
 }
 
+char	decide_on_edge(t_mlx_data *env_p, t_coords w_coll_pos, t_vector ray_vector)
+{
+	if (check_ray_collision(env_p, w_coll_pos.x + 1, w_coll_pos.y + 1)
+		&& check_ray_collision(env_p, w_coll_pos.x + 1, w_coll_pos.y - 1))
+		return ('E');
+	if (check_ray_collision(env_p, w_coll_pos.x - 1, w_coll_pos.y + 1)
+		&& check_ray_collision(env_p, w_coll_pos.x - 1, w_coll_pos.y - 1))
+		return ('W');
+	if (check_ray_collision(env_p, w_coll_pos.x + 1, w_coll_pos.y + 1)
+		&& check_ray_collision(env_p, w_coll_pos.x - 1, w_coll_pos.y + 1))
+		return ('S');
+	if (check_ray_collision(env_p, w_coll_pos.x + 1, w_coll_pos.y - 1)
+		&& check_ray_collision(env_p, w_coll_pos.x - 1, w_coll_pos.y - 1))
+		return ('N');
+	if (ray_vector.y >= 0)
+		return ('S');
+	if (ray_vector.y < 0)
+		return ('N');
+	else
+		return (0);
+}
+
 char	get_wall_collision_side(t_mlx_data *env_p)
 {
 	t_vector ray_vector;
@@ -119,7 +141,9 @@ char	get_wall_collision_side(t_mlx_data *env_p)
 
 	ray_vector = env_p->ray_vector;
 	wall_collision_pos = get_exact_collision_point(env_p, ray_vector);
-	if (ray_vector.x >= 0.0 && (wall_collision_pos.x % env_p->block_size) == 0)
+	if ((wall_collision_pos.y % env_p->block_size) == 0 && (wall_collision_pos.x % env_p->block_size) == 0)
+		return(decide_on_edge(env_p, wall_collision_pos, ray_vector));
+	else if (ray_vector.x >= 0.0 && (wall_collision_pos.x % env_p->block_size) == 0)
 		return ('E');
 	else if (ray_vector.x < 0.0 && (wall_collision_pos.x % env_p->block_size) == 0)
 		return ('W');
