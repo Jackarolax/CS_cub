@@ -6,7 +6,7 @@
 #    By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/08/02 13:02:01 by anematol          #+#    #+#              #
-#    Updated: 2026/09/03 19:52:38 by ssin             ###   ########.fr        #
+#    Updated: 2026/09/13 13:49:59 by anematol         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,6 +44,8 @@ CFILES =	src/main.c \
 			src/hook_functions.c\
 			src/draw.c\
 			src/movement.c\
+			src/movement_collision_checking.c\
+			src/raycasting.c\
 			src/parser/parser.c\
 			src/parser/parser_colors.c\
 			src/parser/parser_coordinates.c\
