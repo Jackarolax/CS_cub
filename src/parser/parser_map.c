@@ -17,7 +17,7 @@ int	valid_first_last_rows(char *row)
 	int	i;
 
 	i = 0;
-	while (row[i])
+	while (row && row[i])
 	{
 		if (ft_strncmp(&row[i], "1", 1) == VALID
 			|| ft_strncmp(&row[i], "	", 1) == VALID

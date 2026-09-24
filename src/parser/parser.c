@@ -22,42 +22,6 @@ static int	is_player_id(char player)
 	return (0);
 }
 
-static int	check_map(t_mlx_data *env_p, char *line, int i)
-{
-	char	*msg;
-	size_t	size;
-	int	j;
-
-	j = 0;
-	if (ft_strncmp(line, "\n", 1) == VALID || ft_strncmp(line, "\0", 1) == VALID)
-		return (0);
-
-	size = ft_strlen(line) - 1;
-	if (size > env_p->map_info->map_width)
-		env_p->map_info->map_width = size;
-	env_p->map_info->map = realloc(env_p->map_info->map, sizeof(char *) * (size + 2));
-	if (!env_p->map_info->map)
-		call_error(env_p, "Memory allocation failed");
-	if (line[size] == '\n')
-	{
-		env_p->map_info->map[i] = ft_substr(line, 0, size);
-		while (line[j])
-		{
-			if (!valid_space_nline(&line[j]) && !valid_map_content(&line[j]))
-				call_error(env_p, "Check map");
-			if (is_player_id(line[j]))
-			{
-				if ((msg = duplicate_player(env_p)))
-					call_error(env_p, msg);
-				env_p->map_info->player_x_start = i;
-				env_p->map_info->player_y_start = j;
-			}
-			j++;
-		}
-	}
-	return (0);
-}
-
 static void	clean_memo(t_mlx_data *env_p, char **tokens, char **line)
 {
 	free_str_array(tokens);
@@ -65,6 +29,47 @@ static void	clean_memo(t_mlx_data *env_p, char **tokens, char **line)
 	env_p->identifiers->line_start = NULL;
 	free(*line);
 	*line = NULL;
+}
+
+static int	add_line_to_map(t_mlx_data *env_p, char *line, int i)
+{
+	char	*msg;
+	size_t	size;
+	int	j;
+
+	j = 0;
+	size = ft_strlen(line) - 1;
+	if (size > env_p->map_info->map_width)
+		env_p->map_info->map_width = size;
+	env_p->map_info->map = realloc(env_p->map_info->map, sizeof(char *) * (size + 2));
+	if (!env_p->map_info->map)
+		call_error(env_p, "Memory allocation failed");
+	if (ft_strncmp(line, "\n", 1) == VALID || ft_strncmp(line, "\0", 1) == VALID)
+	{
+		env_p->map_info->map[i] = NULL;
+		call_error(env_p, "Invalid map");
+	}
+	env_p->map_info->map[i] = ft_substr(line, 0, size);
+	while (line[j])
+	{
+		if (!valid_space_nline(&line[j]) && !valid_map_content(&line[j]))
+		{
+			env_p->map_info->map[i + 1] = NULL;
+			call_error(env_p, "Check map");
+		}
+		if (is_player_id(line[j]))
+		{
+			if ((msg = duplicate_player(env_p)))
+			{
+				env_p->map_info->map[i + 1] = NULL;
+				call_error(env_p, msg);
+			}
+			env_p->map_info->player_x_start = i;
+			env_p->map_info->player_y_start = j;
+		}
+		j++;
+	}
+	return (0);
 }
 
 static void	validate_coord_map(t_mlx_data *env_p, char **tokens, char *line, int *i)
@@ -77,15 +82,26 @@ static void	validate_coord_map(t_mlx_data *env_p, char **tokens, char *line, int
 		if ((exit_msg = check_coordinate(env_p, tokens)))
 			call_error(env_p, exit_msg);
 	}
-	else if (complete_ids(env_p->identifiers) && (valid_space_nline(&tokens[0][*i]) || valid_map_content(*tokens)))
+	else if (complete_ids(env_p->identifiers) && env_p->map_info->map_started && tokens[0][0] == '\n')
+		add_line_to_map(env_p, line, *i);
+	else if (complete_ids(env_p->identifiers) && !env_p->map_info->map_started && tokens[0][0] == '\n')
+		return ;
+	else if (complete_ids(env_p->identifiers)
+		&& valid_map_content(*tokens))
 	{
-		check_map(env_p, line, *i);
+		if (env_p->map_info->map_started == 0)
+			env_p->map_info->map_started = 1;
+		add_line_to_map(env_p, line, *i);
 		env_p->map_info->last_row = *i;
 		if (!valid_space_nline(&tokens[0][*i]))
 			(*i)++;
 	}
 	else
+	{
+		if (!env_p->map_info->map[*i + 1])
+			env_p->map_info->map[*i + 1] = NULL;
 		call_error(env_p, "Check file content");
+	}
 }
 
 static int	valid_file(int map_fd, t_mlx_data *env_p)
@@ -119,10 +135,12 @@ static void	cell_is_close_to_edge(t_mlx_data *env_p, size_t i, size_t j)
 {
 	if (ft_strncmp(&env_p->map_info->map[i][j + 1], " ", 1) == VALID
 		|| (j > 0 && ft_strncmp(&env_p->map_info->map[i][j - 1], " ", 1) == VALID)
+		|| (j == 0 && ft_strncmp(&env_p->map_info->map[i][j], "0", 1) == VALID)
 		|| ft_strncmp(&env_p->map_info->map[i + 1][j], " ", 1) == VALID
 		|| (i > 0 && ft_strncmp(&env_p->map_info->map[i - 1][j], " ", 1) == VALID)
 		|| ft_strncmp(&env_p->map_info->map[i][j + 1], "\0", 1) == VALID
 		|| (j > 0 && ft_strncmp(&env_p->map_info->map[i][j - 1], "\0", 1) == VALID)
+		|| (j == 0 && ft_strncmp(&env_p->map_info->map[i][j], "0", 1) == VALID)
 		|| ft_strncmp(&env_p->map_info->map[i + 1][j], "\0", 1) == VALID
 		|| (i > 0 && ft_strncmp(&env_p->map_info->map[i - 1][j], "\0", 1) == VALID))
 		call_error(env_p, "Check map edge");
@@ -203,7 +221,7 @@ static void	standardize_map(t_mlx_data *env_p)
 	}
 	// just to print and check, remove later
 	i = 0;
-	while (env_p->map_info->map[i] && i < env_p->map_info->last_row)
+	while (env_p->map_info->map[i] && i <= env_p->map_info->last_row)
 	{
 		printf("%s\n", env_p->map_info->map[i]);
 		i++;

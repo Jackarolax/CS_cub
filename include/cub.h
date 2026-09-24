@@ -67,6 +67,7 @@ typedef struct	s_coords {
 typedef struct	s_map_info {
 	int		map_fd;
 	char **map;
+	int		map_started;
 	size_t	map_height;
 	size_t	map_width;
 	int		player_x_start;

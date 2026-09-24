@@ -16,6 +16,7 @@ static void	init_map_info(t_map_info *info)
 {
 	info->map_fd = -1;
 	info->map = NULL;
+	info->map_started = 0;
 	info->map_height = 0;
 	info->map_width = 0;
 	info->player_x_start = -1;
@@ -77,9 +78,15 @@ void	destroy_everything_and_exit(t_mlx_data *env_p, int exit_code)
 	if (env_p->mlx)
 		mlx_destroy_display(env_p->mlx);
 	if (env_p->identifiers->line_start)
+	{
 		free(env_p->identifiers->line_start);
+		env_p->identifiers->line_start = NULL;
+	}
 	if (env_p->identifiers->tokens)
+	{
 		free_str_array(env_p->identifiers->tokens);
+		env_p->identifiers->tokens = NULL;
+	}
 	if (env_p->identifiers->NO)
 		free(env_p->identifiers->NO);
 	if (env_p->identifiers->SO)
@@ -93,7 +100,9 @@ void	destroy_everything_and_exit(t_mlx_data *env_p, int exit_code)
 	if (env_p->map_info)
 	{
 		free_str_array(env_p->map_info->map);
+		env_p->map_info->map = NULL;
 		free(env_p->map_info);
+		env_p->map_info = NULL;
 	}
 	if (env_p->mlx)
 		free(env_p->mlx);
