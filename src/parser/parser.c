@@ -6,13 +6,13 @@
 /*   By: ssin <ssin@student.42berlin.de>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/04 17:58:58 by ssin              #+#    #+#             */
-/*   Updated: 2026/09/17 18:17:11 by ssin             ###   ########.fr       */
+/*   Updated: 2026/09/22 09:59:47 by ssin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/cub.h"
 
-static int	is_player_id(char player)
+int	is_player_id(char player)
 {
 	if (player == 'N'
 		|| player == 'S'
@@ -52,7 +52,7 @@ static int	add_line_to_map(t_mlx_data *env_p, char *line, int i)
 	env_p->map_info->map[i] = ft_substr(line, 0, size);
 	while (line[j])
 	{
-		if (!valid_space_nline(&line[j]) && !valid_map_content(&line[j]))
+		if (!valid_space_nline(line[j]) && !valid_map_content(&line[j]))
 		{
 			env_p->map_info->map[i + 1] = NULL;
 			call_error(env_p, "Check map");
@@ -93,7 +93,7 @@ static void	validate_coord_map(t_mlx_data *env_p, char **tokens, char *line, int
 			env_p->map_info->map_started = 1;
 		add_line_to_map(env_p, line, *i);
 		env_p->map_info->last_row = *i;
-		if (!valid_space_nline(&tokens[0][*i]))
+		if (!valid_space_nline(tokens[0][*i]))
 			(*i)++;
 	}
 	else
@@ -146,15 +146,15 @@ static void	cell_is_close_to_edge(t_mlx_data *env_p, size_t i, size_t j)
 		call_error(env_p, "Check map edge");
 }
 
-int	valid_player_id(char *string)
+/*int	valid_player_id(char string)
 {
-	if (ft_strncmp(string, "N", 1) == VALID
-		|| ft_strncmp(string, "S", 1) == VALID
-		|| ft_strncmp(string, "E", 1) == VALID
-		|| ft_strncmp(string, "W", 1) == VALID)
+	if (ft_strncmp(&string, "N", 1) == VALID
+		|| ft_strncmp(&string, "S", 1) == VALID
+		|| ft_strncmp(&string, "E", 1) == VALID
+		|| ft_strncmp(&string, "W", 1) == VALID)
 		return (1);
 	return (0);
-}
+}*/
 
 static int	player_exists(t_mlx_data *env_p)
 {
@@ -173,9 +173,9 @@ static int	check_walkable_cels(t_mlx_data *env_p, size_t i)
 		if (i > env_p->map_info->map_height || j > env_p->map_info->map_width)
 			return (1);
 		if (ft_strncmp(&env_p->map_info->map[i][j], "0", 1) == VALID
-			|| valid_player_id(&env_p->map_info->map[i][j]))
+			|| is_player_id(env_p->map_info->map[i][j]))
 		{
-			if (valid_player_id(&env_p->map_info->map[i][j]))
+			if (is_player_id(env_p->map_info->map[i][j]))
 			{
 				if (player_exists(env_p))
 					call_error(env_p, "More than 1 player position");

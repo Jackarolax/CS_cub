@@ -6,7 +6,7 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/02 13:01:50 by anematol          #+#    #+#             */
-/*   Updated: 2026/09/17 18:18:26 by ssin             ###   ########.fr       */
+/*   Updated: 2026/09/22 10:08:57 by ssin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 # define ID_WE "WE"
 # define ID_EA "EA"
 # define ID_F "F"
-# define ID_C "C"
+# define ID_C 'C'
 # define COORD_LENGTH 4
 
 # include "../minilibx/mlx.h"
@@ -133,9 +133,10 @@ char	**valid_id_content(t_mlx_data *env_p, char **tokens);
 
 char	*check_file_permissions(t_mlx_data *env_p, char **tokens);
 int	complete_ids(t_id *id_p);
-int valid_space_nline(char *token);
+int valid_space_nline(char character);
 void	call_error(t_mlx_data *env_p, char *message);
-int	valid_player_id(char *string);
+//int	valid_player_id(char string);
+int	is_player_id(char player);
 void	free_str_array(char **str);
 
 int valid_map_content(char *tokens);

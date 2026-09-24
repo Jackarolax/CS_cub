@@ -6,7 +6,7 @@
 /*   By: ssin <ssin@student.42berlin.de>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/03 19:05:49 by ssin              #+#    #+#             */
-/*   Updated: 2026/09/13 12:07:57 by ssin             ###   ########.fr       */
+/*   Updated: 2026/09/22 09:56:29 by ssin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,14 @@ int	complete_ids(t_id *id_p)
 	return (0);
 }
 
-int valid_space_nline(char *token)
+int valid_space_nline(char character)
 {
-	if (ft_strncmp(token, " ", 1) == VALID
+	if (character == ' '
+		|| character == '\n'
+		|| character == '\t')
+	/*if (ft_strncmp(token, " ", 1) == VALID
 		|| ft_strncmp(token, "\t", 1) == VALID
-		|| ft_strncmp(token, "\n", 1) == VALID)
+		|| ft_strncmp(token, "\n", 1) == VALID)*/
 		return (1);
 	return (0);
 }
