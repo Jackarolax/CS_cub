@@ -6,7 +6,7 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/05 14:20:00 by anematol          #+#    #+#             */
-/*   Updated: 2026/09/13 13:53:37 by anematol         ###   ########.fr       */
+/*   Updated: 2026/09/20 19:15:36 by anematol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	check_collision(t_mlx_data *env_p, int check_x, int check_y)
 	bottom = (check_y + env_p->player_img.height - 1) / env_p->block_size;
 	if (left < 0 || right >= env_p->map_width
 		|| top < 0 || bottom >= env_p->map_height)
-		return ('1');
+		return (1);
 	if (env_p->map[top][left] == '1'
 		|| env_p->map[top][right] == '1'
 		|| env_p->map[bottom][left] == '1'
