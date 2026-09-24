@@ -6,7 +6,7 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/03 18:20:30 by ssin              #+#    #+#             */
-/*   Updated: 2026/09/24 22:50:18 by anematol         ###   ########.fr       */
+/*   Updated: 2026/09/24 22:58:48 by anematol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,6 @@ void	set_player_position(t_mlx_data *env_p)
 	}
 	destroy_everything_and_exit(env_p, 1);
 }
-
 
 
 void	set_minilibx(t_mlx_data *env_p)
