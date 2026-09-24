@@ -6,7 +6,7 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/08 20:05:46 by anematol          #+#    #+#             */
-/*   Updated: 2026/09/20 19:19:47 by anematol         ###   ########.fr       */
+/*   Updated: 2026/09/24 22:58:26 by anematol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,26 +33,47 @@ void reset_img(t_img image)
 	// Efficiently zero it out
 	ft_bzero(pixels, total_size);
 }
+
+t_coords add_coords(t_coords coords_1, t_coords coords_2)
+{
+	coords_1.x += coords_2.x;
+	coords_1.y += coords_2.y;
+	return (coords_1);
+}
+
+int	is_out_of_bounds(t_img img, t_coords coords)
+{
+	if (coords.x >= 0 && coords.y >= 0 &&
+		coords.x <= img.width && coords.y <= img.height)
+		return (0);
+	else
+		return (1);
+}
+t_coords vector2coords(t_vector vector)
+{
+	t_coords	coords;
+	coords.x = (int) round(vector.x);
+	coords.y = (int) round(vector.y);
+	return (coords);
+}
 void	draw_line(t_img img, t_coords begin, t_coords end, int color)
 {
-	double	delta_x;
-	double	delta_y;
-	double	line_len;
-	double	i;
+	t_vector	delta;
+	t_coords	curr_delta;
+	double		line_len;
+	double		i;
 
-	delta_x = (double) (end.x - begin.x);
-	delta_y = (double) (end.y - begin.y);
-	line_len = sqrt((delta_x * delta_x) + (delta_y * delta_y));
+	delta.x = (double) (end.x - begin.x);
+	delta.y = (double) (end.y - begin.y);
+	line_len = sqrt((delta.x * delta.x) + (delta.y * delta.y));
 	i = 0.0;
-	while (i <= line_len && begin.x + (int) (delta_x * i / line_len) <= img.width
-						&& begin.y + (delta_y * i / line_len) <= img.height)
+	while (i <= line_len)
 	{
-		if (begin.x + (int) (delta_x * i / line_len) <= img.width
-			&& begin.y + (delta_y * i / line_len) <= img.height
-			&& begin.x + (int) (delta_x * i / line_len) >= 0
-			&& begin.y + (delta_y * i / line_len) >= 0)
-			pixel_put(img, begin.x + (int) (delta_x * i / line_len),
-				begin.y + (delta_y * i / line_len), color);
+		curr_delta.x = (int) round(delta.x * i / line_len);
+		curr_delta.y = (int) round(delta.y * i / line_len);
+		if (!is_out_of_bounds(img, add_coords(begin, curr_delta)))
+			pixel_put(img, add_coords(begin, curr_delta).x,
+				add_coords(begin, curr_delta).y , color);
 		i++;
 	}
 }
@@ -74,6 +95,40 @@ void	draw_square(t_img img, t_coords start_point, int len, int color)
 	start_point.x -= len;
 	start_point.y -= len;
 	draw_line(img, start_point, end_point, color);
+}
+
+void	draw_ceil(t_mlx_data *env_p)
+{
+	t_coords	start;
+	t_coords	end;
+
+	start.x = 0;
+	start.y = 0;
+	end.x = env_p->win_width;
+	end.y = 0;
+	while(start.y <= env_p->win_height / 2)
+	{
+		draw_line(env_p->background_img, start, end, env_p->ceil_color);
+		start.y++;
+		end.y++;
+	}
+}
+
+void	draw_floor(t_mlx_data *env_p)
+{
+	t_coords	start;
+	t_coords	end;
+
+	start.x = 0;
+	start.y = env_p->win_height / 2;
+	end.x = env_p->win_width;
+	end.y = env_p->win_height / 2;
+	while(start.y <= env_p->win_height)
+	{
+		draw_line(env_p->background_img, start, end, env_p->floor_color);
+		start.y++;
+		end.y++;
+	}
 }
 
 void	fill_square(t_img img, t_coords start_point, int len, int color)
@@ -113,7 +168,7 @@ void	draw_obstacles(t_mlx_data *env_p)
 				draw_square(env_p->background_img,
 					give_coords(grid_x * env_p->block_size,
 					grid_y * env_p->block_size),
-					env_p->block_size, RED);
+					env_p->block_size, WHITE);
 			}
 			grid_x++;
 		}
@@ -176,24 +231,21 @@ void	draw_triangle(t_img img, t_3points triangle, int color)
 
 void	fill_triangle(t_img img, t_3points triangle, int color)
 {
-	double	delta_x;
-	double	delta_y;
-	double	line_len;
-	double	i;
+	t_vector	delta;
+	t_coords	curr_delta;
+	double		line_len;
+	double		i;
 
-	delta_x = (double) (triangle.p3.x - triangle.p2.x);
-	delta_y = (double) (triangle.p3.y - triangle.p2.y);
-	line_len = sqrt((delta_x * delta_x) + (delta_y * delta_y));
+	delta.x = (double) (triangle.p3.x - triangle.p2.x);
+	delta.y = (double) (triangle.p3.y - triangle.p2.y);
+	line_len = sqrt((delta.x * delta.x) + (delta.y * delta.y));
 	i = 0.0;
 	while (i <= line_len)
 	{
-		if (triangle.p2.x + (int) (delta_x * i / line_len) <= img.width
-			&& triangle.p2.y + (delta_y * i / line_len) <= img.height
-			&& triangle.p2.x + (int) (delta_x * i / line_len) >= 0
-			&& triangle.p2.y + (delta_y * i / line_len) >= 0)
-			draw_line(img, triangle.p1,
-				give_coords(triangle.p2.x + (int) (delta_x * i / line_len),
-				triangle.p2.y + (delta_y * i / line_len)), color);
+		curr_delta.x = (int) round(delta.x * i / line_len);
+		curr_delta.y = (int) round(delta.y * i / line_len);
+		draw_line(img, triangle.p1,
+			add_coords(triangle.p2, curr_delta), color);
 		i += 0.01;
 	}
 }
@@ -241,9 +293,9 @@ void	draw_ray(t_img image, t_mlx_data *env_p, double degree_angle)
 		wall_collision_pos,
 		0x00FF0000);
 	if (ray_vector.x >= 0.0 && (wall_collision_pos.x % env_p->block_size) == 0 && (wall_collision_pos.y % env_p->block_size) != 0)
-		draw_line(image, wall_collision_pos, give_coords(wall_collision_pos.x + env_p->block_size, wall_collision_pos.y), RED);
+		draw_line(image, wall_collision_pos, give_coords(wall_collision_pos.x + env_p->block_size, wall_collision_pos.y), GREEN);
 	else if (ray_vector.x < 0.0 && (wall_collision_pos.x % env_p->block_size) == 0 && (wall_collision_pos.y % env_p->block_size) != 0)
-		draw_line(image, wall_collision_pos, give_coords(wall_collision_pos.x - env_p->block_size, wall_collision_pos.y), RED);
+		draw_line(image, wall_collision_pos, give_coords(wall_collision_pos.x - env_p->block_size, wall_collision_pos.y), GREEN);
 	else if (ray_vector.y >= 0.0 && (wall_collision_pos.y % env_p->block_size) == 0 && (wall_collision_pos.x % env_p->block_size) != 0)
 		draw_line(image, wall_collision_pos, give_coords(wall_collision_pos.x, wall_collision_pos.y + env_p->block_size), RED);
 	else if (ray_vector.y < 0.0 &&(wall_collision_pos.y % env_p->block_size) == 0 && (wall_collision_pos.x % env_p->block_size) != 0)
@@ -289,7 +341,6 @@ void	draw_fov_line_sprite(t_img image, t_img sprite, t_mlx_data *env_p, int x, i
 	y_down =  (env_p->win_height / 2) + (line_len / 2);
 	wall_x = get_wall_x(env_p);
 	wall_y = 0.0;
-	get_img_pixel(sprite, (int)((double)sprite.width * wall_x), (int)((double)sprite.height * wall_y));
 	while(wall_y < 1.0)
 	{
 		if (y_up + (int)((double)(y_down - y_up) * wall_y) > 0
@@ -319,11 +370,11 @@ void	draw_corresponding_fov_line(t_img image, t_mlx_data *env_p, double degree_a
 	if (get_wall_collision_side(env_p) == 'N')
 		draw_fov_line_sprite(image, env_p->sprite_n_img, env_p, x, line_len);
 	else if (get_wall_collision_side(env_p) == 'S')
-		draw_fov_line_sprite(image, env_p->sprite_n_img, env_p, x, line_len);
+		draw_fov_line_sprite(image, env_p->sprite_s_img, env_p, x, line_len);
 	else if (get_wall_collision_side(env_p) == 'W')
-		draw_fov_line_sprite(image, env_p->sprite_n_img, env_p, x, line_len);
+		draw_fov_line_sprite(image, env_p->sprite_w_img, env_p, x, line_len);
 	else if (get_wall_collision_side(env_p) == 'E')
-		draw_fov_line_sprite(image, env_p->sprite_n_img, env_p, x, line_len);
+		draw_fov_line_sprite(image, env_p->sprite_e_img, env_p, x, line_len);
 }
 
 void	draw_fov(t_img image, t_mlx_data *env_p)
@@ -371,6 +422,8 @@ void	put_img_inside_img(t_img small_image, t_img large_image,
 int	draw_to_window(t_mlx_data	*env_p)
 {
 	reset_img(env_p->background_img);
+	draw_ceil(env_p);
+	draw_floor(env_p);
 	draw_fov(env_p->background_img, env_p);
 	//reset_img(env_p->player_img);
 	//draw_rotated_triangle(env_p);
