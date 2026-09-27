@@ -26,14 +26,27 @@ static void	clean_memo(t_mlx_data *env_p, char **tokens, char **line)
 {
 	free_str_array(tokens);
 	env_p->identifiers->tokens = NULL;
-	env_p->identifiers->line_start = NULL;
 	free(*line);
 	*line = NULL;
+	env_p->identifiers->line_start = NULL;
+}
+
+static void add_player_pos(t_mlx_data *env_p, int i, int j)
+{
+	char	*msg;
+
+	msg = duplicate_player(env_p);
+	if (msg)
+	{
+		env_p->map_info->map[i + 1] = NULL;
+		call_error(env_p, msg);
+	}
+	env_p->map_info->player_x_start = i;
+	env_p->map_info->player_y_start = j;
 }
 
 static int	add_line_to_map(t_mlx_data *env_p, char *line, int i)
 {
-	char	*msg;
 	int		size;
 	int		j;
 
@@ -59,16 +72,7 @@ static int	add_line_to_map(t_mlx_data *env_p, char *line, int i)
 			call_error(env_p, "Error\nCheck map");
 		}
 		if (is_player_id(line[j]))
-		{
-			msg = duplicate_player(env_p);
-			if (msg)
-			{
-				env_p->map_info->map[i + 1] = NULL;
-				call_error(env_p, msg);
-			}
-			env_p->map_info->player_x_start = i;
-			env_p->map_info->player_y_start = j;
-		}
+			add_player_pos(env_p, i, j);
 		j++;
 	}
 	return (0);
@@ -99,7 +103,6 @@ static void	validate_coord_map(t_mlx_data *env_p, char **tokens,
 			env_p->map_info->map_started = 1;
 		add_line_to_map(env_p, line, *i);
 		env_p->map_info->last_row = *i;
-		//if (!valid_space_nline(tokens[0][*i]))
 		*i = *i + 1;
 	}
 	else
@@ -258,13 +261,13 @@ static int	valid_extension(t_mlx_data *env_p, char *map_name_p)
 	if (!map_name_p || access(map_name_p, F_OK) == -1)
 	{
 		perror("Error\nInvalid file");
-		destroy_everything_and_exit(env_p, 1);
+		destroy_everything_and_exit(env_p);
 	}
 	ext = ft_strrchr(map_name_p, '.');
 	if (!ext || (ft_strncmp(EXTENSION, ext, 5) != CUB))
 	{
 		perror("Error\nInvalid map extension");
-		destroy_everything_and_exit(env_p, 1);
+		destroy_everything_and_exit(env_p);
 	}
 	return (1);
 }
@@ -280,7 +283,7 @@ void	parser(char *map_name_p, t_mlx_data *env_p)
 		if (map_fd == ERROR)
 		{
 			perror("Error\nCould not open file");
-			destroy_everything_and_exit(env_p, 1);
+			destroy_everything_and_exit(env_p);
 		}
 		env_p->map_info->map_fd = map_fd;
 		valid_file(map_fd, env_p);
@@ -289,6 +292,6 @@ void	parser(char *map_name_p, t_mlx_data *env_p)
 	if (!complete_ids(env_p->identifiers))
 	{
 		perror("Error\nMissing identifiers");
-		destroy_everything_and_exit(env_p, 1);
+		destroy_everything_and_exit(env_p);
 	}
 }

@@ -33,7 +33,7 @@ void	load_sprite(t_mlx_data *env_p, t_img *image_p, char *path)
 	if (!image_p->img)
 	{
 		printf("Error: Could not load sprite %s\n", path);
-		destroy_everything_and_exit(env_p, 1);
+		destroy_everything_and_exit(env_p);
 		exit(1);
 		return ;
 	}
@@ -101,7 +101,7 @@ void	set_player_position(t_mlx_data *env_p)
 	int	j;
 
 	if (!env_p->map_info->map)
-		destroy_everything_and_exit(env_p, 1);
+		destroy_everything_and_exit(env_p);
 	i = 0;
 	while(env_p->map_info->map[i])
 	{
@@ -118,7 +118,7 @@ void	set_player_position(t_mlx_data *env_p)
 		}
 		i++;
 	}
-	destroy_everything_and_exit(env_p, 1);
+	destroy_everything_and_exit(env_p);
 }
 
 

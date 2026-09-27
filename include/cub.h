@@ -194,7 +194,7 @@ int		handle_key_release(int keycode, void *param);
 int		update_game(void *param);
 
 /* main */
-void	destroy_everything_and_exit(t_mlx_data *env_p, int exit_code);
+void	destroy_everything_and_exit(t_mlx_data *env_p);
 
 /* draw */
 int		draw_to_window(t_mlx_data	*env_p);

@@ -108,7 +108,7 @@ char	**valid_id_content(t_mlx_data *env_p, char **tokens)
 		if (!j || (colors[i][j] && colors[i][j] != '\n'))
 		{
 			perror("Error\nInvalid C / F content");
-			destroy_everything_and_exit(env_p, 1);
+			destroy_everything_and_exit(env_p);
 		}
 		i++;
 	}
