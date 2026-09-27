@@ -6,7 +6,7 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/02 13:01:50 by anematol          #+#    #+#             */
-/*   Updated: 2026/09/20 19:10:13 by anematol         ###   ########.fr       */
+/*   Updated: 2026/09/24 22:59:30 by anematol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,8 @@ typedef struct s_mlx_data {
 	t_img		sprite_s_img;
 	t_img		sprite_w_img;
 	t_img		sprite_e_img;
+	int			ceil_color;
+	int			floor_color;
 	t_img		background_img;
 	t_img		buffer_img;
 	void		*mlx;
@@ -194,5 +196,6 @@ double		get_ray_len(t_mlx_data *env_p, double degree_angle);
 t_coords	get_exact_collision_point(t_mlx_data *env_p, t_vector ray_vector);
 char	get_wall_collision_side(t_mlx_data *env_p);
 double get_wall_x(t_mlx_data *env_p);
+t_coords add_coords(t_coords coords_1, t_coords coords_2);
 
 #endif

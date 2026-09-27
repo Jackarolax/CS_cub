@@ -6,7 +6,7 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/03 18:20:30 by ssin              #+#    #+#             */
-/*   Updated: 2026/09/20 19:14:52 by anematol         ###   ########.fr       */
+/*   Updated: 2026/09/24 22:58:48 by anematol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,6 +157,8 @@ void	set_minilibx(t_mlx_data *env_p)
 	env_p->map[8] = NULL;
 	env_p->map_height = 8;
 	env_p->map_width = 10;
+	env_p->ceil_color = RED + BLUE;
+	env_p->floor_color = RED + GREEN;
 
 	set_player_position(env_p);
 	env_p->width = env_p->map_width * env_p->block_size;
@@ -184,7 +186,10 @@ void	set_minilibx(t_mlx_data *env_p)
 	env_p->buffer_img.addr = mlx_get_data_addr(env_p->buffer_img.img,
 		&env_p->buffer_img.bpp, &env_p->buffer_img.line_length,
 		&env_p->buffer_img.endian);
-	load_sprite(env_p, &env_p->sprite_n_img, "./minilibx/test/open30.xpm");
+	load_sprite(env_p, &env_p->sprite_n_img, "./green.xpm");
+	load_sprite(env_p, &env_p->sprite_e_img, "./red.xpm");
+	load_sprite(env_p, &env_p->sprite_s_img, "./blue.xpm");
+	load_sprite(env_p, &env_p->sprite_w_img, "./white.xpm");
 	draw_obstacles(env_p);
 	mlx_put_image_to_window(env_p->mlx, env_p->win, env_p->player_img.img,
 		(int) env_p->player_x, (int) env_p->player_y);
