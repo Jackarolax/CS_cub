@@ -99,8 +99,8 @@ static void	validate_coord_map(t_mlx_data *env_p, char **tokens,
 			env_p->map_info->map_started = 1;
 		add_line_to_map(env_p, line, *i);
 		env_p->map_info->last_row = *i;
-		if (!valid_space_nline(tokens[0][*i]))
-			(*i)++;
+		//if (!valid_space_nline(tokens[0][*i]))
+		*i = *i + 1;
 	}
 	else
 	{
