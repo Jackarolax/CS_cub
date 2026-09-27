@@ -29,12 +29,12 @@ void	free_map(t_mlx_data *env_p)
 	int	i;
 
 	i = 0;
-	while (env_p->map[i])
+	while (env_p->map_info->map[i])
 	{
-		free(env_p->map[i]);
+		free(env_p->map_info->map[i]);
 		i++;
 	}
-	free(env_p->map);
+	free(env_p->map_info->map);
 }
 
 static void	init_identifiers(t_id *identifiers_p)
@@ -66,8 +66,10 @@ static void	init_env(t_mlx_data *env_p)
 	env_p->width = 0;
 	env_p->height = 0;
 	env_p->player_img.img = NULL;
+	env_p->player_img.img = NULL;
 	env_p->background_img.img = NULL;
 	env_p->buffer_img.img = NULL;
+	env_p->sprite_n_img.img = NULL;
 	env_p->mv_fwd_pressed = 0;
 	env_p->mv_bck_pressed = 0;
 	env_p->mv_l_pressed = 0;
@@ -77,9 +79,11 @@ static void	init_env(t_mlx_data *env_p)
 	env_p->player_x = 0.0;
 	env_p->player_y = 0.0;
 	env_p->player_direction = 0.0;
-	env_p->map = NULL;
-	env_p->map_height = 0;
-	env_p->map_width = 0;
+	env_p->ray_vector.x = 0.0;
+	env_p->ray_vector.y = 0.0;
+	env_p->map_info->map = NULL;
+	env_p->map_info->map_height = 0;
+	env_p->map_info->map_width = 0;
 	env_p->block_size = 0;
 }
 
@@ -91,6 +95,8 @@ void	destroy_everything_and_exit(t_mlx_data *env_p, int exit_code)
 		mlx_destroy_image(env_p->mlx, env_p->background_img.img);
 	if (env_p->buffer_img.img)
 		mlx_destroy_image(env_p->mlx, env_p->buffer_img.img);
+	if (env_p->sprite_n_img.img)
+		mlx_destroy_image(env_p->mlx, env_p->sprite_n_img.img);
 	if (env_p->win)
 		mlx_destroy_window(env_p->mlx, env_p->win);
 	if (env_p->mlx)
@@ -105,9 +111,6 @@ void	destroy_everything_and_exit(t_mlx_data *env_p, int exit_code)
 		free_str_array(env_p->identifiers->tokens);
 		env_p->identifiers->tokens = NULL;
 	}
-	if (env_p->map)
-		free_map(env_p);
-
 	if (env_p->identifiers->NO)
 		free(env_p->identifiers->NO);
 	if (env_p->identifiers->SO)
@@ -136,14 +139,14 @@ int main(int ac, char **av)
 	// add param validation
 	if (ac == 1 || !av[1])
 	{
-		perror("Map is missing");
+		perror("Error\nMap is missing");
 		exit(1);
 	}
 
 	init_env(&env);
 	parser(av[1], &env);
-	env.win_height = 800;
-	env.win_width = 1080;
+	env.win_height = WIN_HEIGHT;
+	env.win_width = WIN_WIDTH;
 	set_minilibx(&env);
 	// parser
 

@@ -34,20 +34,21 @@ static void	clean_memo(t_mlx_data *env_p, char **tokens, char **line)
 static int	add_line_to_map(t_mlx_data *env_p, char *line, int i)
 {
 	char	*msg;
-	size_t	size;
-	int	j;
+	int		size;
+	int		j;
 
 	j = 0;
 	size = ft_strlen(line) - 1;
 	if (size > env_p->map_info->map_width)
 		env_p->map_info->map_width = size;
-	env_p->map_info->map = realloc(env_p->map_info->map, sizeof(char *) * (size + 2));
+	env_p->map_info->map = realloc(env_p->map_info->map,
+			sizeof(char *) * (size + 2));
 	if (!env_p->map_info->map)
-		call_error(env_p, "Memory allocation failed");
+		call_error(env_p, "Error\nMemory allocation failed");
 	if (ft_strncmp(line, "\n", 1) == VALID || ft_strncmp(line, "\0", 1) == VALID)
 	{
 		env_p->map_info->map[i] = NULL;
-		call_error(env_p, "Invalid map");
+		call_error(env_p, "Error\nInvalid map");
 	}
 	env_p->map_info->map[i] = ft_substr(line, 0, size);
 	while (line[j])
@@ -55,11 +56,12 @@ static int	add_line_to_map(t_mlx_data *env_p, char *line, int i)
 		if (!valid_space_nline(line[j]) && !valid_map_content(&line[j]))
 		{
 			env_p->map_info->map[i + 1] = NULL;
-			call_error(env_p, "Check map");
+			call_error(env_p, "Error\nCheck map");
 		}
 		if (is_player_id(line[j]))
 		{
-			if ((msg = duplicate_player(env_p)))
+			msg = duplicate_player(env_p);
+			if (msg)
 			{
 				env_p->map_info->map[i + 1] = NULL;
 				call_error(env_p, msg);
@@ -72,19 +74,23 @@ static int	add_line_to_map(t_mlx_data *env_p, char *line, int i)
 	return (0);
 }
 
-static void	validate_coord_map(t_mlx_data *env_p, char **tokens, char *line, int *i)
+static void	validate_coord_map(t_mlx_data *env_p, char **tokens,
+			char *line, int *i)
 {
 	char	*exit_msg;
 
 	env_p->identifiers->tokens = tokens;
 	if (!complete_ids(env_p->identifiers))
 	{
-		if ((exit_msg = check_coordinate(env_p, tokens)))
+		exit_msg = check_coordinate(env_p, tokens);
+		if (exit_msg)
 			call_error(env_p, exit_msg);
 	}
-	else if (complete_ids(env_p->identifiers) && env_p->map_info->map_started && tokens[0][0] == '\n')
+	else if (complete_ids(env_p->identifiers)
+		&& env_p->map_info->map_started && tokens[0][0] == '\n')
 		add_line_to_map(env_p, line, *i);
-	else if (complete_ids(env_p->identifiers) && !env_p->map_info->map_started && tokens[0][0] == '\n')
+	else if (complete_ids(env_p->identifiers)
+		&& !env_p->map_info->map_started && tokens[0][0] == '\n')
 		return ;
 	else if (complete_ids(env_p->identifiers)
 		&& valid_map_content(*tokens))
@@ -100,7 +106,7 @@ static void	validate_coord_map(t_mlx_data *env_p, char **tokens, char *line, int
 	{
 		if (!env_p->map_info->map[*i + 1])
 			env_p->map_info->map[*i + 1] = NULL;
-		call_error(env_p, "Check file content");
+		call_error(env_p, "Error\nCheck file content");
 	}
 }
 
@@ -114,7 +120,7 @@ static int	valid_file(int map_fd, t_mlx_data *env_p)
 	tokens = NULL;
 	i = 0;
 	if (line == NULL)
-		call_error(env_p, "Empty file");
+		call_error(env_p, "Error\nEmpty file");
 	while (line)
 	{
 		tokens = ft_split(line, ' ');
@@ -125,36 +131,31 @@ static int	valid_file(int map_fd, t_mlx_data *env_p)
 		line = get_next_line(map_fd);
 	}
 	if (!env_p->map_info->map)
-		call_error(env_p, "Check file content");
+		call_error(env_p, "Error\nCheck file content");
 	env_p->map_info->map[i] = NULL;
 	env_p->map_info->map_height = i;
 	return (0);
 }
 
-static void	cell_is_close_to_edge(t_mlx_data *env_p, size_t i, size_t j)
+static void	cell_is_close_to_edge(t_mlx_data *env_p, int i, int j)
 {
 	if (ft_strncmp(&env_p->map_info->map[i][j + 1], " ", 1) == VALID
-		|| (j > 0 && ft_strncmp(&env_p->map_info->map[i][j - 1], " ", 1) == VALID)
-		|| (j == 0 && ft_strncmp(&env_p->map_info->map[i][j], "0", 1) == VALID)
+		|| (j > 0
+		&& ft_strncmp(&env_p->map_info->map[i][j - 1], " ", 1) == VALID)
+		|| (j == 0
+		&& ft_strncmp(&env_p->map_info->map[i][j], "0", 1) == VALID)
 		|| ft_strncmp(&env_p->map_info->map[i + 1][j], " ", 1) == VALID
-		|| (i > 0 && ft_strncmp(&env_p->map_info->map[i - 1][j], " ", 1) == VALID)
+		|| (i > 0
+		&& ft_strncmp(&env_p->map_info->map[i - 1][j], " ", 1) == VALID)
 		|| ft_strncmp(&env_p->map_info->map[i][j + 1], "\0", 1) == VALID
-		|| (j > 0 && ft_strncmp(&env_p->map_info->map[i][j - 1], "\0", 1) == VALID)
+		|| (j > 0
+		&& ft_strncmp(&env_p->map_info->map[i][j - 1], "\0", 1) == VALID)
 		|| (j == 0 && ft_strncmp(&env_p->map_info->map[i][j], "0", 1) == VALID)
 		|| ft_strncmp(&env_p->map_info->map[i + 1][j], "\0", 1) == VALID
-		|| (i > 0 && ft_strncmp(&env_p->map_info->map[i - 1][j], "\0", 1) == VALID))
-		call_error(env_p, "Check map edge");
+		|| (i > 0
+		&& ft_strncmp(&env_p->map_info->map[i - 1][j], "\0", 1) == VALID))
+		call_error(env_p, "Error\nCheck map edge");
 }
-
-/*int	valid_player_id(char string)
-{
-	if (ft_strncmp(&string, "N", 1) == VALID
-		|| ft_strncmp(&string, "S", 1) == VALID
-		|| ft_strncmp(&string, "E", 1) == VALID
-		|| ft_strncmp(&string, "W", 1) == VALID)
-		return (1);
-	return (0);
-}*/
 
 static int	player_exists(t_mlx_data *env_p)
 {
@@ -163,9 +164,9 @@ static int	player_exists(t_mlx_data *env_p)
 	return (0);
 }
 
-static int	check_walkable_cels(t_mlx_data *env_p, size_t i)
+static int	check_walkable_cels(t_mlx_data *env_p, int i)
 {
-	size_t	j;
+	int	j;
 
 	j = 0;
 	while (env_p->map_info->map[i][j])
@@ -178,7 +179,7 @@ static int	check_walkable_cels(t_mlx_data *env_p, size_t i)
 			if (is_player_id(env_p->map_info->map[i][j]))
 			{
 				if (player_exists(env_p))
-					call_error(env_p, "More than 1 player position");
+					call_error(env_p, "Error\nMore than 1 player position");
 				env_p->player_x = i;
 				env_p->player_y = j;
 			}
@@ -191,16 +192,17 @@ static int	check_walkable_cels(t_mlx_data *env_p, size_t i)
 
 static void	standardize_map(t_mlx_data *env_p)
 {
-	size_t	i;
-	size_t	j;
-	size_t	line_len;
+	int	i;
+	int	j;
+	int	line_len;
 
 	i = 0;
 	while (env_p->map_info->map[i])
 	{
 		j = 0;
 		// replace spaces with 1's at the beginning of the line
-		while (env_p->map_info->map[i][j] && ft_strncmp(&env_p->map_info->map[i][j], " ", 1) == VALID)
+		while (env_p->map_info->map[i][j]
+			&& ft_strncmp(&env_p->map_info->map[i][j], " ", 1) == VALID)
 		{
 			env_p->map_info->map[i][j] = '1';
 			j++;
@@ -208,7 +210,9 @@ static void	standardize_map(t_mlx_data *env_p)
 		line_len = ft_strlen(env_p->map_info->map[i]);
 		if (line_len < env_p->map_info->map_width)
 		{
-			env_p->map_info->map[i] = realloc(env_p->map_info->map[i], sizeof(char) * (env_p->map_info->map_width + 1));
+			env_p->map_info->map[i] = realloc(
+					env_p->map_info->map[i],
+					sizeof(char) * (env_p->map_info->map_width + 1));
 			// replace the spaces with 1's at the end of the line
 			while (line_len < env_p->map_info->map_width)
 			{
@@ -230,20 +234,20 @@ static void	standardize_map(t_mlx_data *env_p)
 
 static void	valid_map(t_mlx_data *env_p)
 {
-	size_t	i;
+	int	i;
 
 	i = 0;
 	if (valid_first_last_rows(env_p->map_info->map[0])
-		|| valid_first_last_rows(env_p->map_info->map[env_p->map_info->last_row]))
-		call_error(env_p, "Check map's first/last rows");
+		|| valid_first_last_rows(
+			env_p->map_info->map[env_p->map_info->last_row]))
+		call_error(env_p, "Error\nCheck map's first/last rows");
 	while (env_p->map_info->map[i] && i < env_p->map_info->last_row)
 	{
 		check_walkable_cels(env_p, i);
 		i++;
 	}
 	if (!player_exists(env_p))
-		call_error(env_p, "Set player position");
-
+		call_error(env_p, "Error\nSet player position");
 	standardize_map(env_p);
 }
 
@@ -253,13 +257,13 @@ static int	valid_extension(t_mlx_data *env_p, char *map_name_p)
 
 	if (!map_name_p || access(map_name_p, F_OK) == -1)
 	{
-		perror("Invalid file");
+		perror("Error\nInvalid file");
 		destroy_everything_and_exit(env_p, 1);
 	}
 	ext = ft_strrchr(map_name_p, '.');
 	if (!ext || (ft_strncmp(EXTENSION, ext, 5) != CUB))
 	{
-		perror("Invalid map extension");
+		perror("Error\nInvalid map extension");
 		destroy_everything_and_exit(env_p, 1);
 	}
 	return (1);
@@ -275,7 +279,7 @@ void	parser(char *map_name_p, t_mlx_data *env_p)
 		map_fd = open(map_name_p, O_RDONLY);
 		if (map_fd == ERROR)
 		{
-			perror("Could not open file");
+			perror("Error\nCould not open file");
 			destroy_everything_and_exit(env_p, 1);
 		}
 		env_p->map_info->map_fd = map_fd;
@@ -284,7 +288,7 @@ void	parser(char *map_name_p, t_mlx_data *env_p)
 	}
 	if (!complete_ids(env_p->identifiers))
 	{
-		perror("Missing identifiers");
+		perror("Error\nMissing identifiers");
 		destroy_everything_and_exit(env_p, 1);
 	}
 }

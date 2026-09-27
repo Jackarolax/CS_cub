@@ -42,8 +42,8 @@ char	*fill_coordinates(t_id *id_p, char **tokens)
 
 char	*check_coordinate(t_mlx_data *env_p, char **tokens)
 {
-	size_t	i;
-	char	*msg;
+	size_t		i;
+	char		*msg;
 	const char	*coordinates[] = {
 		ID_NO,
 		ID_SO,
@@ -68,14 +68,14 @@ char	*check_coordinate(t_mlx_data *env_p, char **tokens)
 		valid_ceiling_floor(env_p, tokens);
 	}
 	else if (!valid_space_nline(tokens[0][0]) && !valid_map_content(*tokens))
-		return ("Not a valid identifier");
+		return ("Error\nNot a valid identifier");
 	return (NULL);
 }
 
 char	*duplicate_player(t_mlx_data *env_p)
 {
 	if (env_p->map_info->player_x_start != -1 && env_p->map_info->player_y_start != -1)
-		return ("Duplicated Player");
+		return ("Error\nDuplicated Player");
 	return (NULL);
 }
 
@@ -107,7 +107,7 @@ char	**valid_id_content(t_mlx_data *env_p, char **tokens)
 			j++;
 		if (!j || (colors[i][j] && colors[i][j] != '\n'))
 		{
-			perror("Invalid C / F content");
+			perror("Error\nInvalid C / F content");
 			destroy_everything_and_exit(env_p, 1);
 		}
 		i++;
