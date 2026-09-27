@@ -6,7 +6,7 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/08 20:05:46 by anematol          #+#    #+#             */
-/*   Updated: 2026/09/27 15:04:11 by anematol         ###   ########.fr       */
+/*   Updated: 2026/09/27 16:21:27 by anematol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,9 +104,9 @@ void	draw_ceil(t_mlx_data *env_p)
 
 	start.x = 0;
 	start.y = 0;
-	end.x = env_p->win_width;
+	end.x = WIN_WIDTH;
 	end.y = 0;
-	while (start.y <= env_p->win_height / 2)
+	while (start.y <= WIN_HEIGHT / 2)
 	{
 		draw_line(env_p->background_img, start, end, env_p->ceil_color);
 		start.y++;
@@ -120,10 +120,10 @@ void	draw_floor(t_mlx_data *env_p)
 	t_coords	end;
 
 	start.x = 0;
-	start.y = env_p->win_height / 2;
-	end.x = env_p->win_width;
-	end.y = env_p->win_height / 2;
-	while (start.y <= env_p->win_height)
+	start.y = WIN_HEIGHT / 2;
+	end.x = WIN_WIDTH;
+	end.y = WIN_HEIGHT / 2;
+	while (start.y <= WIN_HEIGHT)
 	{
 		draw_line(env_p->background_img, start, end, env_p->floor_color);
 		start.y++;
@@ -174,12 +174,6 @@ void	draw_obstacles(t_mlx_data *env_p)
 		}
 		grid_y++;
 	}
-}
-
-void	copy_background_to_buffer(t_mlx_data *env_p)
-{
-	ft_memcpy(env_p->buffer_img.addr, env_p->background_img.addr,
-		env_p->background_img.height * env_p->background_img.line_length);
 }
 
 //the ostacle sprite has to be initialized already
@@ -332,8 +326,8 @@ void	draw_fov_line(t_mlx_data *env_p, int x, int line_len)
 	int		thickness;
 	double	wall_x;
 
-	y_up = (env_p->win_height / 2) - (line_len / 2);
-	y_down = (env_p->win_height / 2) + (line_len / 2);
+	y_up = (WIN_HEIGHT / 2) - (line_len / 2);
+	y_down = (WIN_HEIGHT / 2) + (line_len / 2);
 	thickness = (y_down - y_up) / 20;
 	wall_x = get_wall_x(env_p);
 	if (wall_x < 0.05 || wall_x > 0.95)
@@ -358,14 +352,14 @@ void	draw_fov_line_sprite(t_img sprite,
 	double	wall_x;
 	double	wall_y;
 
-	y_up = (env_p->win_height / 2) - (line_len / 2);
-	y_down = (env_p->win_height / 2) + (line_len / 2);
+	y_up = (WIN_HEIGHT / 2) - (line_len / 2);
+	y_down = (WIN_HEIGHT / 2) + (line_len / 2);
 	wall_x = get_wall_x(env_p);
 	wall_y = 0.0;
 	while (wall_y < 1.0)
 	{
-		if (y_up + (int)((double)(y_down - y_up) * wall_y) > 0
-			&& y_up + (int)((double)(y_down - y_up) * wall_y)
+		if (y_up + (int)((double)(y_down - y_up) *wall_y) > 0
+			&& y_up + (int)((double)(y_down - y_up) *wall_y)
 				< env_p->background_img.height)
 			pixel_put(env_p->background_img, x,
 				y_up + (y_down - y_up) * wall_y,
@@ -386,11 +380,11 @@ void	draw_corresponding_fov_line(t_mlx_data *env_p, double degree_angle)
 	else
 		sign = 1.0;
 	degree_angle *= sign;
-	x = (env_p->win_width / 2)
-		+ (int)round((double)(env_p->win_width / 2)
-			* (degree_angle / ((double)FOV_DEGREE / 2.0)) * sign);
-	line_len = ((FOV_HEIGHT_SCALING_FACTOR * env_p->win_height / FOV_DEGREE)
-			* env_p->win_height) / get_ray_len(env_p, degree_angle * sign);
+	x = (WIN_WIDTH / 2)
+		+ (int)round((double)(WIN_WIDTH / 2)
+			*(degree_angle / ((double)FOV_DEGREE / 2.0)) * sign);
+	line_len = ((FOV_HEIGHT_SCALING_FACTOR * WIN_HEIGHT / FOV_DEGREE)
+			* WIN_HEIGHT) / get_ray_len(env_p, degree_angle * sign);
 	if (get_wall_collision_side(env_p) == 'N')
 		draw_fov_line_sprite(env_p->sprite_n_img, env_p, x, line_len);
 	else if (get_wall_collision_side(env_p) == 'S')
