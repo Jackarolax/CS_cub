@@ -6,7 +6,7 @@
 /*   By: ssin <ssin@student.42berlin.de>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/03 19:01:30 by ssin              #+#    #+#             */
-/*   Updated: 2026/09/03 19:14:07 by ssin             ###   ########.fr       */
+/*   Updated: 2026/09/22 10:10:29 by ssin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,10 @@ char	*fill_coordinates(t_id *id_p, char **tokens)
 	return (NULL);
 }
 
-void	check_coordinate(t_mlx_data *env_p, char **tokens)
+char	*check_coordinate(t_mlx_data *env_p, char **tokens)
 {
-	size_t	i;
+	size_t		i;
+	char		*msg;
 	const char	*coordinates[] = {
 		ID_NO,
 		ID_SO,
@@ -56,42 +57,39 @@ void	check_coordinate(t_mlx_data *env_p, char **tokens)
 		i++;
 	if (i < COORD_LENGTH)
 	{
-		check_dup(env_p, tokens[0]);
-		check_file_permissions(env_p, tokens);
+		if ((msg = duplicate_id(env_p, tokens[0], 1)))
+			return (msg);
+		return (check_file_permissions(env_p, tokens));
 	}
 	else if (tokens && ft_strlen(tokens[0]) == 1
-			&& (ft_strncmp(tokens[0], ID_F, 1) == VALID
-			|| ft_strncmp(tokens[0], ID_C, 1) == VALID))
+			&& (tokens[0][0] == 'F' || tokens[0][0] == ID_C))
 	{
 		check_fc_dup(env_p, tokens[0]);
 		valid_ceiling_floor(env_p, tokens);
 	}
-	else if (!valid_char(tokens[0]) && !valid_map_content(*tokens))
-		call_error(env_p, "Not a valid identifier");
+	else if (!valid_space_nline(tokens[0][0]) && !valid_map_content(*tokens))
+		return ("Error\nNot a valid identifier");
+	return (NULL);
 }
 
-void	check_dup(t_mlx_data *env_p, char *token)
+char	*duplicate_player(t_mlx_data *env_p)
 {
-	if (token && env_p->identifiers->NO && ft_strncmp(ID_NO, token, 2) == VALID)
-	{
-		perror("Duplicated NO");
-		destroy_everything_and_exit(env_p, 1);
-	}
-	if (token && env_p->identifiers->SO && ft_strncmp(ID_SO, token, 2) == VALID)
-	{
-		perror("Duplicated SO");
-		destroy_everything_and_exit(env_p, 1);
-	}
-	if (token && env_p->identifiers->WE && ft_strncmp(ID_WE, token, 2) == VALID)
-	{
-		perror("Duplicated WE");
-		destroy_everything_and_exit(env_p, 1);
-	}
-	if (token && env_p->identifiers->EA && ft_strncmp(ID_EA, token, 2) == VALID)
-	{
-		perror("Duplicated EA");
-		destroy_everything_and_exit(env_p, 1);
-	}
+	if (env_p->map_info->player_x_start != -1 && env_p->map_info->player_y_start != -1)
+		return ("Error\nDuplicated Player");
+	return (NULL);
+}
+
+char	*duplicate_id(t_mlx_data *env_p, char *token, int size)
+{
+	if (token && env_p->identifiers->NO && ft_strncmp(ID_NO, token, size) == VALID)
+		return ("Duplicated NO");
+	if (token && env_p->identifiers->SO && ft_strncmp(ID_SO, token, size) == VALID)
+		return ("Duplicated SO");
+	if (token && env_p->identifiers->WE && ft_strncmp(ID_WE, token, size) == VALID)
+		return ("Duplicated WE");
+	if (token && env_p->identifiers->EA && ft_strncmp(ID_EA, token, size) == VALID)
+		return ("Duplicated EA");
+	return (NULL);
 }
 
 char	**valid_id_content(t_mlx_data *env_p, char **tokens)
@@ -109,8 +107,8 @@ char	**valid_id_content(t_mlx_data *env_p, char **tokens)
 			j++;
 		if (!j || (colors[i][j] && colors[i][j] != '\n'))
 		{
-			perror("Invalid C / F content");
-			destroy_everything_and_exit(env_p, 1);
+			perror("Error\nInvalid C / F content");
+			destroy_everything_and_exit(env_p);
 		}
 		i++;
 	}

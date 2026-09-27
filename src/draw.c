@@ -154,12 +154,12 @@ void	draw_obstacles(t_mlx_data *env_p)
 	int		grid_y;
 
 	grid_y = 0;
-	while (env_p->map[grid_y])
+	while (env_p->map_info->map[grid_y])
 	{
 		grid_x = 0;
-		while (env_p->map[grid_y][grid_x])
+		while (env_p->map_info->map[grid_y][grid_x])
 		{
-			if (env_p->map[grid_y][grid_x] == '1')
+			if (env_p->map_info->map[grid_y][grid_x] == '1')
 			{
 				fill_square(env_p->background_img,
 					give_coords(grid_x * env_p->block_size,
@@ -189,17 +189,17 @@ void	copy_background_to_buffer(t_mlx_data *env_p)
 //	int		grid_y;
 //	char	**map;
 //
-//	map = env_p->map;
+//	map = env_p->map_info->map;
 //	if (!map)
 //	{
 //		ft_printf("Error: draw_obstacles called with NULL map\n");
 //		return ;
 //	}
 //	grid_y = 0;
-//	while (grid_y < env_p->map_height)
+//	while (grid_y < env_p->map_info->map_height)
 //	{
 //		grid_x = 0;
-//		while (grid_x < env_p->map_width)
+//		while (grid_x < env_p->map_info->map_width)
 //		{
 //			if (map[grid_y][grid_x] == '1')
 //				put_img_inside_img(env_p->wall_img,

@@ -6,7 +6,7 @@
 /*   By: ssin <ssin@student.42berlin.de>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/03 19:00:24 by ssin              #+#    #+#             */
-/*   Updated: 2026/09/03 19:14:27 by ssin             ###   ########.fr       */
+/*   Updated: 2026/09/22 10:09:16 by ssin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ char	**filter_color(t_mlx_data *env_p, char **tokens)
 	if (!colors || !colors[0] || !colors[1] || !colors[2] || colors[3])
 	{
 		free_str_array(colors);
-		perror("Invalid C / F content");
-		destroy_everything_and_exit(env_p, 1);
+		perror("Error\nInvalid C / F content");
+		destroy_everything_and_exit(env_p);
 	}
 	return (colors);
 }
@@ -48,7 +48,7 @@ void	fill_color(t_mlx_data *env_p, char **colors, char **tokens)
 		env_p->identifiers->F_G = ft_atoi(colors[1]);
 		env_p->identifiers->F_B = ft_atoi(colors[2]);
 	}
-	else if (colors && ft_strncmp(tokens[0], ID_C, 1) == VALID)
+	else if (colors && tokens[0][0] == ID_C)
 	{
 		env_p->identifiers->C_R = ft_atoi(colors[0]);
 		env_p->identifiers->C_G = ft_atoi(colors[1]);
@@ -56,8 +56,8 @@ void	fill_color(t_mlx_data *env_p, char **colors, char **tokens)
 	}
 	else
 	{
-		perror("Invalid C / F");
-		destroy_everything_and_exit(env_p, 1);
+		perror("Error\nInvalid C / F");
+		destroy_everything_and_exit(env_p);
 	}
 }
 
@@ -66,14 +66,14 @@ void	check_fc_dup(t_mlx_data *env_p, char *token)
 	if (token && env_p->identifiers->F_R != -1
 		&& ft_strncmp(ID_F, token, 2) == VALID)
 	{
-		perror("Duplicated F");
-		destroy_everything_and_exit(env_p, 1);
+		perror("Error\nDuplicated F");
+		destroy_everything_and_exit(env_p);
 	}
 	if (token && env_p->identifiers->C_R != -1
-		&& ft_strncmp(ID_C, token, 2) == VALID)
+		&& token[0] == ID_C)
 	{
-		perror("Duplicated C");
-		destroy_everything_and_exit(env_p, 1);
+		perror("Error\nDuplicated C");
+		destroy_everything_and_exit(env_p);
 	}
 }
 
@@ -88,8 +88,8 @@ void	valid_ceiling_floor(t_mlx_data *env_p, char **tokens)
 	{
 		if (ft_atoi(colors[i]) < 0 || ft_atoi(colors[i]) > 255)
 		{
-			perror("Invalid C / F content");
-			destroy_everything_and_exit(env_p, 1);
+			perror("Error\nInvalid C / F content");
+			destroy_everything_and_exit(env_p);
 		}
 		i++;
 	}

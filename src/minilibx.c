@@ -33,7 +33,7 @@ void	load_sprite(t_mlx_data *env_p, t_img *image_p, char *path)
 	if (!image_p->img)
 	{
 		printf("Error: Could not load sprite %s\n", path);
-		destroy_everything_and_exit(env_p, 1);
+		destroy_everything_and_exit(env_p);
 		exit(1);
 		return ;
 	}
@@ -81,13 +81,13 @@ void	set_player_position_from_i_j(t_mlx_data *env_p, int i, int j)
 					(env_p->block_size / 2) - MINI_PLAYER_CENTER_POINT;
 	env_p->player_y = i * env_p->block_size +
 					(env_p->block_size / 2) - MINI_PLAYER_CENTER_POINT;
-	if (env_p->map[i][j] == 'E')
+	if (env_p->map_info->map[i][j] == 'E')
 		env_p->player_direction = 0 * M_PI / 2;
-	else if (env_p->map[i][j] == 'S')
+	else if (env_p->map_info->map[i][j] == 'S')
 		env_p->player_direction = 1 * M_PI / 2;
-	else if (env_p->map[i][j] == 'W')
+	else if (env_p->map_info->map[i][j] == 'W')
 		env_p->player_direction = 2 * M_PI / 2;
-	else if (env_p->map[i][j] == 'N')
+	else if (env_p->map_info->map[i][j] == 'N')
 		env_p->player_direction = 3 * M_PI / 2;
 
 }
@@ -100,25 +100,25 @@ void	set_player_position(t_mlx_data *env_p)
 	int	i;
 	int	j;
 
-	if (!env_p->map)
-		destroy_everything_and_exit(env_p, 1);
+	if (!env_p->map_info->map)
+		destroy_everything_and_exit(env_p);
 	i = 0;
-	while(env_p->map[i])
+	while(env_p->map_info->map[i])
 	{
 		j = 0;
-		while(env_p->map[i][j])
+		while(env_p->map_info->map[i][j])
 		{
-			if (env_p->map[i][j] == 'N'
-				|| env_p->map[i][j] == 'E'
-				|| env_p->map[i][j] == 'S'
-				|| env_p->map[i][j] == 'W')
+			if (env_p->map_info->map[i][j] == 'N'
+				|| env_p->map_info->map[i][j] == 'E'
+				|| env_p->map_info->map[i][j] == 'S'
+				|| env_p->map_info->map[i][j] == 'W')
 				return (set_player_position_from_i_j(env_p, i, j));
 
 			j++;
 		}
 		i++;
 	}
-	destroy_everything_and_exit(env_p, 1);
+	destroy_everything_and_exit(env_p);
 }
 
 
@@ -127,42 +127,42 @@ void	set_minilibx(t_mlx_data *env_p)
 
 	env_p->mlx = mlx_init();
 	env_p->block_size = BLOCK_SIZE;
-	//env_p->map = malloc(15 * sizeof(char*));
-	//env_p->map[0] = ft_strdup("111111111111111111111111111111111");
-	//env_p->map[1] = ft_strdup("111111111000000000110000000000001");
-	//env_p->map[2] = ft_strdup("111111111011000001110000000000001");
-	//env_p->map[3] = ft_strdup("1111111110E1000000000000000000001");
-	//env_p->map[4] = ft_strdup("111111111011000001110000000000001");
-	//env_p->map[5] = ft_strdup("100000000011000001110111111111111");
-	//env_p->map[6] = ft_strdup("111101111111110111000000100011111");
-	//env_p->map[7] = ft_strdup("111101111111110111010100100011111");
-	//env_p->map[8] = ft_strdup("110000001101010111000000100011111");
-	//env_p->map[9] = ft_strdup("100000000000000011000000100011111");
-	//env_p->map[10] = ft_strdup("100000000000000011010100100011111");
-	//env_p->map[11] = ft_strdup("11000001110101011111011110N011111");
-	//env_p->map[12] = ft_strdup("11110111 1110101 1011110100011111");
-	//env_p->map[13] = ft_strdup("11111111 1111111 1111111111111111");
-	//env_p->map[14] = NULL;
-	//env_p->map_height = 14;
-	//env_p->map_width = 33;
-	env_p->map = malloc(9 * sizeof(char*));
-	env_p->map[0] = ft_strdup("1111111111");
-	env_p->map[1] = ft_strdup("1000100001");
-	env_p->map[2] = ft_strdup("1000010101");
-	env_p->map[3] = ft_strdup("1000010101");
-	env_p->map[4] = ft_strdup("1011110101");
-	env_p->map[5] = ft_strdup("1000N11101");
-	env_p->map[6] = ft_strdup("1010000001");
-	env_p->map[7] = ft_strdup("1111111111");
-	env_p->map[8] = NULL;
-	env_p->map_height = 8;
-	env_p->map_width = 10;
+	//env_p->map_info->map = malloc(15 * sizeof(char*));
+	//env_p->map_info->map[0] = ft_strdup("111111111111111111111111111111111");
+	//env_p->map_info->map[1] = ft_strdup("111111111000000000110000000000001");
+	//env_p->map_info->map[2] = ft_strdup("111111111011000001110000000000001");
+	//env_p->map_info->map[3] = ft_strdup("1111111110E1000000000000000000001");
+	//env_p->map_info->map[4] = ft_strdup("111111111011000001110000000000001");
+	//env_p->map_info->map[5] = ft_strdup("100000000011000001110111111111111");
+	//env_p->map_info->map[6] = ft_strdup("111101111111110111000000100011111");
+	//env_p->map_info->map[7] = ft_strdup("111101111111110111010100100011111");
+	//env_p->map_info->map[8] = ft_strdup("110000001101010111000000100011111");
+	//env_p->map_info->map[9] = ft_strdup("100000000000000011000000100011111");
+	//env_p->map_info->map[10] = ft_strdup("100000000000000011010100100011111");
+	//env_p->map_info->map[11] = ft_strdup("11000001110101011111011110N011111");
+	//env_p->map_info->map[12] = ft_strdup("11110111 1110101 1011110100011111");
+	//env_p->map_info->map[13] = ft_strdup("11111111 1111111 1111111111111111");
+	//env_p->map_info->map[14] = NULL;
+	//env_p->map_info->map_height = 14;
+	//env_p->map_info->map_width = 33;
+	/*env_p->map_info->map = malloc(9 * sizeof(char*));
+	env_p->map_info->map[0] = ft_strdup("1111111111");
+	env_p->map_info->map[1] = ft_strdup("1000100001");
+	env_p->map_info->map[2] = ft_strdup("1000010101");
+	env_p->map_info->map[3] = ft_strdup("1000010101");
+	env_p->map_info->map[4] = ft_strdup("1011110101");
+	env_p->map_info->map[5] = ft_strdup("1000N11101");
+	env_p->map_info->map[6] = ft_strdup("1010000001");
+	env_p->map_info->map[7] = ft_strdup("1111111111");
+	env_p->map_info->map[8] = NULL;
+	env_p->map_info->map_height = 8;
+	env_p->map_info->map_width = 10;*/
 	env_p->ceil_color = RED + BLUE;
 	env_p->floor_color = RED + GREEN;
 
 	set_player_position(env_p);
-	env_p->width = env_p->map_width * env_p->block_size;
-	env_p->height = env_p->map_height * env_p->block_size;
+	env_p->width = env_p->map_info->map_width * env_p->block_size;
+	env_p->height = env_p->map_info->map_height * env_p->block_size;
 	env_p->win = mlx_new_window(env_p->mlx, env_p->win_width,
 		env_p->win_height, "CUB 3D");
 	env_p->player_img.width = MINI_PLAYER_EDGE_POINT;

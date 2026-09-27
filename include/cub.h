@@ -23,7 +23,7 @@
 # define ID_WE "WE"
 # define ID_EA "EA"
 # define ID_F "F"
-# define ID_C "C"
+# define ID_C 'C'
 # define COORD_LENGTH 4
 
 # include "../minilibx/mlx.h"
@@ -52,7 +52,7 @@
 #define FOV_DEGREE 130
 #define FOV_HEIGHT_SCALING_FACTOR 9
 
-# define MOVING_SPEED 2
+# define MOVING_SPEED 4
 # define TURNING_SPEED 2
 
 # define MINI_PLAYER_CENTER_POINT 25
@@ -82,6 +82,17 @@ typedef struct	s_coords {
 	int	y;
 }				t_coords;
 
+typedef struct	s_map_info {
+	int		map_fd;
+	char **map;
+	int		map_started;
+	int	map_height;
+	int	map_width;
+	int		player_x_start;
+	int		player_y_start;
+	int  last_row;
+} t_map_info;
+
 typedef struct	s_vector {
 	double	x;
 	double	y;
@@ -95,6 +106,8 @@ typedef struct	s_3points {
 
 
 typedef struct  s_id {
+	char	*line_start;
+	char	**tokens;
   char  *NO;
   char  *SO;
   char  *WE;
@@ -138,6 +151,7 @@ typedef struct s_mlx_data {
 	int			map_width;
 	int			block_size;
 	t_id		*identifiers;
+  t_map_info        *map_info;
 }				t_mlx_data;
 
 /* minilibx */
@@ -154,17 +168,21 @@ void	check_fc_dup(t_mlx_data *env_p, char *token);
 void	valid_ceiling_floor(t_mlx_data *env_p, char **tokens);
 
 char	*fill_coordinates(t_id *id_p, char **tokens);
-void	check_coordinate(t_mlx_data *env_p, char **tokens);
-void	check_dup(t_mlx_data *env_p, char *token);
+char	*check_coordinate(t_mlx_data *env_p, char **tokens);
+char	*duplicate_id(t_mlx_data *env_p, char *token, int size);
+char	*duplicate_player(t_mlx_data *env_p);
 char	**valid_id_content(t_mlx_data *env_p, char **tokens);
 
-void	check_file_permissions(t_mlx_data *env_p, char **tokens);
+char	*check_file_permissions(t_mlx_data *env_p, char **tokens);
 int	complete_ids(t_id *id_p);
-int valid_char(char *token);
+int valid_space_nline(char character);
 void	call_error(t_mlx_data *env_p, char *message);
+//int	valid_player_id(char string);
+int	is_player_id(char player);
 void	free_str_array(char **str);
 
 int valid_map_content(char *tokens);
+int	valid_first_last_rows(char *row);
 
 /* movement */
 void	move_player(t_mlx_data *env_p);
@@ -176,7 +194,7 @@ int		handle_key_release(int keycode, void *param);
 int		update_game(void *param);
 
 /* main */
-void	destroy_everything_and_exit(t_mlx_data *env_p, int exit_code);
+void	destroy_everything_and_exit(t_mlx_data *env_p);
 
 /* draw */
 int		draw_to_window(t_mlx_data	*env_p);

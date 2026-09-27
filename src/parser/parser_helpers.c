@@ -6,35 +6,27 @@
 /*   By: ssin <ssin@student.42berlin.de>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/03 19:05:49 by ssin              #+#    #+#             */
-/*   Updated: 2026/09/03 19:13:29 by ssin             ###   ########.fr       */
+/*   Updated: 2026/09/22 09:56:29 by ssin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/cub.h"
 
-void	check_file_permissions(t_mlx_data *env_p, char **tokens)
+char	*check_file_permissions(t_mlx_data *env_p, char **tokens)
 {
 	char	*path;
 
 	if (!tokens[0] || !tokens[1] || tokens[2])
-	{
-		perror("Check identifiers");
-		destroy_everything_and_exit(env_p, 1);
-	}
+		return ("Check identifiers");
 	else
 	{
 		path = fill_coordinates(env_p->identifiers, tokens);
 		if (!path)
-		{
-			perror("Not a valid identifier");
-			destroy_everything_and_exit(env_p, 1);
-		}
+			return ("Not a valid identifier");
 		if (path && access(path, F_OK | R_OK) == -1)
-		{
-			perror("Could not open sprite file");
-			destroy_everything_and_exit(env_p, 1);
-		}
+			return ("Could not open sprite file");
 	}
+	return (NULL);
 }
 
 int	complete_ids(t_id *id_p)
@@ -48,19 +40,27 @@ int	complete_ids(t_id *id_p)
 	return (0);
 }
 
-int valid_char(char *token)
+int valid_space_nline(char character)
 {
-	if (ft_strncmp(token, " ", 1) == VALID
+	if (character == ' '
+		|| character == '\n'
+		|| character == '\t')
+	/*if (ft_strncmp(token, " ", 1) == VALID
 		|| ft_strncmp(token, "\t", 1) == VALID
-		|| ft_strncmp(token, "\n", 1) == VALID)
+		|| ft_strncmp(token, "\n", 1) == VALID)*/
 		return (1);
 	return (0);
 }
 
 void	call_error(t_mlx_data *env_p, char *message)
 {
+	if (env_p->map_info->map_fd >= 0)
+	{
+		close(env_p->map_info->map_fd);
+		env_p->map_info->map_fd = -1;
+	}
 	perror(message);
-	destroy_everything_and_exit(env_p, 1);
+	destroy_everything_and_exit(env_p);
 }
 
 void	free_str_array(char **str)
