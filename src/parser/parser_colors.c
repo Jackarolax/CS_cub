@@ -34,15 +34,14 @@ char	**filter_color(t_mlx_data *env_p, char **tokens)
 	if (!colors || !colors[0] || !colors[1] || !colors[2] || colors[3])
 	{
 		free_str_array(colors);
-		perror("Error\nInvalid C / F content");
-		destroy_everything_and_exit(env_p);
+		call_error(env_p, "Error\nInvalid C / F content");
 	}
 	return (colors);
 }
 
 void	fill_color(t_mlx_data *env_p, char **colors, char **tokens)
 {
-	if (colors && ft_strncmp(tokens[0], ID_F, 1) == VALID)
+	if (colors && tokens[0][0] == ID_F)
 	{
 		env_p->identifiers->F_R = ft_atoi(colors[0]);
 		env_p->identifiers->F_G = ft_atoi(colors[1]);
@@ -56,25 +55,19 @@ void	fill_color(t_mlx_data *env_p, char **colors, char **tokens)
 	}
 	else
 	{
-		perror("Error\nInvalid C / F");
-		destroy_everything_and_exit(env_p);
+		free_str_array(colors);
+		call_error(env_p, "Error\nInvalid C / F");
 	}
 }
 
 void	check_fc_dup(t_mlx_data *env_p, char *token)
 {
 	if (token && env_p->identifiers->F_R != -1
-		&& ft_strncmp(ID_F, token, 2) == VALID)
-	{
-		perror("Error\nDuplicated F");
-		destroy_everything_and_exit(env_p);
-	}
+		&& token[0] == ID_F)
+		call_error(env_p, "Error\nDuplicated F");
 	if (token && env_p->identifiers->C_R != -1
 		&& token[0] == ID_C)
-	{
-		perror("Error\nDuplicated C");
-		destroy_everything_and_exit(env_p);
-	}
+		call_error(env_p, "Error\nDuplicated C");
 }
 
 void	valid_ceiling_floor(t_mlx_data *env_p, char **tokens)
@@ -88,8 +81,8 @@ void	valid_ceiling_floor(t_mlx_data *env_p, char **tokens)
 	{
 		if (ft_atoi(colors[i]) < 0 || ft_atoi(colors[i]) > 255)
 		{
-			perror("Error\nInvalid C / F content");
-			destroy_everything_and_exit(env_p);
+			free_str_array(colors);
+			call_error(env_p, "Error\nInvalid C / F content");
 		}
 		i++;
 	}

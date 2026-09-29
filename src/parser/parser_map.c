@@ -19,9 +19,7 @@ int	valid_first_last_rows(char *row)
 	i = 0;
 	while (row && row[i])
 	{
-		if (ft_strncmp(&row[i], "1", 1) == VALID
-			|| ft_strncmp(&row[i], "	", 1) == VALID
-			|| ft_strncmp(&row[i], " ", 1) == VALID)
+		if (row[i] == '1' || row[i] == '	' || row[i] == ' ')
 			i++;
 		else
 			return (1);
@@ -29,12 +27,9 @@ int	valid_first_last_rows(char *row)
 	return (0);
 }
 
-int valid_map_content(char *letter)
+int valid_map_content(char letter)
 {
-	if (ft_strncmp(letter, "0", 1) == VALID
-		|| ft_strncmp(letter, "1", 1) == VALID
-		//|| ft_strncmp(letter, " ", 1) == VALID
-		|| is_player_id(*letter))
+	if (letter == '0' || letter == '1' || is_player_id(letter))
 		return (1);
 	return (0);
 }

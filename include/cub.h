@@ -22,7 +22,7 @@
 # define ID_SO "SO"
 # define ID_WE "WE"
 # define ID_EA "EA"
-# define ID_F "F"
+# define ID_F 'F'
 # define ID_C 'C'
 # define COORD_LENGTH 4
 
@@ -181,7 +181,7 @@ void	call_error(t_mlx_data *env_p, char *message);
 int	is_player_id(char player);
 void	free_str_array(char **str);
 
-int valid_map_content(char *tokens);
+int valid_map_content(char tokens);
 int	valid_first_last_rows(char *row);
 
 /* movement */

@@ -57,7 +57,7 @@ char	*check_coordinate(t_mlx_data *env_p, char **tokens)
 		i++;
 	if (i < COORD_LENGTH)
 	{
-		if ((msg = duplicate_id(env_p, tokens[0], 1)))
+		if ((msg = duplicate_id(env_p, tokens[0], 2)))
 			return (msg);
 		return (check_file_permissions(env_p, tokens));
 	}
@@ -67,7 +67,7 @@ char	*check_coordinate(t_mlx_data *env_p, char **tokens)
 		check_fc_dup(env_p, tokens[0]);
 		valid_ceiling_floor(env_p, tokens);
 	}
-	else if (!valid_space_nline(tokens[0][0]) && !valid_map_content(*tokens))
+	else if (!valid_space_nline(tokens[0][0]) && !valid_map_content(*tokens[0]))
 		return ("Error\nNot a valid identifier");
 	return (NULL);
 }
@@ -107,8 +107,8 @@ char	**valid_id_content(t_mlx_data *env_p, char **tokens)
 			j++;
 		if (!j || (colors[i][j] && colors[i][j] != '\n'))
 		{
-			perror("Error\nInvalid C / F content");
-			destroy_everything_and_exit(env_p);
+			free_str_array(colors);
+			call_error(env_p, "Error\nInvalid C / F content");
 		}
 		i++;
 	}

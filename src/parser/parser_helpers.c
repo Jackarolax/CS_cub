@@ -45,9 +45,6 @@ int valid_space_nline(char character)
 	if (character == ' '
 		|| character == '\n'
 		|| character == '\t')
-	/*if (ft_strncmp(token, " ", 1) == VALID
-		|| ft_strncmp(token, "\t", 1) == VALID
-		|| ft_strncmp(token, "\n", 1) == VALID)*/
 		return (1);
 	return (0);
 }

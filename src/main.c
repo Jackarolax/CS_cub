@@ -112,15 +112,30 @@ void	destroy_everything_and_exit(t_mlx_data *env_p)
 		env_p->identifiers->tokens = NULL;
 	}
 	if (env_p->identifiers->NO)
+	{
 		free(env_p->identifiers->NO);
+		env_p->identifiers->NO = NULL;
+	}
 	if (env_p->identifiers->SO)
+	{
 		free(env_p->identifiers->SO);
+		env_p->identifiers->SO = NULL;
+	}
 	if (env_p->identifiers->WE)
+	{
 		free(env_p->identifiers->WE);
+		env_p->identifiers->WE = NULL;
+	}
 	if (env_p->identifiers->EA)
+	{
 		free(env_p->identifiers->EA);
+		env_p->identifiers->EA = NULL;
+	}
 	if (env_p->identifiers)
+	{
 		free(env_p->identifiers);
+		env_p->identifiers = NULL;
+	}
 	if (env_p->map_info)
 	{
 		free_str_array(env_p->map_info->map);
