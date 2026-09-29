@@ -57,7 +57,7 @@ void	call_error(t_mlx_data *env_p, char *message)
 		env_p->map_info->map_fd = -1;
 	}
 	perror(message);
-	destroy_everything_and_exit(env_p);
+	destroy_everything_and_exit(env_p, EXIT_FAILURE);
 }
 
 void	free_str_array(char **str)

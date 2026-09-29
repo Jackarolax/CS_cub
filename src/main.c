@@ -87,7 +87,7 @@ static void	init_env(t_mlx_data *env_p)
 	env_p->block_size = 0;
 }
 
-void	destroy_everything_and_exit(t_mlx_data *env_p)
+void	destroy_everything_and_exit(t_mlx_data *env_p, int exit_code)
 {
 	if (env_p->player_img.img)
 		mlx_destroy_image(env_p->mlx, env_p->player_img.img);
@@ -145,7 +145,7 @@ void	destroy_everything_and_exit(t_mlx_data *env_p)
 	}
 	if (env_p->mlx)
 		free(env_p->mlx);
-	exit(EXIT_FAILURE);
+	exit(exit_code);
 }
 
 int main(int ac, char **av)
