@@ -82,13 +82,13 @@ char	*duplicate_player(t_mlx_data *env_p)
 char	*duplicate_id(t_mlx_data *env_p, char *token, int size)
 {
 	if (token && env_p->identifiers->NO && ft_strncmp(ID_NO, token, size) == VALID)
-		return ("Duplicated NO");
+		return ("Error\nDuplicated NO");
 	if (token && env_p->identifiers->SO && ft_strncmp(ID_SO, token, size) == VALID)
-		return ("Duplicated SO");
+		return ("Error\nDuplicated SO");
 	if (token && env_p->identifiers->WE && ft_strncmp(ID_WE, token, size) == VALID)
-		return ("Duplicated WE");
+		return ("Error\nDuplicated WE");
 	if (token && env_p->identifiers->EA && ft_strncmp(ID_EA, token, size) == VALID)
-		return ("Duplicated EA");
+		return ("Error\nDuplicated EA");
 	return (NULL);
 }
 

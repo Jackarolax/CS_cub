@@ -17,14 +17,14 @@ char	*check_file_permissions(t_mlx_data *env_p, char **tokens)
 	char	*path;
 
 	if (!tokens[0] || !tokens[1] || tokens[2])
-		return ("Check identifiers");
+		return ("Error\nCheck identifiers");
 	else
 	{
 		path = fill_coordinates(env_p->identifiers, tokens);
 		if (!path)
-			return ("Not a valid identifier");
+			return ("Error\nNot a valid identifier");
 		if (path && access(path, F_OK | R_OK) == -1)
-			return ("Could not open sprite file");
+			return ("Error\nCould not open sprite file");
 	}
 	return (NULL);
 }
