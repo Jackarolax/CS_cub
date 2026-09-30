@@ -39,7 +39,7 @@ char	**filter_color(t_mlx_data *env_p, char **tokens)
 	return (colors);
 }
 
-void	fill_color(t_mlx_data *env_p, char **colors, char **tokens)
+static void	fill_color(t_mlx_data *env_p, char **colors, char **tokens)
 {
 	if (colors && tokens[0][0] == ID_F)
 	{

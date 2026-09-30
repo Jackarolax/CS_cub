@@ -24,19 +24,6 @@ static void	init_map_info(t_map_info *info)
 	info->last_row = 0;
 }
 
-void	free_map(t_mlx_data *env_p)
-{
-	int	i;
-
-	i = 0;
-	while (env_p->map_info->map[i])
-	{
-		free(env_p->map_info->map[i]);
-		i++;
-	}
-	free(env_p->map_info->map);
-}
-
 static void	init_identifiers(t_id *identifiers_p)
 {
 	identifiers_p->line_start = NULL;

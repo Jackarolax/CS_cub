@@ -12,75 +12,7 @@
 
 #include "../../include/cub.h"
 
-int	is_player_id(char player)
-{
-	if (player == 'N'
-		|| player == 'S'
-		|| player == 'W'
-		|| player == 'E')
-		return (1);
-	return (0);
-}
-
-static void	clean_memo(t_mlx_data *env_p, char **tokens)
-{
-	free_str_array(tokens);
-	tokens = NULL;
-	env_p->identifiers->tokens = NULL;
-	free(env_p->identifiers->line_start);
-	env_p->identifiers->line_start = NULL;
-}
-
-static void add_player_pos(t_mlx_data *env_p, int i, int j)
-{
-	char	*msg;
-
-	msg = duplicate_player(env_p);
-	if (msg)
-	{
-		env_p->map_info->map[i + 1] = NULL;
-		call_error(env_p, msg);
-	}
-	env_p->map_info->player_x_start = i;
-	env_p->map_info->player_y_start = j;
-}
-
-static int	add_line_to_map(t_mlx_data *env_p, char *line, int i)
-{
-	int		size;
-	int		j;
-	char **tmp;
-
-	j = 0;
-	size = 0;
-	if (ft_strlen(line) > 0)
-		size = ft_strlen(line) - 1;
-	if (size > env_p->map_info->map_width)
-		env_p->map_info->map_width = size;
-	tmp = realloc(env_p->map_info->map,
-			sizeof(char *) * (i + 2));
-	if (!tmp)
-		call_error(env_p, "Error\nMemory allocation failed");
-	env_p->map_info->map = tmp;
-	if (line[0] == '\n' || line[0] == '\0')
-	{
-		env_p->map_info->map[i] = NULL;
-		call_error(env_p, "Error\nInvalid map");
-	}
-	env_p->map_info->map[i] = ft_substr(line, 0, size);
-	env_p->map_info->map[i + 1] = NULL;
-	while (line[j])
-	{
-		if (!valid_space_nline(line[j]) && !valid_map_content(line[j]))
-			call_error(env_p, "Error\nCheck map");
-		if (is_player_id(line[j]))
-			add_player_pos(env_p, i, j);
-		j++;
-	}
-	return (0);
-}
-
-static void	validate_coord_map(t_mlx_data *env_p, char **tokens,
+static void	validate_tokens(t_mlx_data *env_p, char **tokens,
 			char *line, int *i)
 {
 	char	*exit_msg;
@@ -88,7 +20,7 @@ static void	validate_coord_map(t_mlx_data *env_p, char **tokens,
 	env_p->identifiers->tokens = tokens;
 	if (!complete_ids(env_p->identifiers))
 	{
-		exit_msg = check_coordinate(env_p, tokens);
+		exit_msg = check_identifiers(env_p, tokens);
 		if (exit_msg)
 			call_error(env_p, exit_msg);
 	}
@@ -98,8 +30,7 @@ static void	validate_coord_map(t_mlx_data *env_p, char **tokens,
 	else if (complete_ids(env_p->identifiers)
 		&& !env_p->map_info->map_started && tokens[0][0] == '\n')
 		return ;
-	else if (complete_ids(env_p->identifiers)
-		&& valid_map_content(*tokens[0]))
+	else if (complete_ids(env_p->identifiers) && valid_map_content(*tokens[0]))
 	{
 		if (env_p->map_info->map_started == 0)
 			env_p->map_info->map_started = 1;
@@ -128,7 +59,8 @@ static int	valid_file(int map_fd, t_mlx_data *env_p)
 		env_p->identifiers->line_start = line;
 		line = NULL;
 		if (tokens[0])
-			validate_coord_map(env_p, tokens, env_p->identifiers->line_start, &i);
+			validate_tokens(env_p, tokens,
+				env_p->identifiers->line_start, &i);
 		clean_memo(env_p, tokens);
 		line = get_next_line(map_fd);
 	}
@@ -137,115 +69,6 @@ static int	valid_file(int map_fd, t_mlx_data *env_p)
 	env_p->map_info->map[i] = NULL;
 	env_p->map_info->map_height = i;
 	return (0);
-}
-
-static void	cell_is_close_to_edge(t_mlx_data *env_p, int i, int j)
-{
-	if (env_p->map_info->map[i][j + 1] == ' '
-		|| (j > 0 && env_p->map_info->map[i][j - 1] == ' ')
-		|| (j == 0 && env_p->map_info->map[i][j] == '0')
-		|| env_p->map_info->map[i + 1][j] == ' '
-		|| (i > 0 && env_p->map_info->map[i - 1][j] == ' ')
-		|| env_p->map_info->map[i][j + 1] == '\0'
-		|| (j > 0 && env_p->map_info->map[i][j - 1] == '\0')
-		|| (j == 0 && env_p->map_info->map[i][j] == '0')
-		|| env_p->map_info->map[i + 1][j] == '\0'
-		|| (i > 0 && env_p->map_info->map[i - 1][j] == '\0'))
-		call_error(env_p, "Error\nCheck map edge");
-}
-
-static int	player_exists(t_mlx_data *env_p)
-{
-	if (env_p->player_x && env_p->player_y)
-		return (1);
-	return (0);
-}
-
-static int	check_walkable_cels(t_mlx_data *env_p, int i)
-{
-	int	j;
-
-	j = 0;
-	while (env_p->map_info->map[i][j])
-	{
-		if (i > env_p->map_info->map_height || j > env_p->map_info->map_width)
-			return (1);
-		if (env_p->map_info->map[i][j] == '0'
-			|| is_player_id(env_p->map_info->map[i][j]))
-		{
-			if (is_player_id(env_p->map_info->map[i][j]))
-			{
-				if (player_exists(env_p))
-					call_error(env_p, "Error\nMore than 1 player position");
-				env_p->player_x = i;
-				env_p->player_y = j;
-			}
-			cell_is_close_to_edge(env_p, i, j);
-		}
-		j++;
-	}
-	return (0);
-}
-
-static void	standardize_map(t_mlx_data *env_p)
-{
-	int	i;
-	int	j;
-	int	line_len;
-
-	i = 0;
-	while (env_p->map_info->map[i])
-	{
-		j = 0;
-		// replace spaces with 1's at the beginning of the line
-		while (env_p->map_info->map[i][j]
-			&& env_p->map_info->map[i][j] == ' ')
-		{
-			env_p->map_info->map[i][j] = '1';
-			j++;
-		}
-		line_len = ft_strlen(env_p->map_info->map[i]);
-		if (line_len < env_p->map_info->map_width)
-		{
-			env_p->map_info->map[i] = realloc(
-					env_p->map_info->map[i],
-					sizeof(char) * (env_p->map_info->map_width + 1));
-			// replace the spaces with 1's at the end of the line
-			while (line_len < env_p->map_info->map_width)
-			{
-				env_p->map_info->map[i][line_len] = '1';
-				line_len++;
-			}
-			env_p->map_info->map[i][line_len] = '\0';
-		}
-		i++;
-	}
-	// just to print and check, remove later
-	i = 0;
-	while (env_p->map_info->map[i] && i <= env_p->map_info->last_row)
-	{
-		printf("%s\n", env_p->map_info->map[i]);
-		i++;
-	}
-}
-
-static void	valid_map(t_mlx_data *env_p)
-{
-	int	i;
-
-	i = 0;
-	if (valid_first_last_rows(env_p->map_info->map[0])
-		|| valid_first_last_rows(
-			env_p->map_info->map[env_p->map_info->last_row]))
-		call_error(env_p, "Error\nCheck map's first/last rows");
-	while (env_p->map_info->map[i] && i < env_p->map_info->last_row)
-	{
-		check_walkable_cels(env_p, i);
-		i++;
-	}
-	if (!player_exists(env_p))
-		call_error(env_p, "Error\nSet player position");
-	standardize_map(env_p);
 }
 
 static int	valid_extension(t_mlx_data *env_p, char *map_name_p)

@@ -29,6 +29,21 @@ char	*check_file_permissions(t_mlx_data *env_p, char **tokens)
 	return (NULL);
 }
 
+int	check_coordinate(char *tokens, size_t *i)
+{
+	const char	*coordinates[] = {
+		ID_NO,
+		ID_SO,
+		ID_EA,
+		ID_WE
+	};
+
+	while (*i < COORD_LENGTH
+		&& ft_strncmp(tokens, coordinates[*i], 2) != VALID)
+		(*i)++;
+	return (*i);
+}
+
 int	complete_ids(t_id *id_p)
 {
 	if (id_p)
@@ -40,7 +55,7 @@ int	complete_ids(t_id *id_p)
 	return (0);
 }
 
-int valid_space_nline(char character)
+int	valid_space_nline(char character)
 {
 	if (character == ' '
 		|| character == '\n'
@@ -58,20 +73,4 @@ void	call_error(t_mlx_data *env_p, char *message)
 	}
 	perror(message);
 	destroy_everything_and_exit(env_p, EXIT_FAILURE);
-}
-
-void	free_str_array(char **str)
-{
-	char	**str_start;
-
-	str_start = str;
-	if (str)
-	{
-		while (*str)
-		{
-			free(*str);
-			str++;
-		}
-		free(str_start);
-	}
 }

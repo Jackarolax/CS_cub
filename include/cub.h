@@ -163,26 +163,32 @@ void	pixel_put(t_img img, int x, int y, int color);
 void	parser(char *map, t_mlx_data *env);
 
 char	**filter_color(t_mlx_data *env_p, char **tokens);
-void	fill_color(t_mlx_data *env_p, char **colors, char **tokens);
 void	check_fc_dup(t_mlx_data *env_p, char *token);
 void	valid_ceiling_floor(t_mlx_data *env_p, char **tokens);
 
 char	*fill_coordinates(t_id *id_p, char **tokens);
-char	*check_coordinate(t_mlx_data *env_p, char **tokens);
-char	*duplicate_id(t_mlx_data *env_p, char *token, int size);
-char	*duplicate_player(t_mlx_data *env_p);
+char	*check_identifiers(t_mlx_data *env_p, char **tokens);
 char	**valid_id_content(t_mlx_data *env_p, char **tokens);
 
 char	*check_file_permissions(t_mlx_data *env_p, char **tokens);
-int	complete_ids(t_id *id_p);
-int valid_space_nline(char character);
+int		check_coordinate(char *tokens, size_t *i);
+int		complete_ids(t_id *id_p);
+int		valid_space_nline(char character);
 void	call_error(t_mlx_data *env_p, char *message);
-//int	valid_player_id(char string);
-int	is_player_id(char player);
+
+int		add_line_to_map(t_mlx_data *env_p, char *line, int i);
+int		valid_map_content(char tokens);
+void	valid_map(t_mlx_data *env_p);
+
+int		check_walkable_cels(t_mlx_data *env_p, int i);
+void	standardize_map(t_mlx_data *env_p);
+
+void	clean_memo(t_mlx_data *env_p, char **tokens);
 void	free_str_array(char **str);
 
-int valid_map_content(char tokens);
-int	valid_first_last_rows(char *row);
+void	add_player_pos(t_mlx_data *env_p, int i, int j);
+int		is_player_id(char player);
+int		player_exists(t_mlx_data *env_p);
 
 /* movement */
 void	move_player(t_mlx_data *env_p);
