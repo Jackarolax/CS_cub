@@ -51,7 +51,6 @@ int	is_out_of_bounds(t_img img, t_coords coords)
 t_coords	vector2coords(t_vector vector)
 {
 	t_coords	coords;
-
 	coords.x = (int) round(vector.x);
 	coords.y = (int) round(vector.y);
 	return (coords);
@@ -154,12 +153,12 @@ void	draw_obstacles(t_mlx_data *env_p)
 	int		grid_y;
 
 	grid_y = 0;
-	while (env_p->map[grid_y])
+	while (env_p->map_info->map[grid_y])
 	{
 		grid_x = 0;
-		while (env_p->map[grid_y][grid_x])
+		while (env_p->map_info->map[grid_y][grid_x])
 		{
-			if (env_p->map[grid_y][grid_x] == '1')
+			if (env_p->map_info->map[grid_y][grid_x] == '1')
 			{
 				fill_square(env_p->background_img,
 					give_coords(grid_x * env_p->block_size,
@@ -175,36 +174,6 @@ void	draw_obstacles(t_mlx_data *env_p)
 		grid_y++;
 	}
 }
-
-//the ostacle sprite has to be initialized already
-//void	draw_obstacles(t_mlx_data *env_p)
-//{
-//	int		grid_x;
-//	int		grid_y;
-//	char	**map;
-//
-//	map = env_p->map;
-//	if (!map)
-//	{
-//		ft_printf("Error: draw_obstacles called with NULL map\n");
-//		return ;
-//	}
-//	grid_y = 0;
-//	while (grid_y < env_p->map_height)
-//	{
-//		grid_x = 0;
-//		while (grid_x < env_p->map_width)
-//		{
-//			if (map[grid_y][grid_x] == '1')
-//				put_img_inside_img(env_p->wall_img,
-//					env_p->background_img,
-//					grid_x * env_p->block_size,
-//					grid_y * env_p->block_size);
-//			grid_x++;
-//		}
-//		grid_y++;
-//	}
-//}
 
 t_3points	give_3points(t_coords p1, t_coords p2, t_coords p3)
 {
@@ -439,23 +408,25 @@ void	put_img_inside_img(t_img small_image, t_img large_image,
 
 int	draw_to_window(t_mlx_data	*env_p)
 {
-	int	i;
+	// int	i;
 
 	reset_img(env_p->background_img);
+	draw_ceil(env_p);
+	draw_floor(env_p);
 	draw_fov(env_p);
-	reset_img(env_p->player_img);
-	draw_rotated_triangle(env_p);
-	draw_obstacles(env_p);
-	draw_ray(env_p->background_img, env_p, 0);
-	i = 1.0;
-	while (i < 45)
-	{
-		draw_ray(env_p->background_img, env_p, i);
-		draw_ray(env_p->background_img, env_p, -i);
-		i += 1.0;
-	}
-	put_img_inside_img(env_p->player_img, env_p->background_img,
-		(int) env_p->player_x, (int) env_p->player_y);
+	// reset_img(env_p->player_img);
+	// draw_rotated_triangle(env_p);
+	// draw_obstacles(env_p);
+	// draw_ray(env_p->background_img, env_p, 0);
+	// i = 1.0;
+	// while (i < 45)
+	// {
+	// 	draw_ray(env_p->background_img, env_p, i);
+	// 	draw_ray(env_p->background_img, env_p, -i);
+	// 	i += 1.0;
+	// }
+	// put_img_inside_img(env_p->player_img, env_p->background_img,
+	// 	(int) env_p->player_x, (int) env_p->player_y);
 	mlx_put_image_to_window(env_p->mlx, env_p->win,
 		env_p->background_img.img, 0, 0);
 	return (0);

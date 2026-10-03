@@ -19,10 +19,10 @@ int	check_ray_collision(t_mlx_data *env_p, int check_x, int check_y)
 
 	tile_x = check_x / env_p->block_size;
 	tile_y = check_y / env_p->block_size;
-	if (tile_x < 0 || tile_x >= env_p->map_width
-		|| tile_y < 0 || tile_y >= env_p->map_height)
+	if (tile_x < 0 || tile_x >= env_p->map_info->map_width
+		|| tile_y < 0 || tile_y >= env_p->map_info->map_height)
 		return (1);
-	if (env_p->map[tile_y][tile_x] == '1')
+	if (env_p->map_info->map[tile_y][tile_x] == '1')
 		return (1);
 	return (0);
 }

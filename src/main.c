@@ -12,21 +12,22 @@
 
 #include "../include/cub.h"
 
-void	free_map(t_mlx_data *env_p)
+static void	init_map_info(t_map_info *info)
 {
-	int	i;
-
-	i = 0;
-	while (env_p->map[i])
-	{
-		free(env_p->map[i]);
-		i++;
-	}
-	free(env_p->map);
+	info->map_fd = -1;
+	info->map = NULL;
+	info->map_started = 0;
+	info->map_height = 0;
+	info->map_width = 0;
+	info->player_x_start = -1;
+	info->player_y_start = -1;
+	info->last_row = 0;
 }
 
 static void	init_identifiers(t_id *identifiers_p)
 {
+	identifiers_p->line_start = NULL;
+	identifiers_p->tokens = NULL;
 	identifiers_p->SO = NULL;
 	identifiers_p->WE = NULL;
 	identifiers_p->NO = NULL;
@@ -42,9 +43,11 @@ static void	init_identifiers(t_id *identifiers_p)
 static void	init_env(t_mlx_data *env_p)
 {
 	env_p->identifiers = ft_calloc(1, sizeof(t_id));
-	if (!env_p->identifiers)
+	env_p->map_info = ft_calloc(1, sizeof(t_map_info));
+	if (!env_p->identifiers || !env_p->map_info)
 		exit(1);
 	init_identifiers(env_p->identifiers);
+	init_map_info(env_p->map_info);
 	env_p->mlx = NULL;
 	env_p->win = NULL;
 	env_p->width = 0;
@@ -67,9 +70,9 @@ static void	init_env(t_mlx_data *env_p)
 	env_p->player_direction = 0.0;
 	env_p->ray_vector.x = 0.0;
 	env_p->ray_vector.y = 0.0;
-	env_p->map = NULL;
-	env_p->map_height = 0;
-	env_p->map_width = 0;
+	env_p->map_info->map = NULL;
+	env_p->map_info->map_height = 0;
+	env_p->map_info->map_width = 0;
 	env_p->block_size = 0;
 }
 
@@ -91,17 +94,48 @@ void	destroy_everything_and_exit(t_mlx_data *env_p, int exit_code)
 		mlx_destroy_window(env_p->mlx, env_p->win);
 	if (env_p->mlx)
 		mlx_destroy_display(env_p->mlx);
-	if (env_p->map)
-		free_map(env_p);
+	if (env_p->identifiers->line_start)
+	{
+		free(env_p->identifiers->line_start);
+		env_p->identifiers->line_start = NULL;
+	}
+	if (env_p->identifiers->tokens)
+	{
+		free_str_array(env_p->identifiers->tokens);
+		env_p->identifiers->tokens = NULL;
+	}
 	if (env_p->identifiers->NO)
+	{
 		free(env_p->identifiers->NO);
+		env_p->identifiers->NO = NULL;
+	}
 	if (env_p->identifiers->SO)
+	{
 		free(env_p->identifiers->SO);
+		env_p->identifiers->SO = NULL;
+	}
 	if (env_p->identifiers->WE)
+	{
 		free(env_p->identifiers->WE);
+		env_p->identifiers->WE = NULL;
+	}
 	if (env_p->identifiers->EA)
+	{
 		free(env_p->identifiers->EA);
-	free(env_p->identifiers);
+		env_p->identifiers->EA = NULL;
+	}
+	if (env_p->identifiers)
+	{
+		free(env_p->identifiers);
+		env_p->identifiers = NULL;
+	}
+	if (env_p->map_info)
+	{
+		free_str_array(env_p->map_info->map);
+		env_p->map_info->map = NULL;
+		free(env_p->map_info);
+		env_p->map_info = NULL;
+	}
 	if (env_p->mlx)
 		free(env_p->mlx);
 	exit(exit_code);
@@ -113,7 +147,7 @@ int	main(int ac, char **av)
 
 	if (ac == 1 || !av[1])
 	{
-		perror("Map is missing");
+		perror("Error\nMap is missing");
 		exit(1);
 	}
 	init_env(&env);

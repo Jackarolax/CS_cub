@@ -23,13 +23,13 @@ int	check_collision(t_mlx_data *env_p, int check_x, int check_y)
 	right = (check_x + env_p->player_img.width - 1) / env_p->block_size;
 	top = check_y / env_p->block_size;
 	bottom = (check_y + env_p->player_img.height - 1) / env_p->block_size;
-	if (left < 0 || right >= env_p->map_width
-		|| top < 0 || bottom >= env_p->map_height)
+	if (left < 0 || right >= env_p->map_info->map_width
+		|| top < 0 || bottom >= env_p->map_info->map_height)
 		return (1);
-	if (env_p->map[top][left] == '1'
-		|| env_p->map[top][right] == '1'
-		|| env_p->map[bottom][left] == '1'
-		|| env_p->map[bottom][right] == '1')
+	if (env_p->map_info->map[top][left] == '1'
+		|| env_p->map_info->map[top][right] == '1'
+		|| env_p->map_info->map[bottom][left] == '1'
+		|| env_p->map_info->map[bottom][right] == '1')
 		return (1);
 	return (0);
 }

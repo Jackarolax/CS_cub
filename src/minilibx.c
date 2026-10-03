@@ -62,13 +62,13 @@ void	set_player_position_from_i_j(t_mlx_data *env_p, int i, int j)
 		+ (env_p->block_size / 2) - MINI_PLAYER_CENTER_POINT;
 	env_p->player_y = i * env_p->block_size
 		+ (env_p->block_size / 2) - MINI_PLAYER_CENTER_POINT;
-	if (env_p->map[i][j] == 'E')
+	if (env_p->map_info->map[i][j] == 'E')
 		env_p->player_direction = 0 * M_PI / 2;
-	else if (env_p->map[i][j] == 'S')
+	else if (env_p->map_info->map[i][j] == 'S')
 		env_p->player_direction = 1 * M_PI / 2;
-	else if (env_p->map[i][j] == 'W')
+	else if (env_p->map_info->map[i][j] == 'W')
 		env_p->player_direction = 2 * M_PI / 2;
-	else if (env_p->map[i][j] == 'N')
+	else if (env_p->map_info->map[i][j] == 'N')
 		env_p->player_direction = 3 * M_PI / 2;
 }
 
@@ -79,24 +79,24 @@ void	set_player_position(t_mlx_data *env_p)
 	int	i;
 	int	j;
 
-	if (!env_p->map)
-		destroy_everything_and_exit(env_p, 1);
+	if (!env_p->map_info->map)
+		destroy_everything_and_exit(env_p, EXIT_FAILURE);
 	i = 0;
-	while (env_p->map[i])
+	while (env_p->map_info->map[i])
 	{
 		j = 0;
-		while (env_p->map[i][j])
+		while (env_p->map_info->map[i][j])
 		{
-			if (env_p->map[i][j] == 'N'
-				|| env_p->map[i][j] == 'E'
-				|| env_p->map[i][j] == 'S'
-				|| env_p->map[i][j] == 'W')
+			if (env_p->map_info->map[i][j] == 'N'
+				|| env_p->map_info->map[i][j] == 'E'
+				|| env_p->map_info->map[i][j] == 'S'
+				|| env_p->map_info->map[i][j] == 'W')
 				return (set_player_position_from_i_j(env_p, i, j));
 			j++;
 		}
 		i++;
 	}
-	destroy_everything_and_exit(env_p, 1);
+	destroy_everything_and_exit(env_p, EXIT_FAILURE);
 }
 
 void	create_image(t_mlx_data *env_p, t_img *image_p, int width, int height)
@@ -132,23 +132,11 @@ void	set_minilibx(t_mlx_data *env_p)
 {
 	env_p->mlx = mlx_init();
 	env_p->block_size = BLOCK_SIZE;
-	env_p->map = malloc(9 * sizeof(char *));
-	env_p->map[0] = ft_strdup("1111111111");
-	env_p->map[1] = ft_strdup("1000100001");
-	env_p->map[2] = ft_strdup("1000010101");
-	env_p->map[3] = ft_strdup("1000010101");
-	env_p->map[4] = ft_strdup("1011110101");
-	env_p->map[5] = ft_strdup("1000N11101");
-	env_p->map[6] = ft_strdup("1010000001");
-	env_p->map[7] = ft_strdup("1111111111");
-	env_p->map[8] = NULL;
-	env_p->map_height = 8;
-	env_p->map_width = 10;
 	env_p->ceil_color = RED;
 	env_p->floor_color = RED;
 	set_player_position(env_p);
-	env_p->width = env_p->map_width * env_p->block_size;
-	env_p->height = env_p->map_height * env_p->block_size;
+	env_p->width = env_p->map_info->map_width * env_p->block_size;
+	env_p->height = env_p->map_info->map_height * env_p->block_size;
 	env_p->win = mlx_new_window(env_p->mlx, WIN_WIDTH, WIN_HEIGHT, "CUB 3D");
 	load_images(env_p);
 	set_hooks(env_p);
