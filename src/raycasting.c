@@ -43,13 +43,13 @@ t_vector	get_ray_vector(t_mlx_data *env_p, double degree_angle)
 	t_vector	vector;
 	t_vector	delta;
 
-	vector.x = cos(env_p->player_direction + (degree_angle / 180 * M_PI));
-	vector.y = sin(env_p->player_direction + (degree_angle / 180 * M_PI));
+	vector.x = cos(env_p->map_info->player_direction + (degree_angle / 180 * M_PI));
+	vector.y = sin(env_p->map_info->player_direction + (degree_angle / 180 * M_PI));
 	delta.x = vector.x;
 	delta.y = vector.y;
 	while (!check_ray_collision(env_p,
-			(int)(vector.x + env_p->player_x + MINI_PLAYER_CENTER_POINT),
-		(int)(vector.y + env_p->player_y + MINI_PLAYER_CENTER_POINT)))
+			(int)(vector.x + env_p->map_info->player_x + MINI_PLAYER_CENTER_POINT),
+		(int)(vector.y + env_p->map_info->player_y + MINI_PLAYER_CENTER_POINT)))
 	{
 		vector.x += 0.1 * delta.x;
 		vector.y += 0.1 * delta.y;
@@ -73,13 +73,13 @@ t_coords	get_exact_collision_point(t_mlx_data *env_p, t_vector ray_vector)
 	t_coords	collision_point;
 
 	if (ray_vector.x > 0)
-		collision_point.x = (int)(ray_vector.x + env_p->player_x);
+		collision_point.x = (int)(ray_vector.x + env_p->map_info->player_x);
 	else
-		collision_point.x = (int)ceil(ray_vector.x + env_p->player_x);
+		collision_point.x = (int)ceil(ray_vector.x + env_p->map_info->player_x);
 	if (ray_vector.y > 0)
-		collision_point.y = (int)(ray_vector.y + env_p->player_y);
+		collision_point.y = (int)(ray_vector.y + env_p->map_info->player_y);
 	else
-		collision_point.y = (int)ceil(ray_vector.y + env_p->player_y);
+		collision_point.y = (int)ceil(ray_vector.y + env_p->map_info->player_y);
 	collision_point.x += MINI_PLAYER_CENTER_POINT;
 	collision_point.y += MINI_PLAYER_CENTER_POINT;
 	return (collision_point);
@@ -139,19 +139,19 @@ double	get_wall_x(t_mlx_data *env_p)
 	ray_vector = env_p->ray_vector;
 	wall_coll_pos = get_exact_collision_point(env_p, ray_vector);
 	if (ray_vector.x >= 0.0 && (wall_coll_pos.x % env_p->block_size) == 0)
-		return (fmod(ray_vector.y + env_p->player_y
+		return (fmod(ray_vector.y + env_p->map_info->player_y
 				+ (double)MINI_PLAYER_CENTER_POINT, (double)env_p->block_size)
 			/ (double)(env_p->block_size));
 	else if (ray_vector.x < 0.0 && (wall_coll_pos.x % env_p->block_size) == 0)
-		return (1.0 - fmod(ray_vector.y + env_p->player_y
+		return (1.0 - fmod(ray_vector.y + env_p->map_info->player_y
 				+ (double)MINI_PLAYER_CENTER_POINT, (double)env_p->block_size)
 			/ (double)(env_p->block_size));
 	else if (ray_vector.y >= 0.0 && (wall_coll_pos.y % env_p->block_size) == 0)
-		return (1.0 - fmod(ray_vector.x + env_p->player_x
+		return (1.0 - fmod(ray_vector.x + env_p->map_info->player_x
 				+ (double)MINI_PLAYER_CENTER_POINT, (double)env_p->block_size)
 			/ (double)(env_p->block_size));
 	else if (ray_vector.y < 0.0 && (wall_coll_pos.y % env_p->block_size) == 0)
-		return (fmod(ray_vector.x + env_p->player_x
+		return (fmod(ray_vector.x + env_p->map_info->player_x
 				+ (double)MINI_PLAYER_CENTER_POINT, (double)env_p->block_size)
 			/ (double)(env_p->block_size));
 	else

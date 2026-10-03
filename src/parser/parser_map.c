@@ -76,17 +76,17 @@ int	valid_map_content(char letter)
 
 void	valid_map(t_mlx_data *env_p)
 {
-	int	i;
+	double	i;
 
-	i = 0;
+	i = 0.0;
 	if (valid_first_last_rows(env_p->map_info->map[0])
 		|| valid_first_last_rows(
 			env_p->map_info->map[env_p->map_info->last_row]))
 		call_error(env_p, "Error\nCheck map's first/last rows");
-	while (env_p->map_info->map[i] && i < env_p->map_info->last_row)
+	while (env_p->map_info->map[(int)i] && i < env_p->map_info->last_row)
 	{
 		check_walkable_cels(env_p, i);
-		i++;
+		i += 1.0;
 	}
 	if (!player_exists(env_p))
 		call_error(env_p, "Error\nSet player position");

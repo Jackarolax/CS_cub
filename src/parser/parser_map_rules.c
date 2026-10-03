@@ -27,28 +27,19 @@ static void	cell_is_close_to_edge(t_mlx_data *env_p, int i, int j)
 		call_error(env_p, "Error\nCheck map edge");
 }
 
-int	check_walkable_cels(t_mlx_data *env_p, int i)
+double	check_walkable_cels(t_mlx_data *env_p, double i)
 {
-	int	j;
+	double	j;
 
-	j = 0;
-	while (env_p->map_info->map[i][j])
+	j = 0.0;
+	while (env_p->map_info->map[(int)i][(int)j])
 	{
 		if (i > env_p->map_info->map_height || j > env_p->map_info->map_width)
 			return (1);
-		if (env_p->map_info->map[i][j] == '0'
-			|| is_player_id(env_p->map_info->map[i][j]))
-		{
-			if (is_player_id(env_p->map_info->map[i][j]))
-			{
-				if (player_exists(env_p))
-					call_error(env_p, "Error\nMore than 1 player position");
-				env_p->player_x = i;
-				env_p->player_y = j;
-			}
+		if (env_p->map_info->map[(int)i][(int)j] == '0'
+			|| is_player_id(env_p->map_info->map[(int)i][(int)j]))
 			cell_is_close_to_edge(env_p, i, j);
-		}
-		j++;
+		j += 1.0;
 	}
 	return (0);
 }

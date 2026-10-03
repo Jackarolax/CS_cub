@@ -88,8 +88,9 @@ typedef struct s_map_info {
 	int		map_started;
 	int		map_height;
 	int		map_width;
-	int		player_x_start;
-	int		player_y_start;
+	double		player_x;
+	double		player_y;
+	double		player_direction;
 	int		last_row;
 }	t_map_info;
 
@@ -139,9 +140,6 @@ typedef struct s_mlx_data {
 	int			mv_r_pressed;
 	int			look_l_pressed;
 	int			look_r_pressed;
-	double		player_x;
-	double		player_y;
-	double		player_direction;
 	t_vector	ray_vector;
 	char		**map;
 	int			map_height;
@@ -177,13 +175,13 @@ int			add_line_to_map(t_mlx_data *env_p, char *line, int i);
 int			valid_map_content(char tokens);
 void		valid_map(t_mlx_data *env_p);
 
-int			check_walkable_cels(t_mlx_data *env_p, int i);
+double		check_walkable_cels(t_mlx_data *env_p, double i);
 void		standardize_map(t_mlx_data *env_p);
 
 void		clean_memo(t_mlx_data *env_p, char **tokens);
 void		free_str_array(char **str);
 
-void		add_player_pos(t_mlx_data *env_p, int i, int j);
+void		add_player_pos(t_mlx_data *env_p, double i, double j);
 int			is_player_id(char player);
 int			player_exists(t_mlx_data *env_p);
 

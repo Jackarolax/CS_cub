@@ -19,8 +19,8 @@ static void	init_map_info(t_map_info *info)
 	info->map_started = 0;
 	info->map_height = 0;
 	info->map_width = 0;
-	info->player_x_start = -1;
-	info->player_y_start = -1;
+	info->player_x = 0.0;
+	info->player_y = 0.0;
 	info->last_row = 0;
 }
 
@@ -40,6 +40,17 @@ static void	init_identifiers(t_id *identifiers_p)
 	identifiers_p->c_b = -1;
 }
 
+static void	init_img(t_mlx_data *env_p)
+{
+	env_p->player_img.img = NULL;
+	env_p->player_img.img = NULL;
+	env_p->background_img.img = NULL;
+	env_p->sprite_n_img.img = NULL;
+	env_p->sprite_e_img.img = NULL;
+	env_p->sprite_s_img.img = NULL;
+	env_p->sprite_w_img.img = NULL;
+}
+
 static void	init_env(t_mlx_data *env_p)
 {
 	env_p->identifiers = ft_calloc(1, sizeof(t_id));
@@ -48,26 +59,16 @@ static void	init_env(t_mlx_data *env_p)
 		exit(1);
 	init_identifiers(env_p->identifiers);
 	init_map_info(env_p->map_info);
+	init_img(env_p);
 	env_p->mlx = NULL;
 	env_p->win = NULL;
-	env_p->width = 0;
-	env_p->height = 0;
-	env_p->player_img.img = NULL;
-	env_p->player_img.img = NULL;
-	env_p->background_img.img = NULL;
-	env_p->sprite_n_img.img = NULL;
-	env_p->sprite_e_img.img = NULL;
-	env_p->sprite_s_img.img = NULL;
-	env_p->sprite_w_img.img = NULL;
 	env_p->mv_fwd_pressed = 0;
 	env_p->mv_bck_pressed = 0;
 	env_p->mv_l_pressed = 0;
 	env_p->mv_r_pressed = 0;
 	env_p->look_l_pressed = 0;
 	env_p->look_r_pressed = 0;
-	env_p->player_x = 0.0;
-	env_p->player_y = 0.0;
-	env_p->player_direction = 0.0;
+	env_p->map_info->player_direction = 0.0;
 	env_p->ray_vector.x = 0.0;
 	env_p->ray_vector.y = 0.0;
 	env_p->map_info->map = NULL;

@@ -56,49 +56,6 @@ t_coords	rotate_point(t_coords point, t_coords center, double angle)
 	return (new_point);
 }
 
-void	set_player_position_from_i_j(t_mlx_data *env_p, int i, int j)
-{
-	env_p->player_x = j * env_p->block_size
-		+ (env_p->block_size / 2) - MINI_PLAYER_CENTER_POINT;
-	env_p->player_y = i * env_p->block_size
-		+ (env_p->block_size / 2) - MINI_PLAYER_CENTER_POINT;
-	if (env_p->map_info->map[i][j] == 'E')
-		env_p->player_direction = 0 * M_PI / 2;
-	else if (env_p->map_info->map[i][j] == 'S')
-		env_p->player_direction = 1 * M_PI / 2;
-	else if (env_p->map_info->map[i][j] == 'W')
-		env_p->player_direction = 2 * M_PI / 2;
-	else if (env_p->map_info->map[i][j] == 'N')
-		env_p->player_direction = 3 * M_PI / 2;
-}
-
-//the map has to be initialized before calling this function
-//assumes there is only one player position character (N, E, S, W)
-void	set_player_position(t_mlx_data *env_p)
-{
-	int	i;
-	int	j;
-
-	if (!env_p->map_info->map)
-		destroy_everything_and_exit(env_p, EXIT_FAILURE);
-	i = 0;
-	while (env_p->map_info->map[i])
-	{
-		j = 0;
-		while (env_p->map_info->map[i][j])
-		{
-			if (env_p->map_info->map[i][j] == 'N'
-				|| env_p->map_info->map[i][j] == 'E'
-				|| env_p->map_info->map[i][j] == 'S'
-				|| env_p->map_info->map[i][j] == 'W')
-				return (set_player_position_from_i_j(env_p, i, j));
-			j++;
-		}
-		i++;
-	}
-	destroy_everything_and_exit(env_p, EXIT_FAILURE);
-}
-
 void	create_image(t_mlx_data *env_p, t_img *image_p, int width, int height)
 {
 	image_p->width = width;
@@ -113,10 +70,10 @@ void	load_images(t_mlx_data *env_p)
 	create_image(env_p, &env_p->player_img,
 		MINI_PLAYER_EDGE_POINT, MINI_PLAYER_EDGE_POINT);
 	create_image(env_p, &env_p->background_img, WIN_WIDTH, WIN_HEIGHT);
-	load_sprite(env_p, &env_p->sprite_n_img, "./minilibx/test/open24.xpm");
-	load_sprite(env_p, &env_p->sprite_e_img, "./minilibx/test/open24.xpm");
-	load_sprite(env_p, &env_p->sprite_s_img, "./minilibx/test/open24.xpm");
-	load_sprite(env_p, &env_p->sprite_w_img, "./minilibx/test/open24.xpm");
+	load_sprite(env_p, &env_p->sprite_n_img, env_p->identifiers->no);
+	load_sprite(env_p, &env_p->sprite_e_img, env_p->identifiers->ea);
+	load_sprite(env_p, &env_p->sprite_s_img, env_p->identifiers->so);
+	load_sprite(env_p, &env_p->sprite_w_img, env_p->identifiers->we);
 }
 
 void	set_hooks(t_mlx_data *env_p)
@@ -134,9 +91,6 @@ void	set_minilibx(t_mlx_data *env_p)
 	env_p->block_size = BLOCK_SIZE;
 	env_p->ceil_color = RED;
 	env_p->floor_color = RED;
-	set_player_position(env_p);
-	env_p->width = env_p->map_info->map_width * env_p->block_size;
-	env_p->height = env_p->map_info->map_height * env_p->block_size;
 	env_p->win = mlx_new_window(env_p->mlx, WIN_WIDTH, WIN_HEIGHT, "CUB 3D");
 	load_images(env_p);
 	set_hooks(env_p);

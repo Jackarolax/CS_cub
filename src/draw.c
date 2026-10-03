@@ -227,11 +227,11 @@ void	draw_rotated_triangle(t_mlx_data *env_p)
 	center_point.x = MINI_PLAYER_CENTER_POINT;
 	center_point.y = MINI_PLAYER_CENTER_POINT;
 	triangle.p1 = rotate_point(triangle.p1, center_point,
-			env_p->player_direction);
+			env_p->map_info->player_direction);
 	triangle.p2 = rotate_point(triangle.p2, center_point,
-			env_p->player_direction);
+			env_p->map_info->player_direction);
 	triangle.p3 = rotate_point(triangle.p3, center_point,
-			env_p->player_direction);
+			env_p->map_info->player_direction);
 	fill_triangle(env_p->player_img, triangle, RED + BLUE + GREEN);
 	draw_triangle(env_p->player_img, triangle, RED);
 }
@@ -281,8 +281,8 @@ void	draw_ray(t_img image, t_mlx_data *env_p, double degree_angle)
 	env_p->ray_vector = ray_vector;
 	wall_coll_pos = get_exact_collision_point(env_p, ray_vector);
 	draw_line(image,
-		give_coords((int) env_p->player_x + MINI_PLAYER_CENTER_POINT,
-			(int) env_p->player_y + MINI_PLAYER_CENTER_POINT),
+		give_coords((int) env_p->map_info->player_x + MINI_PLAYER_CENTER_POINT,
+			(int) env_p->map_info->player_y + MINI_PLAYER_CENTER_POINT),
 		wall_coll_pos,
 		0x00FF0000);
 	draw_2nd_ray(image, env_p, wall_coll_pos);
@@ -426,7 +426,7 @@ int	draw_to_window(t_mlx_data	*env_p)
 	// 	i += 1.0;
 	// }
 	// put_img_inside_img(env_p->player_img, env_p->background_img,
-	// 	(int) env_p->player_x, (int) env_p->player_y);
+	// 	(int) env_p->map_info->player_x, (int) env_p->map_info->player_y);
 	mlx_put_image_to_window(env_p->mlx, env_p->win,
 		env_p->background_img.img, 0, 0);
 	return (0);
