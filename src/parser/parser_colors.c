@@ -43,15 +43,15 @@ static void	fill_color(t_mlx_data *env_p, char **colors, char **tokens)
 {
 	if (colors && tokens[0][0] == ID_F)
 	{
-		env_p->identifiers->F_R = ft_atoi(colors[0]);
-		env_p->identifiers->F_G = ft_atoi(colors[1]);
-		env_p->identifiers->F_B = ft_atoi(colors[2]);
+		env_p->identifiers->f_r = ft_atoi(colors[0]);
+		env_p->identifiers->f_g = ft_atoi(colors[1]);
+		env_p->identifiers->f_b = ft_atoi(colors[2]);
 	}
 	else if (colors && tokens[0][0] == ID_C)
 	{
-		env_p->identifiers->C_R = ft_atoi(colors[0]);
-		env_p->identifiers->C_G = ft_atoi(colors[1]);
-		env_p->identifiers->C_B = ft_atoi(colors[2]);
+		env_p->identifiers->c_r = ft_atoi(colors[0]);
+		env_p->identifiers->c_g = ft_atoi(colors[1]);
+		env_p->identifiers->c_b = ft_atoi(colors[2]);
 	}
 	else
 	{
@@ -62,10 +62,10 @@ static void	fill_color(t_mlx_data *env_p, char **colors, char **tokens)
 
 void	check_fc_dup(t_mlx_data *env_p, char *token)
 {
-	if (token && env_p->identifiers->F_R != -1
+	if (token && env_p->identifiers->f_r != -1
 		&& token[0] == ID_F)
 		call_error(env_p, "Error\nDuplicated F");
-	if (token && env_p->identifiers->C_R != -1
+	if (token && env_p->identifiers->c_r != -1
 		&& token[0] == ID_C)
 		call_error(env_p, "Error\nDuplicated C");
 }

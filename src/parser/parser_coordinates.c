@@ -18,23 +18,23 @@ char	*fill_coordinates(t_id *id_p, char **tokens)
 	{
 		if (ft_strncmp(tokens[0], ID_NO, 2) == VALID)
 		{
-			id_p->NO = ft_strtrim(tokens[1], " \t\n");
-			return (id_p->NO);
+			id_p->no = ft_strtrim(tokens[1], " \t\n");
+			return (id_p->no);
 		}
 		else if (ft_strncmp(tokens[0], ID_SO, 2) == VALID)
 		{
-			id_p->SO = ft_strtrim(tokens[1], " \t\n");
-			return (id_p->SO);
+			id_p->so = ft_strtrim(tokens[1], " \t\n");
+			return (id_p->so);
 		}
 		else if (ft_strncmp(tokens[0], ID_WE, 2) == VALID)
 		{
-			id_p->WE = ft_strtrim(tokens[1], " \t\n");
-			return (id_p->WE);
+			id_p->we = ft_strtrim(tokens[1], " \t\n");
+			return (id_p->we);
 		}
 		else if (ft_strncmp(tokens[0], ID_EA, 2) == VALID)
 		{
-			id_p->EA = ft_strtrim(tokens[1], " \t\n");
-			return (id_p->EA);
+			id_p->ea = ft_strtrim(tokens[1], " \t\n");
+			return (id_p->ea);
 		}
 	}
 	return (NULL);
@@ -42,16 +42,16 @@ char	*fill_coordinates(t_id *id_p, char **tokens)
 
 static char	*duplicate_id(t_mlx_data *env_p, char *token, int size)
 {
-	if (token && env_p->identifiers->NO
+	if (token && env_p->identifiers->no
 		&& ft_strncmp(ID_NO, token, size) == VALID)
 		return ("Error\nDuplicated NO");
-	if (token && env_p->identifiers->SO
+	if (token && env_p->identifiers->so
 		&& ft_strncmp(ID_SO, token, size) == VALID)
 		return ("Error\nDuplicated SO");
-	if (token && env_p->identifiers->WE
+	if (token && env_p->identifiers->we
 		&& ft_strncmp(ID_WE, token, size) == VALID)
 		return ("Error\nDuplicated WE");
-	if (token && env_p->identifiers->EA
+	if (token && env_p->identifiers->ea
 		&& ft_strncmp(ID_EA, token, size) == VALID)
 		return ("Error\nDuplicated EA");
 	return (NULL);
@@ -72,7 +72,7 @@ char	*check_identifiers(t_mlx_data *env_p, char **tokens)
 		return (check_file_permissions(env_p, tokens));
 	}
 	else if (tokens && ft_strlen(tokens[0]) == 1
-		&& (tokens[0][0] == 'F' || tokens[0][0] == ID_C))
+		&& (tokens[0][0] == ID_F || tokens[0][0] == ID_C))
 	{
 		check_fc_dup(env_p, tokens[0]);
 		valid_ceiling_floor(env_p, tokens);

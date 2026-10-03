@@ -28,16 +28,16 @@ static void	init_identifiers(t_id *identifiers_p)
 {
 	identifiers_p->line_start = NULL;
 	identifiers_p->tokens = NULL;
-	identifiers_p->SO = NULL;
-	identifiers_p->WE = NULL;
-	identifiers_p->NO = NULL;
-	identifiers_p->EA = NULL;
-	identifiers_p->F_R = -1;
-	identifiers_p->F_G = -1;
-	identifiers_p->F_B = -1;
-	identifiers_p->C_R = -1;
-	identifiers_p->C_G = -1;
-	identifiers_p->C_B = -1;
+	identifiers_p->so = NULL;
+	identifiers_p->we = NULL;
+	identifiers_p->no = NULL;
+	identifiers_p->ea = NULL;
+	identifiers_p->f_r = -1;
+	identifiers_p->f_g = -1;
+	identifiers_p->f_b = -1;
+	identifiers_p->c_r = -1;
+	identifiers_p->c_g = -1;
+	identifiers_p->c_b = -1;
 }
 
 static void	init_env(t_mlx_data *env_p)
@@ -104,25 +104,25 @@ void	destroy_everything_and_exit(t_mlx_data *env_p, int exit_code)
 		free_str_array(env_p->identifiers->tokens);
 		env_p->identifiers->tokens = NULL;
 	}
-	if (env_p->identifiers->NO)
+	if (env_p->identifiers->no)
 	{
-		free(env_p->identifiers->NO);
-		env_p->identifiers->NO = NULL;
+		free(env_p->identifiers->no);
+		env_p->identifiers->no = NULL;
 	}
-	if (env_p->identifiers->SO)
+	if (env_p->identifiers->so)
 	{
-		free(env_p->identifiers->SO);
-		env_p->identifiers->SO = NULL;
+		free(env_p->identifiers->so);
+		env_p->identifiers->so = NULL;
 	}
-	if (env_p->identifiers->WE)
+	if (env_p->identifiers->we)
 	{
-		free(env_p->identifiers->WE);
-		env_p->identifiers->WE = NULL;
+		free(env_p->identifiers->we);
+		env_p->identifiers->we = NULL;
 	}
-	if (env_p->identifiers->EA)
+	if (env_p->identifiers->ea)
 	{
-		free(env_p->identifiers->EA);
-		env_p->identifiers->EA = NULL;
+		free(env_p->identifiers->ea);
+		env_p->identifiers->ea = NULL;
 	}
 	if (env_p->identifiers)
 	{

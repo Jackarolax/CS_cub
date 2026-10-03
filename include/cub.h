@@ -6,7 +6,7 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/02 13:01:50 by anematol          #+#    #+#             */
-/*   Updated: 2026/09/27 16:50:58 by anematol         ###   ########.fr       */
+/*   Updated: 2026/10/03 11:42:13 by ssin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@
 # define ID_SO "SO"
 # define ID_WE "WE"
 # define ID_EA "EA"
-# define ID_F 'F'
-# define ID_C 'C'
+# define ID_F 70
+# define ID_C 67
 # define COORD_LENGTH 4
 
 # include "../minilibx/mlx.h"
@@ -82,18 +82,18 @@ typedef struct s_coords
 	int	y;
 }				t_coords;
 
-typedef struct	s_map_info {
+typedef struct s_map_info {
 	int		map_fd;
-	char **map;
+	char	**map;
 	int		map_started;
-	int	map_height;
-	int	map_width;
+	int		map_height;
+	int		map_width;
 	int		player_x_start;
 	int		player_y_start;
-	int  last_row;
-} t_map_info;
+	int		last_row;
+}	t_map_info;
 
-typedef struct	s_vector {
+typedef struct s_vector {
 	double	x;
 	double	y;
 }				t_vector;
@@ -105,20 +105,20 @@ typedef struct s_3points
 	t_coords	p3;
 }				t_3points;
 
-typedef struct  s_id {
+typedef struct s_id {
 	char	*line_start;
 	char	**tokens;
-  char  *NO;
-  char  *SO;
-  char  *WE;
-  char  *EA;
-  int   F_R;
-  int   F_G;
-  int   F_B;
-  int   C_R;
-  int   C_G;
-  int   C_B;
-} t_id;
+	char	*no;
+	char	*so;
+	char	*we;
+	char	*ea;
+	int		f_r;
+	int		f_g;
+	int		f_b;
+	int		c_r;
+	int		c_g;
+	int		c_b;
+}	t_id;
 
 typedef struct s_mlx_data {
 	t_img		player_img;
@@ -148,7 +148,7 @@ typedef struct s_mlx_data {
 	int			map_width;
 	int			block_size;
 	t_id		*identifiers;
-  t_map_info        *map_info;
+	t_map_info	*map_info;
 }				t_mlx_data;
 
 /* minilibx */
@@ -159,33 +159,33 @@ void		pixel_put(t_img img, int x, int y, int color);
 /* parser */
 void		parser(char *map, t_mlx_data *env);
 
-char	**filter_color(t_mlx_data *env_p, char **tokens);
-void	check_fc_dup(t_mlx_data *env_p, char *token);
-void	valid_ceiling_floor(t_mlx_data *env_p, char **tokens);
+char		**filter_color(t_mlx_data *env_p, char **tokens);
+void		check_fc_dup(t_mlx_data *env_p, char *token);
+void		valid_ceiling_floor(t_mlx_data *env_p, char **tokens);
 
-char	*fill_coordinates(t_id *id_p, char **tokens);
-char	*check_identifiers(t_mlx_data *env_p, char **tokens);
-char	**valid_id_content(t_mlx_data *env_p, char **tokens);
+char		*fill_coordinates(t_id *id_p, char **tokens);
+char		*check_identifiers(t_mlx_data *env_p, char **tokens);
+char		**valid_id_content(t_mlx_data *env_p, char **tokens);
 
-char	*check_file_permissions(t_mlx_data *env_p, char **tokens);
-int		check_coordinate(char *tokens, size_t *i);
-int		complete_ids(t_id *id_p);
-int		valid_space_nline(char character);
-void	call_error(t_mlx_data *env_p, char *message);
+char		*check_file_permissions(t_mlx_data *env_p, char **tokens);
+int			check_coordinate(char *tokens, size_t *i);
+int			complete_ids(t_id *id_p);
+int			valid_space_nline(char character);
+void		call_error(t_mlx_data *env_p, char *message);
 
-int		add_line_to_map(t_mlx_data *env_p, char *line, int i);
-int		valid_map_content(char tokens);
-void	valid_map(t_mlx_data *env_p);
+int			add_line_to_map(t_mlx_data *env_p, char *line, int i);
+int			valid_map_content(char tokens);
+void		valid_map(t_mlx_data *env_p);
 
-int		check_walkable_cels(t_mlx_data *env_p, int i);
-void	standardize_map(t_mlx_data *env_p);
+int			check_walkable_cels(t_mlx_data *env_p, int i);
+void		standardize_map(t_mlx_data *env_p);
 
-void	clean_memo(t_mlx_data *env_p, char **tokens);
-void	free_str_array(char **str);
+void		clean_memo(t_mlx_data *env_p, char **tokens);
+void		free_str_array(char **str);
 
-void	add_player_pos(t_mlx_data *env_p, int i, int j);
-int		is_player_id(char player);
-int		player_exists(t_mlx_data *env_p);
+void		add_player_pos(t_mlx_data *env_p, int i, int j);
+int			is_player_id(char player);
+int			player_exists(t_mlx_data *env_p);
 
 /* movement */
 void		move_player(t_mlx_data *env_p);
