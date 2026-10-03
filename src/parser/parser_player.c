@@ -21,19 +21,19 @@ static char	*duplicate_player(t_mlx_data *env_p)
 }
 
 static void	set_player_position_from_i_j(t_mlx_data *env_p, int i, int j)
- {
- 	env_p->map_info->player_x = j * BLOCK_SIZE
- 		+ (BLOCK_SIZE / 2) - MINI_PLAYER_CENTER_POINT;
- 	env_p->map_info->player_y = i * BLOCK_SIZE
- 		+ (BLOCK_SIZE / 2) - MINI_PLAYER_CENTER_POINT;
- 	if (env_p->map_info->map[i][j] == 'E')
- 		env_p->map_info->player_direction = 0 * M_PI / 2;
- 	else if (env_p->map_info->map[i][j] == 'S')
- 		env_p->map_info->player_direction = 1 * M_PI / 2;
- 	else if (env_p->map_info->map[i][j] == 'W')
- 		env_p->map_info->player_direction = 2 * M_PI / 2;
- 	else if (env_p->map_info->map[i][j] == 'N')
- 		env_p->map_info->player_direction = 3 * M_PI / 2;
+{
+	env_p->map_info->player_x = j * BLOCK_SIZE
+		+ (BLOCK_SIZE / 2) - MINI_PLAYER_CENTER_POINT;
+	env_p->map_info->player_y = i * BLOCK_SIZE
+		+ (BLOCK_SIZE / 2) - MINI_PLAYER_CENTER_POINT;
+	if (env_p->map_info->map[i][j] == 'E')
+		env_p->map_info->player_direction = 0 * M_PI / 2;
+	else if (env_p->map_info->map[i][j] == 'S')
+		env_p->map_info->player_direction = 1 * M_PI / 2;
+	else if (env_p->map_info->map[i][j] == 'W')
+		env_p->map_info->player_direction = 2 * M_PI / 2;
+	else if (env_p->map_info->map[i][j] == 'N')
+		env_p->map_info->player_direction = 3 * M_PI / 2;
 }
 
 void	add_player_pos(t_mlx_data *env_p, double i, double j)
