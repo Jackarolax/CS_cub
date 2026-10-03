@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   events.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/09/27 16:51:21 by anematol          #+#    #+#             */
+/*   Updated: 2026/09/27 16:53:08 by anematol         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef EVENTS_H
 # define EVENTS_H
 
@@ -8,17 +20,13 @@
 #  define KEY_RELEASE 3
 #  define KEY_PRESS_MASK 0
 #  define KEY_RELEASE_MASK 11
-# define XK_ESCAPE 53
-# define XK_w   13
-# define XK_W   13
-# define XK_a   0
-# define XK_A   0
-# define XK_s   1
-# define XK_S   1
-# define XK_d   2
-# define XK_D   2
-# define KEY_LEFT   123
-# define KEY_RIGHT  124
+#  define XK_ESCAPE 53
+#  define XK_W   13
+#  define XK_A   0
+#  define XK_S   1
+#  define XK_D   2
+#  define KEY_LEFT   123
+#  define KEY_RIGHT  124
 
 # else
 
@@ -28,8 +36,8 @@
 #  define KEY_PRESS_MASK KeyPressMask
 #  define KEY_RELEASE_MASK KeyReleaseMask
 #  define XK_ESCAPE XK_Escape
-# define KEY_LEFT   XK_Left
-# define KEY_RIGHT  XK_Right
+#  define KEY_LEFT   XK_Left
+#  define KEY_RIGHT  XK_Right
 
 # endif
 

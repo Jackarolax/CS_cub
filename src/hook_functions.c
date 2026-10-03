@@ -6,7 +6,7 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/04 21:25:59 by anematol          #+#    #+#             */
-/*   Updated: 2026/09/03 18:21:17 by ssin             ###   ########.fr       */
+/*   Updated: 2026/09/27 16:40:11 by anematol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ int	handle_key_press(int keycode, void *param)
 	if (keycode == KEY_LEFT)
 		env_p->look_l_pressed = 1;
 	return (0);
-
 }
 
 int	handle_key_release(int keycode, void *param)
@@ -64,19 +63,11 @@ int	handle_key_release(int keycode, void *param)
 	return (0);
 }
 
-
 int	update_game(void *param)
 {
-	//long int	time_diff;
 	t_mlx_data	*env_p;
 
 	env_p = (t_mlx_data *)param;
-	//gettimeofday(&env_p->t1, NULL);
-	//time_diff = (env_p->t1.tv_sec - env_p->t0.tv_sec)
-	//	* 1000000 + env_p->t1.tv_usec - env_p->t0.tv_usec;
-	//if (time_diff < 16600)
-	//	usleep(16600 - (time_diff));
-	//gettimeofday(&env_p->t0, NULL);
 	move_player(env_p);
 	draw_to_window(env_p);
 	return (0);

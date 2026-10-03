@@ -6,7 +6,7 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/08 20:15:51 by anematol          #+#    #+#             */
-/*   Updated: 2026/09/13 13:48:38 by anematol         ###   ########.fr       */
+/*   Updated: 2026/09/27 16:24:32 by anematol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static double	calculate_new_x(t_mlx_data *env_p)
 {
-	double new_x;
+	double	new_x;
 
 	new_x = env_p->player_x;
 	if (env_p->mv_fwd_pressed)
@@ -48,28 +48,22 @@ void	move_player_with_collisions(t_mlx_data *env_p, int new_x, int new_y)
 {
 	if (!check_collision(env_p, new_x, env_p->player_y))
 	{
-		//count_moves(env_p, new_x, collision_position_y(env_p, new_y));
 		env_p->player_x = new_x;
 		env_p->player_y = collision_position_y(env_p, new_y);
 	}
 	else if (!check_collision(env_p, env_p->player_x, new_y))
 	{
-		//count_moves(env_p, collision_position_x(env_p, new_x), new_y);
 		env_p->player_x = collision_position_x(env_p, new_x);
 		env_p->player_y = new_y;
 	}
 	else if (touching_x(env_p))
 	{
 		printf("touching x");
-		//count_moves(env_p, env_p->player_x,
-		//	collision_position_y(env_p, new_y));
 		env_p->player_y = collision_position_y(env_p, new_y);
 	}
 	else if (touching_y(env_p))
 	{
 		printf("touching y");
-		//count_moves(env_p, collision_position_x(env_p, new_x),
-		//	env_p->player_y);
 		env_p->player_x = collision_position_x(env_p, new_x);
 	}
 }
@@ -91,12 +85,9 @@ void	move_player(t_mlx_data *env_p)
 		env_p->player_direction += 2.0 * M_PI;
 	if (!check_collision(env_p, new_x, new_y))
 	{
-		//count_moves(env_p, new_x, new_y);
 		env_p->player_x = new_x;
 		env_p->player_y = new_y;
-		//check_element_collisions(env_p, new_x, new_y);
 		return ;
 	}
-	//check_element_collisions(env_p, new_x, new_y);
 	move_player_with_collisions(env_p, new_x, new_y);
 }
