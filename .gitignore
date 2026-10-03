@@ -4,7 +4,6 @@ cub3D
 *.o
 maps/*
 !maps/*.cub
-tests/
 
 # Mac
 .DS_Store

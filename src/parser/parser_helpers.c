@@ -47,10 +47,10 @@ int	check_coordinate(char *tokens, size_t *i)
 int	complete_ids(t_id *id_p)
 {
 	if (id_p)
-		if (id_p->NO && id_p->SO && id_p->WE && id_p->EA
-			&& id_p->F_R != -1 && id_p->C_R != -1
-			&& id_p->F_G != -1 && id_p->C_G != -1
-			&& id_p->F_B != -1 && id_p->C_B != -1)
+		if (id_p->no && id_p->so && id_p->we && id_p->ea
+			&& id_p->f_r != -1 && id_p->c_r != -1
+			&& id_p->f_g != -1 && id_p->c_g != -1
+			&& id_p->f_b != -1 && id_p->c_b != -1)
 			return (1);
 	return (0);
 }
