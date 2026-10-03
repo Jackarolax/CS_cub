@@ -6,7 +6,7 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/03 18:20:30 by ssin              #+#    #+#             */
-/*   Updated: 2026/09/27 16:25:25 by anematol         ###   ########.fr       */
+/*   Updated: 2026/10/03 13:20:46 by anematol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,10 +113,11 @@ void	load_images(t_mlx_data *env_p)
 	create_image(env_p, &env_p->player_img,
 		MINI_PLAYER_EDGE_POINT, MINI_PLAYER_EDGE_POINT);
 	create_image(env_p, &env_p->background_img, WIN_WIDTH, WIN_HEIGHT);
-	load_sprite(env_p, &env_p->sprite_n_img, "./minilibx/test/open24.xpm");
-	load_sprite(env_p, &env_p->sprite_e_img, "./minilibx/test/open24.xpm");
-	load_sprite(env_p, &env_p->sprite_s_img, "./minilibx/test/open24.xpm");
-	load_sprite(env_p, &env_p->sprite_w_img, "./minilibx/test/open24.xpm");
+	create_image(env_p, &env_p->background_buffer_img, WIN_WIDTH, WIN_HEIGHT);
+	load_sprite(env_p, &env_p->sprite_n_img, "./brick-tile-red.xpm");
+	load_sprite(env_p, &env_p->sprite_e_img, "./desert-cracked-tile.xpm");
+	load_sprite(env_p, &env_p->sprite_s_img, "./dune-tile-golden.xpm");
+	load_sprite(env_p, &env_p->sprite_w_img, "./flagstone-tile-gray.xpm");
 }
 
 void	set_hooks(t_mlx_data *env_p)
@@ -132,12 +133,14 @@ void	set_minilibx(t_mlx_data *env_p)
 {
 	env_p->mlx = mlx_init();
 	env_p->block_size = BLOCK_SIZE;
-	env_p->ceil_color = RED;
-	env_p->floor_color = RED;
+	env_p->ceil_color = GREY;
+	env_p->floor_color = DARK_GREY;
 	set_player_position(env_p);
 	env_p->width = env_p->map_info->map_width * env_p->block_size;
 	env_p->height = env_p->map_info->map_height * env_p->block_size;
 	env_p->win = mlx_new_window(env_p->mlx, WIN_WIDTH, WIN_HEIGHT, "CUB 3D");
 	load_images(env_p);
+	draw_ceil(env_p);
+	draw_floor(env_p);
 	set_hooks(env_p);
 }

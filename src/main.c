@@ -6,7 +6,7 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/02 13:01:56 by anematol          #+#    #+#             */
-/*   Updated: 2026/09/27 16:22:42 by anematol         ###   ########.fr       */
+/*   Updated: 2026/10/03 12:34:56 by anematol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ static void	init_env(t_mlx_data *env_p)
 	env_p->player_img.img = NULL;
 	env_p->player_img.img = NULL;
 	env_p->background_img.img = NULL;
+	env_p->background_buffer_img.img = NULL;
 	env_p->sprite_n_img.img = NULL;
 	env_p->sprite_e_img.img = NULL;
 	env_p->sprite_s_img.img = NULL;
@@ -82,6 +83,8 @@ void	destroy_everything_and_exit(t_mlx_data *env_p, int exit_code)
 		mlx_destroy_image(env_p->mlx, env_p->player_img.img);
 	if (env_p->background_img.img)
 		mlx_destroy_image(env_p->mlx, env_p->background_img.img);
+	if (env_p->background_buffer_img.img)
+		mlx_destroy_image(env_p->mlx, env_p->background_buffer_img.img);
 	if (env_p->sprite_n_img.img)
 		mlx_destroy_image(env_p->mlx, env_p->sprite_n_img.img);
 	if (env_p->sprite_e_img.img)

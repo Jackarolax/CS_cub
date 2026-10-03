@@ -6,7 +6,7 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/08 20:05:46 by anematol          #+#    #+#             */
-/*   Updated: 2026/09/27 16:21:27 by anematol         ###   ########.fr       */
+/*   Updated: 2026/10/03 12:41:50 by anematol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ void	draw_ceil(t_mlx_data *env_p)
 	end.y = 0;
 	while (start.y <= WIN_HEIGHT / 2)
 	{
-		draw_line(env_p->background_img, start, end, env_p->ceil_color);
+		draw_line(env_p->background_buffer_img, start, end, env_p->ceil_color);
 		start.y++;
 		end.y++;
 	}
@@ -124,7 +124,7 @@ void	draw_floor(t_mlx_data *env_p)
 	end.y = WIN_HEIGHT / 2;
 	while (start.y <= WIN_HEIGHT)
 	{
-		draw_line(env_p->background_img, start, end, env_p->floor_color);
+		draw_line(env_p->background_buffer_img, start, end, env_p->floor_color);
 		start.y++;
 		end.y++;
 	}
@@ -411,9 +411,6 @@ int	draw_to_window(t_mlx_data	*env_p)
 	// int	i;
 
 	reset_img(env_p->background_img);
-	draw_ceil(env_p);
-	draw_floor(env_p);
-	draw_fov(env_p);
 	// reset_img(env_p->player_img);
 	// draw_rotated_triangle(env_p);
 	// draw_obstacles(env_p);
@@ -425,8 +422,9 @@ int	draw_to_window(t_mlx_data	*env_p)
 	// 	draw_ray(env_p->background_img, env_p, -i);
 	// 	i += 1.0;
 	// }
-	// put_img_inside_img(env_p->player_img, env_p->background_img,
-	// 	(int) env_p->player_x, (int) env_p->player_y);
+	put_img_inside_img(env_p->background_buffer_img, env_p->background_img,
+	 	0, 0);
+	draw_fov(env_p);
 	mlx_put_image_to_window(env_p->mlx, env_p->win,
 		env_p->background_img.img, 0, 0);
 	return (0);
