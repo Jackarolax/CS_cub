@@ -51,6 +51,9 @@ CFILES =	src/main.c \
 			src/parser/parser_coordinates.c\
 			src/parser/parser_helpers.c\
 			src/parser/parser_map.c\
+			src/parser/parser_map_rules.c\
+			src/parser/parser_memo.c\
+			src/parser/parser_player.c\
 
 OFILES =	main.o \
 

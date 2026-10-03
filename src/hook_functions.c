@@ -17,7 +17,7 @@ int	close_window(void *param)
 	t_mlx_data	*env_p;
 
 	env_p = (t_mlx_data *)param;
-	destroy_everything_and_exit(env_p);
+	destroy_everything_and_exit(env_p, EXIT_SUCCESS);
 	return (0);
 }
 

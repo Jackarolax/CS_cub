@@ -17,16 +17,31 @@ char	*check_file_permissions(t_mlx_data *env_p, char **tokens)
 	char	*path;
 
 	if (!tokens[0] || !tokens[1] || tokens[2])
-		return ("Check identifiers");
+		return ("Error\nCheck identifiers");
 	else
 	{
 		path = fill_coordinates(env_p->identifiers, tokens);
 		if (!path)
-			return ("Not a valid identifier");
+			return ("Error\nNot a valid identifier");
 		if (path && access(path, F_OK | R_OK) == -1)
-			return ("Could not open sprite file");
+			return ("Error\nCould not open sprite file");
 	}
 	return (NULL);
+}
+
+int	check_coordinate(char *tokens, size_t *i)
+{
+	const char	*coordinates[] = {
+		ID_NO,
+		ID_SO,
+		ID_EA,
+		ID_WE
+	};
+
+	while (*i < COORD_LENGTH
+		&& ft_strncmp(tokens, coordinates[*i], 2) != VALID)
+		(*i)++;
+	return (*i);
 }
 
 int	complete_ids(t_id *id_p)
@@ -40,14 +55,11 @@ int	complete_ids(t_id *id_p)
 	return (0);
 }
 
-int valid_space_nline(char character)
+int	valid_space_nline(char character)
 {
 	if (character == ' '
 		|| character == '\n'
 		|| character == '\t')
-	/*if (ft_strncmp(token, " ", 1) == VALID
-		|| ft_strncmp(token, "\t", 1) == VALID
-		|| ft_strncmp(token, "\n", 1) == VALID)*/
 		return (1);
 	return (0);
 }
@@ -60,21 +72,5 @@ void	call_error(t_mlx_data *env_p, char *message)
 		env_p->map_info->map_fd = -1;
 	}
 	perror(message);
-	destroy_everything_and_exit(env_p);
-}
-
-void	free_str_array(char **str)
-{
-	char	**str_start;
-
-	str_start = str;
-	if (str)
-	{
-		while (*str)
-		{
-			free(*str);
-			str++;
-		}
-		free(str_start);
-	}
+	destroy_everything_and_exit(env_p, EXIT_FAILURE);
 }

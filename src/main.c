@@ -24,19 +24,6 @@ static void	init_map_info(t_map_info *info)
 	info->last_row = 0;
 }
 
-void	free_map(t_mlx_data *env_p)
-{
-	int	i;
-
-	i = 0;
-	while (env_p->map_info->map[i])
-	{
-		free(env_p->map_info->map[i]);
-		i++;
-	}
-	free(env_p->map_info->map);
-}
-
 static void	init_identifiers(t_id *identifiers_p)
 {
 	identifiers_p->line_start = NULL;
@@ -87,7 +74,7 @@ static void	init_env(t_mlx_data *env_p)
 	env_p->block_size = 0;
 }
 
-void	destroy_everything_and_exit(t_mlx_data *env_p)
+void	destroy_everything_and_exit(t_mlx_data *env_p, int exit_code)
 {
 	if (env_p->player_img.img)
 		mlx_destroy_image(env_p->mlx, env_p->player_img.img);
@@ -112,15 +99,30 @@ void	destroy_everything_and_exit(t_mlx_data *env_p)
 		env_p->identifiers->tokens = NULL;
 	}
 	if (env_p->identifiers->NO)
+	{
 		free(env_p->identifiers->NO);
+		env_p->identifiers->NO = NULL;
+	}
 	if (env_p->identifiers->SO)
+	{
 		free(env_p->identifiers->SO);
+		env_p->identifiers->SO = NULL;
+	}
 	if (env_p->identifiers->WE)
+	{
 		free(env_p->identifiers->WE);
+		env_p->identifiers->WE = NULL;
+	}
 	if (env_p->identifiers->EA)
+	{
 		free(env_p->identifiers->EA);
+		env_p->identifiers->EA = NULL;
+	}
 	if (env_p->identifiers)
+	{
 		free(env_p->identifiers);
+		env_p->identifiers = NULL;
+	}
 	if (env_p->map_info)
 	{
 		free_str_array(env_p->map_info->map);
@@ -130,7 +132,7 @@ void	destroy_everything_and_exit(t_mlx_data *env_p)
 	}
 	if (env_p->mlx)
 		free(env_p->mlx);
-	exit(EXIT_FAILURE);
+	exit(exit_code);
 }
 
 int main(int ac, char **av)
