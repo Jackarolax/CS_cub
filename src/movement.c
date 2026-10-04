@@ -6,7 +6,7 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/08 20:15:51 by anematol          #+#    #+#             */
-/*   Updated: 2026/09/27 16:24:32 by anematol         ###   ########.fr       */
+/*   Updated: 2026/10/04 11:16:20 by anematol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,10 @@ void	move_player_with_collisions(t_mlx_data *env_p, int new_x, int new_y)
 	}
 	else if (touching_x(env_p))
 	{
-		printf("touching x");
 		env_p->player_y = collision_position_y(env_p, new_y);
 	}
 	else if (touching_y(env_p))
 	{
-		printf("touching y");
 		env_p->player_x = collision_position_x(env_p, new_x);
 	}
 }
