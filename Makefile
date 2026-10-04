@@ -40,6 +40,8 @@ LIBFT_DIR = ./libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
 CFILES =	src/main.c \
+			src/init_values.c \
+			src/destroy_everything.c \
 			src/minilibx.c \
 			src/hook_functions.c\
 			src/draw.c\
