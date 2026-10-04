@@ -6,7 +6,7 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/02 13:01:50 by anematol          #+#    #+#             */
-/*   Updated: 2026/10/03 11:42:13 by ssin             ###   ########.fr       */
+/*   Updated: 2026/10/04 11:02:15 by anematol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@
 # define RED 0x00FF0000
 # define GREEN 0x0000FF00
 # define BLUE 0x000000FF
+# define GREY 0x00808080
+# define DARK_GREY 0x00363737
 
 typedef struct s_img
 {
@@ -74,36 +76,39 @@ typedef struct s_img
 	int		bpp;
 	int		line_length;
 	int		endian;
-}				t_img;
+}	t_img;
 
 typedef struct s_coords
 {
 	int	x;
 	int	y;
-}				t_coords;
+}	t_coords;
 
-typedef struct s_map_info {
+typedef struct s_map_info
+{
 	int		map_fd;
 	char	**map;
 	int		map_started;
 	int		map_height;
 	int		map_width;
-	int		player_x_start;
-	int		player_y_start;
+	double	player_x;
+	double	player_y;
+	double	player_direction;
 	int		last_row;
 }	t_map_info;
 
-typedef struct s_vector {
+typedef struct s_vector
+{
 	double	x;
 	double	y;
-}				t_vector;
+}	t_vector;
 
 typedef struct s_3points
 {
 	t_coords	p1;
 	t_coords	p2;
 	t_coords	p3;
-}				t_3points;
+}	t_3points;
 
 typedef struct s_id {
 	char	*line_start;
@@ -120,7 +125,8 @@ typedef struct s_id {
 	int		c_b;
 }	t_id;
 
-typedef struct s_mlx_data {
+typedef struct s_mlx_data
+{
 	t_img		player_img;
 	t_img		sprite_n_img;
 	t_img		sprite_s_img;
@@ -129,6 +135,7 @@ typedef struct s_mlx_data {
 	int			ceil_color;
 	int			floor_color;
 	t_img		background_img;
+	t_img		background_buffer_img;
 	void		*mlx;
 	void		*win;
 	int			width;
@@ -139,9 +146,6 @@ typedef struct s_mlx_data {
 	int			mv_r_pressed;
 	int			look_l_pressed;
 	int			look_r_pressed;
-	double		player_x;
-	double		player_y;
-	double		player_direction;
 	t_vector	ray_vector;
 	char		**map;
 	int			map_height;
@@ -149,12 +153,11 @@ typedef struct s_mlx_data {
 	int			block_size;
 	t_id		*identifiers;
 	t_map_info	*map_info;
-}				t_mlx_data;
+}	t_mlx_data;
 
 /* minilibx */
 void		set_minilibx(t_mlx_data *env_p);
 t_coords	rotate_point(t_coords point, t_coords center, double angle);
-void		pixel_put(t_img img, int x, int y, int color);
 
 /* parser */
 void		parser(char *map, t_mlx_data *env);
@@ -177,18 +180,15 @@ int			add_line_to_map(t_mlx_data *env_p, char *line, int i);
 int			valid_map_content(char tokens);
 void		valid_map(t_mlx_data *env_p);
 
-int			check_walkable_cels(t_mlx_data *env_p, int i);
+double		check_walkable_cels(t_mlx_data *env_p, double i);
 void		standardize_map(t_mlx_data *env_p);
 
 void		clean_memo(t_mlx_data *env_p, char **tokens);
 void		free_str_array(char **str);
 
-void		add_player_pos(t_mlx_data *env_p, int i, int j);
+void		add_player_pos(t_mlx_data *env_p, double i, double j);
 int			is_player_id(char player);
 int			player_exists(t_mlx_data *env_p);
-
-/* movement */
-void		move_player(t_mlx_data *env_p);
 
 /* hook_functions */
 int			close_window(void *param);
@@ -196,27 +196,64 @@ int			handle_key_press(int keycode, void *param);
 int			handle_key_release(int keycode, void *param);
 int			update_game(void *param);
 
-/* main */
+/* init_values */
+void		init_env(t_mlx_data *env_p);
+
+/* destroy_everything */
 void		destroy_everything_and_exit(t_mlx_data *env_p, int exit_code);
 
 /* draw */
+void		pixel_put(t_img img, int x, int y, int color);
+int			get_img_pixel(t_img image, int x, int y);
 int			draw_to_window(t_mlx_data	*env_p);
-void		draw_line(t_img img, t_coords begin, t_coords end, int color);
 void		draw_rotated_triangle(t_mlx_data *env_p);
-void		draw_square(t_img img, t_coords start_point, int len, int color);
 void		draw_obstacles(t_mlx_data *env_p);
+
+/* movement */
+void		move_player(t_mlx_data *env_p);
+
+/* movement_collision_checking */
 int			check_collision(t_mlx_data *env_p, int check_x, int check_y);
 int			collision_position_x(t_mlx_data *env_p, int new_x);
 int			collision_position_y(t_mlx_data *env_p, int new_y);
 int			touching_x(t_mlx_data *env_p);
 int			touching_y(t_mlx_data *env_p);
+
+/* coords_and_vectors */
 t_coords	give_coords(int x, int y);
 t_vector	give_vector(double x, double y);
+t_coords	add_coords(t_coords coords_1, t_coords coords_2);
+t_coords	vector2coords(t_vector vector);
+t_3points	give_3points(t_coords p1, t_coords p2, t_coords p3);
+
+/* draw_fov */
+void		draw_floor(t_mlx_data *env_p);
+void		draw_ceil(t_mlx_data *env_p);
+void		draw_fov(t_mlx_data *env_p);
+
+/* raycasting */
 t_vector	get_ray_vector(t_mlx_data *env_p, double degree_angle);
 double		get_ray_len(t_mlx_data *env_p, double degree_angle);
 t_coords	get_exact_collision_point(t_mlx_data *env_p, t_vector ray_vector);
-char		get_wall_collision_side(t_mlx_data *env_p);
+
+/* raycasting_helpers */
+int			is_out_of_bounds(t_img img, t_coords coords);
+int			check_ray_collision(t_mlx_data *env_p, int check_x, int check_y);
 double		get_wall_x(t_mlx_data *env_p);
-t_coords	add_coords(t_coords coords_1, t_coords coords_2);
+char		get_wall_collision_side(t_mlx_data *env_p);
+
+/* draw_primitive */
+void		draw_line(t_img img, t_coords begin, t_coords end, int color);
+void		draw_square(t_img img, t_coords start_point, int len, int color);
+void		draw_triangle(t_img img, t_3points triangle, int color);
+void		fill_square(t_img img, t_coords start_point, int len, int color);
+void		fill_triangle(t_img img, t_3points triangle, int color);
+
+/* draw_2d_testing */
+void		draw_rotated_triangle(t_mlx_data *env_p);
+void		draw_obstacles(t_mlx_data *env_p);
+void		draw_ray(t_img image, t_mlx_data *env_p, double degree_angle);
+void		draw_2nd_ray(t_img image, t_mlx_data *env_p,
+				t_coords wall_coll_pos);
 
 #endif

@@ -6,7 +6,7 @@
 #    By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/08/02 13:02:01 by anematol          #+#    #+#              #
-#    Updated: 2026/09/13 13:49:59 by anematol         ###   ########.fr        #
+#    Updated: 2026/10/03 14:23:45 by anematol         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,12 +40,19 @@ LIBFT_DIR = ./libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
 CFILES =	src/main.c \
+			src/init_values.c \
+			src/destroy_everything.c \
 			src/minilibx.c \
 			src/hook_functions.c\
 			src/draw.c\
+			src/draw_fov.c\
+			src/draw_primitive.c\
+			src/coords_and_vectors.c\
+			src/draw_2d_testing.c\
 			src/movement.c\
 			src/movement_collision_checking.c\
 			src/raycasting.c\
+			src/raycasting_helpers.c\
 			src/parser/parser.c\
 			src/parser/parser_colors.c\
 			src/parser/parser_coordinates.c\
