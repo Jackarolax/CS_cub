@@ -18,6 +18,8 @@ static void	destroy_img(t_mlx_data *env_p)
 		mlx_destroy_image(env_p->mlx, env_p->player_img.img);
 	if (env_p->background_img.img)
 		mlx_destroy_image(env_p->mlx, env_p->background_img.img);
+	if (env_p->background_buffer_img.img)
+		mlx_destroy_image(env_p->mlx, env_p->background_buffer_img.img);
 	if (env_p->sprite_n_img.img)
 		mlx_destroy_image(env_p->mlx, env_p->sprite_n_img.img);
 	if (env_p->sprite_e_img.img)

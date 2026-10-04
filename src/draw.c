@@ -6,19 +6,18 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/08 20:05:46 by anematol          #+#    #+#             */
-/*   Updated: 2026/09/27 16:21:27 by anematol         ###   ########.fr       */
+/*   Updated: 2026/10/03 14:16:07 by anematol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub.h"
 
-t_coords	give_coords(int x, int y)
+void	pixel_put(t_img img, int x, int y, int color)
 {
-	t_coords	coords;
+	char	*dst;
 
-	coords.x = x;
-	coords.y = y;
-	return (coords);
+	dst = img.addr + (y * img.line_length + x * (img.bpp / 8));
+	*(unsigned int *)dst = color;
 }
 
 void	reset_img(t_img image)
@@ -32,352 +31,13 @@ void	reset_img(t_img image)
 	ft_bzero(pixels, total_size);
 }
 
-t_coords	add_coords(t_coords coords_1, t_coords coords_2)
-{
-	coords_1.x += coords_2.x;
-	coords_1.y += coords_2.y;
-	return (coords_1);
-}
-
-int	is_out_of_bounds(t_img img, t_coords coords)
-{
-	if (coords.x >= 0 && coords.y >= 0
-		&& coords.x <= img.width && coords.y <= img.height)
-		return (0);
-	else
-		return (1);
-}
-
-t_coords	vector2coords(t_vector vector)
-{
-	t_coords	coords;
-	coords.x = (int) round(vector.x);
-	coords.y = (int) round(vector.y);
-	return (coords);
-}
-
-void	draw_line(t_img img, t_coords begin, t_coords end, int color)
-{
-	t_vector	delta;
-	t_coords	curr_delta;
-	double		line_len;
-	double		i;
-
-	delta.x = (double)(end.x - begin.x);
-	delta.y = (double)(end.y - begin.y);
-	line_len = sqrt((delta.x * delta.x) + (delta.y * delta.y));
-	i = 0.0;
-	while (i <= line_len)
-	{
-		curr_delta.x = (int) round(delta.x * i / line_len);
-		curr_delta.y = (int) round(delta.y * i / line_len);
-		if (!is_out_of_bounds(img, add_coords(begin, curr_delta)))
-			pixel_put(img, add_coords(begin, curr_delta).x,
-				add_coords(begin, curr_delta).y, color);
-		i++;
-	}
-}
-
-void	draw_square(t_img img, t_coords start_point, int len, int color)
-{
-	t_coords	end_point;
-
-	end_point.x = start_point.x + len;
-	end_point.y = start_point.y;
-	draw_line(img, start_point, end_point, color);
-	start_point.x += len;
-	start_point.y += len;
-	draw_line(img, start_point, end_point, color);
-	end_point.x -= len;
-	end_point.y += len;
-	draw_line(img, start_point, end_point, color);
-	start_point.x -= len;
-	start_point.y -= len;
-	draw_line(img, start_point, end_point, color);
-}
-
-void	draw_ceil(t_mlx_data *env_p)
-{
-	t_coords	start;
-	t_coords	end;
-
-	start.x = 0;
-	start.y = 0;
-	end.x = WIN_WIDTH;
-	end.y = 0;
-	while (start.y <= WIN_HEIGHT / 2)
-	{
-		draw_line(env_p->background_img, start, end, env_p->ceil_color);
-		start.y++;
-		end.y++;
-	}
-}
-
-void	draw_floor(t_mlx_data *env_p)
-{
-	t_coords	start;
-	t_coords	end;
-
-	start.x = 0;
-	start.y = WIN_HEIGHT / 2;
-	end.x = WIN_WIDTH;
-	end.y = WIN_HEIGHT / 2;
-	while (start.y <= WIN_HEIGHT)
-	{
-		draw_line(env_p->background_img, start, end, env_p->floor_color);
-		start.y++;
-		end.y++;
-	}
-}
-
-void	fill_square(t_img img, t_coords start_point, int len, int color)
-{
-	t_coords	end_point;
-	int			i;
-
-	end_point.x = start_point.x + len;
-	end_point.y = start_point.y;
-	i = 0;
-	while (i <= len)
-	{
-		draw_line(img, start_point, end_point, color);
-		start_point.y++;
-		end_point.y++;
-		i++;
-	}
-}
-
-void	draw_obstacles(t_mlx_data *env_p)
-{
-	int		grid_x;
-	int		grid_y;
-
-	grid_y = 0;
-	while (env_p->map_info->map[grid_y])
-	{
-		grid_x = 0;
-		while (env_p->map_info->map[grid_y][grid_x])
-		{
-			if (env_p->map_info->map[grid_y][grid_x] == '1')
-			{
-				fill_square(env_p->background_img,
-					give_coords(grid_x * env_p->block_size,
-						grid_y * env_p->block_size),
-					env_p->block_size, WHITE);
-				draw_square(env_p->background_img,
-					give_coords(grid_x * env_p->block_size,
-						grid_y * env_p->block_size),
-					env_p->block_size, WHITE);
-			}
-			grid_x++;
-		}
-		grid_y++;
-	}
-}
-
-t_3points	give_3points(t_coords p1, t_coords p2, t_coords p3)
-{
-	t_3points	points;
-
-	points.p1 = p1;
-	points.p2 = p2;
-	points.p3 = p3;
-	return (points);
-}
-
-void	draw_triangle(t_img img, t_3points triangle, int color)
-{
-	draw_line(img, triangle.p1, triangle.p2, color);
-	draw_line(img, triangle.p2, triangle.p3, color);
-	draw_line(img, triangle.p3, triangle.p1, color);
-}
-
-void	fill_triangle(t_img img, t_3points triangle, int color)
-{
-	t_vector	delta;
-	t_coords	curr_delta;
-	double		line_len;
-	double		i;
-
-	delta.x = (double)(triangle.p3.x - triangle.p2.x);
-	delta.y = (double)(triangle.p3.y - triangle.p2.y);
-	line_len = sqrt((delta.x * delta.x) + (delta.y * delta.y));
-	i = 0.0;
-	while (i <= line_len)
-	{
-		curr_delta.x = (int) round(delta.x * i / line_len);
-		curr_delta.y = (int) round(delta.y * i / line_len);
-		draw_line(img, triangle.p1,
-			add_coords(triangle.p2, curr_delta), color);
-		i += 0.01;
-	}
-}
-
-void	draw_rotated_triangle(t_mlx_data *env_p)
-{
-	t_3points	triangle;
-	t_coords	center_point;
-
-	triangle.p1.x = MINI_PLAYER_CENTER_POINT + MINI_PLAYER_LENGTH / 2;
-	triangle.p1.y = MINI_PLAYER_CENTER_POINT;
-	triangle.p2.x = MINI_PLAYER_CENTER_POINT - MINI_PLAYER_LENGTH / 2;
-	triangle.p2.y = MINI_PLAYER_CENTER_POINT - MINI_PLAYER_WIDTH / 2;
-	triangle.p3.x = MINI_PLAYER_CENTER_POINT - MINI_PLAYER_LENGTH / 2;
-	triangle.p3.y = MINI_PLAYER_CENTER_POINT + MINI_PLAYER_WIDTH / 2;
-	center_point.x = MINI_PLAYER_CENTER_POINT;
-	center_point.y = MINI_PLAYER_CENTER_POINT;
-	triangle.p1 = rotate_point(triangle.p1, center_point,
-			env_p->map_info->player_direction);
-	triangle.p2 = rotate_point(triangle.p2, center_point,
-			env_p->map_info->player_direction);
-	triangle.p3 = rotate_point(triangle.p3, center_point,
-			env_p->map_info->player_direction);
-	fill_triangle(env_p->player_img, triangle, RED + BLUE + GREEN);
-	draw_triangle(env_p->player_img, triangle, RED);
-}
-
 // Get pixel color from sprite
-static int	get_img_pixel(t_img image, int x, int y)
+int	get_img_pixel(t_img image, int x, int y)
 {
 	char	*pixel;
 
 	pixel = image.addr + (y * image.line_length + x * (image.bpp / 8));
 	return (*(int *)pixel);
-}
-
-void	draw_2nd_ray(t_img image, t_mlx_data *env_p, t_coords wall_coll_pos)
-{
-	t_vector	ray_vector;
-
-	ray_vector = env_p->ray_vector;
-	if (ray_vector.x >= 0.0 && (wall_coll_pos.x % env_p->block_size) == 0
-		&& (wall_coll_pos.y % env_p->block_size) != 0)
-		draw_line(image, wall_coll_pos,
-			give_coords(wall_coll_pos.x + env_p->block_size, wall_coll_pos.y),
-			GREEN);
-	else if (ray_vector.x < 0.0 && (wall_coll_pos.x % env_p->block_size) == 0
-		&& (wall_coll_pos.y % env_p->block_size) != 0)
-		draw_line(image, wall_coll_pos,
-			give_coords(wall_coll_pos.x - env_p->block_size, wall_coll_pos.y),
-			GREEN);
-	else if (ray_vector.y >= 0.0 && (wall_coll_pos.y % env_p->block_size) == 0
-		&& (wall_coll_pos.x % env_p->block_size) != 0)
-		draw_line(image, wall_coll_pos,
-			give_coords(wall_coll_pos.x, wall_coll_pos.y + env_p->block_size),
-			RED);
-	else if (ray_vector.y < 0.0 && (wall_coll_pos.y % env_p->block_size) == 0
-		&& (wall_coll_pos.x % env_p->block_size) != 0)
-		draw_line(image, wall_coll_pos,
-			give_coords(wall_coll_pos.x, wall_coll_pos.y - env_p->block_size),
-			RED);
-}
-
-void	draw_ray(t_img image, t_mlx_data *env_p, double degree_angle)
-{
-	t_vector	ray_vector;
-	t_coords	wall_coll_pos;
-
-	ray_vector = get_ray_vector(env_p, degree_angle);
-	env_p->ray_vector = ray_vector;
-	wall_coll_pos = get_exact_collision_point(env_p, ray_vector);
-	draw_line(image,
-		give_coords((int) env_p->map_info->player_x + MINI_PLAYER_CENTER_POINT,
-			(int) env_p->map_info->player_y + MINI_PLAYER_CENTER_POINT),
-		wall_coll_pos,
-		0x00FF0000);
-	draw_2nd_ray(image, env_p, wall_coll_pos);
-}
-
-void	draw_fov_line(t_mlx_data *env_p, int x, int line_len)
-{
-	int		y_up;
-	int		y_down;
-	int		thickness;
-	double	wall_x;
-
-	y_up = (WIN_HEIGHT / 2) - (line_len / 2);
-	y_down = (WIN_HEIGHT / 2) + (line_len / 2);
-	thickness = (y_down - y_up) / 20;
-	wall_x = get_wall_x(env_p);
-	if (wall_x < 0.05 || wall_x > 0.95)
-		draw_line(env_p->background_img, give_coords(x, y_up),
-			give_coords(x, y_down), BLUE);
-	else
-		draw_line(env_p->background_img, give_coords(x, y_up),
-			give_coords(x, y_down), BLUE + GREEN);
-	if (y_up + thickness >= 0)
-		draw_line(env_p->background_img, give_coords(x, y_up),
-			give_coords(x, y_up + thickness), BLUE);
-	if (y_down - thickness <= env_p->background_img.height)
-		draw_line(env_p->background_img, give_coords(x, y_down - thickness),
-			give_coords(x, y_down), BLUE);
-}
-
-void	draw_fov_line_sprite(t_img sprite,
-	t_mlx_data *env_p, int x, int line_len)
-{
-	int		y_up;
-	int		y_down;
-	double	wall_x;
-	double	wall_y;
-
-	y_up = (WIN_HEIGHT / 2) - (line_len / 2);
-	y_down = (WIN_HEIGHT / 2) + (line_len / 2);
-	wall_x = get_wall_x(env_p);
-	wall_y = 0.0;
-	while (wall_y < 1.0)
-	{
-		if (y_up + (int)((double)(y_down - y_up) *wall_y) > 0
-			&& y_up + (int)((double)(y_down - y_up) *wall_y)
-				< env_p->background_img.height)
-			pixel_put(env_p->background_img, x,
-				y_up + (y_down - y_up) * wall_y,
-				get_img_pixel(sprite, (int)((double)sprite.width * wall_x),
-					(int)((double)sprite.height * wall_y)));
-		wall_y += 0.9 / ((double)(y_down - y_up));
-	}
-}
-
-void	draw_corresponding_fov_line(t_mlx_data *env_p, double degree_angle)
-{
-	int		x;
-	int		line_len;
-	double	sign;
-
-	if (degree_angle < 0.0)
-		sign = -1.0;
-	else
-		sign = 1.0;
-	degree_angle *= sign;
-	x = (WIN_WIDTH / 2)
-		+ (int)round((double)(WIN_WIDTH / 2)
-			*(degree_angle / ((double)FOV_DEGREE / 2.0)) * sign);
-	line_len = ((FOV_HEIGHT_SCALING_FACTOR * WIN_HEIGHT / FOV_DEGREE)
-			* WIN_HEIGHT) / get_ray_len(env_p, degree_angle * sign);
-	if (get_wall_collision_side(env_p) == 'N')
-		draw_fov_line_sprite(env_p->sprite_n_img, env_p, x, line_len);
-	else if (get_wall_collision_side(env_p) == 'S')
-		draw_fov_line_sprite(env_p->sprite_s_img, env_p, x, line_len);
-	else if (get_wall_collision_side(env_p) == 'W')
-		draw_fov_line_sprite(env_p->sprite_w_img, env_p, x, line_len);
-	else if (get_wall_collision_side(env_p) == 'E')
-		draw_fov_line_sprite(env_p->sprite_e_img, env_p, x, line_len);
-}
-
-void	draw_fov(t_mlx_data *env_p)
-{
-	double	degree_angle;
-	double	line_delta;
-
-	line_delta = ((double)FOV_DEGREE / (double)WIN_WIDTH);
-	draw_corresponding_fov_line(env_p, 0);
-	degree_angle = line_delta;
-	while ((int) degree_angle < FOV_DEGREE / 2)
-	{
-		draw_corresponding_fov_line(env_p, degree_angle);
-		draw_corresponding_fov_line(env_p, -degree_angle);
-		degree_angle += line_delta;
-	}
 }
 
 void	put_img_inside_img(t_img small_image, t_img large_image,
@@ -408,25 +68,10 @@ void	put_img_inside_img(t_img small_image, t_img large_image,
 
 int	draw_to_window(t_mlx_data	*env_p)
 {
-	// int	i;
-
 	reset_img(env_p->background_img);
-	draw_ceil(env_p);
-	draw_floor(env_p);
+	put_img_inside_img(env_p->background_buffer_img, env_p->background_img,
+		0, 0);
 	draw_fov(env_p);
-	// reset_img(env_p->player_img);
-	// draw_rotated_triangle(env_p);
-	// draw_obstacles(env_p);
-	// draw_ray(env_p->background_img, env_p, 0);
-	// i = 1.0;
-	// while (i < 45)
-	// {
-	// 	draw_ray(env_p->background_img, env_p, i);
-	// 	draw_ray(env_p->background_img, env_p, -i);
-	// 	i += 1.0;
-	// }
-	// put_img_inside_img(env_p->player_img, env_p->background_img,
-	// 	(int) env_p->map_info->player_x, (int) env_p->map_info->player_y);
 	mlx_put_image_to_window(env_p->mlx, env_p->win,
 		env_p->background_img.img, 0, 0);
 	return (0);
