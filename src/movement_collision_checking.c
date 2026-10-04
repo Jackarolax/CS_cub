@@ -43,7 +43,8 @@ int	collision_position_x(t_mlx_data *env_p, int new_x)
 	{
 		while (i <= env_p->map_info->player_x - new_x)
 		{
-			if (check_collision(env_p, env_p->map_info->player_x - i, env_p->map_info->player_y))
+			if (check_collision(env_p, env_p->map_info->player_x - i,
+					env_p->map_info->player_y))
 				return (env_p->map_info->player_x - i + 1);
 			i++;
 		}
@@ -52,7 +53,8 @@ int	collision_position_x(t_mlx_data *env_p, int new_x)
 	{
 		while (i <= new_x - env_p->map_info->player_x)
 		{
-			if (check_collision(env_p, env_p->map_info->player_x + i, env_p->map_info->player_y))
+			if (check_collision(env_p, env_p->map_info->player_x + i,
+					env_p->map_info->player_y))
 				return (env_p->map_info->player_x + i - 1);
 			i++;
 		}
@@ -69,7 +71,8 @@ int	collision_position_y(t_mlx_data *env_p, int new_y)
 	{
 		while (i <= env_p->map_info->player_y - new_y)
 		{
-			if (check_collision(env_p, env_p->map_info->player_x, env_p->map_info->player_y - i))
+			if (check_collision(env_p, env_p->map_info->player_x,
+					env_p->map_info->player_y - i))
 				return (env_p->map_info->player_y - i + 1);
 			i++;
 		}
@@ -78,7 +81,8 @@ int	collision_position_y(t_mlx_data *env_p, int new_y)
 	{
 		while (i <= new_y - env_p->map_info->player_y)
 		{
-			if (check_collision(env_p, env_p->map_info->player_x, env_p->map_info->player_y + i))
+			if (check_collision(env_p, env_p->map_info->player_x,
+					env_p->map_info->player_y + i))
 				return (env_p->map_info->player_y + i - 1);
 			i++;
 		}
@@ -88,16 +92,20 @@ int	collision_position_y(t_mlx_data *env_p, int new_y)
 
 int	touching_x(t_mlx_data *env_p)
 {
-	if (check_collision(env_p, env_p->map_info->player_x - 1, env_p->map_info->player_y)
-		|| check_collision(env_p, env_p->map_info->player_x + 1, env_p->map_info->player_y))
+	if (check_collision(env_p, env_p->map_info->player_x - 1,
+			env_p->map_info->player_y)
+		|| check_collision(env_p, env_p->map_info->player_x + 1,
+			env_p->map_info->player_y))
 		return (1);
 	return (0);
 }
 
 int	touching_y(t_mlx_data *env_p)
 {
-	if (check_collision(env_p, env_p->map_info->player_x, env_p->map_info->player_y - 1)
-		|| check_collision(env_p, env_p->map_info->player_x, env_p->map_info->player_y + 1))
+	if (check_collision(env_p, env_p->map_info->player_x,
+			env_p->map_info->player_y - 1)
+		|| check_collision(env_p, env_p->map_info->player_x,
+			env_p->map_info->player_y + 1))
 		return (1);
 	return (0);
 }

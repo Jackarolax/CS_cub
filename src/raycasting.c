@@ -19,12 +19,15 @@ t_vector	get_ray_vector(t_mlx_data *env_p, double degree_angle)
 	t_vector	vector;
 	t_vector	delta;
 
-	vector.x = cos(env_p->map_info->player_direction + (degree_angle / 180 * M_PI));
-	vector.y = sin(env_p->map_info->player_direction + (degree_angle / 180 * M_PI));
+	vector.x = cos(env_p->map_info->player_direction
+			+ (degree_angle / 180 * M_PI));
+	vector.y = sin(env_p->map_info->player_direction
+			+ (degree_angle / 180 * M_PI));
 	delta.x = vector.x;
 	delta.y = vector.y;
 	while (!check_ray_collision(env_p,
-			(int)(vector.x + env_p->map_info->player_x + MINI_PLAYER_CENTER_POINT),
+			(int)(vector.x + env_p->map_info->player_x
+			+ MINI_PLAYER_CENTER_POINT),
 		(int)(vector.y + env_p->map_info->player_y + MINI_PLAYER_CENTER_POINT)))
 	{
 		vector.x += 0.1 * delta.x;

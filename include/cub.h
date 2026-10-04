@@ -91,9 +91,9 @@ typedef struct s_map_info
 	int		map_started;
 	int		map_height;
 	int		map_width;
-	double		player_x;
-	double		player_y;
-	double		player_direction;
+	double	player_x;
+	double	player_y;
+	double	player_direction;
 	int		last_row;
 }	t_map_info;
 
@@ -197,7 +197,7 @@ int			handle_key_release(int keycode, void *param);
 int			update_game(void *param);
 
 /* init_values */
-void	init_env(t_mlx_data *env_p);
+void		init_env(t_mlx_data *env_p);
 
 /* destroy_everything */
 void		destroy_everything_and_exit(t_mlx_data *env_p, int exit_code);
