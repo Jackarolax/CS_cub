@@ -1,7 +1,7 @@
-NO ./minilibx/test/open24.xpm
-SO ./minilibx/test/open24.xpm
-WE ./minilibx/test/open24.xpm
-EA ./minilibx/test/open24.xpm
+NO ./maps/dune-tile-golden.xpm
+SO ./maps/dune-tile-golden.xpm
+WE ./maps/dune-tile-golden.xpm
+EA ./maps/dune-tile-golden.xpm
 
 F 220,100,10
 C 225,30,2

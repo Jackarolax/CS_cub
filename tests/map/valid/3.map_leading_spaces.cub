@@ -1,7 +1,7 @@
-NO minilibx/test/open.xpm
-SO minilibx/test/open.xpm
-WE minilibx/test/open.xpm
-EA minilibx/test/open.xpm
+NO ./maps/desert-cracked-tile.xpm
+SO ./maps/flagstone-tile-gray.xpm
+WE ./maps/desert-cracked-tile.xpm
+EA ./maps/flagstone-tile-gray.xpm
 F 100,110,120
 C 200,210,220
 

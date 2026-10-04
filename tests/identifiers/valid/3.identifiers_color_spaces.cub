@@ -1,7 +1,7 @@
-NO    minilibx/test/open.xpm
-SO minilibx/test/open.xpm
-WE minilibx/test/open.xpm
-EA minilibx/test/open.xpm
+NO    ./maps/desert-cracked-tile.xpm
+SO ./maps/desert-cracked-tile.xpm
+WE ./maps/desert-cracked-tile.xpm
+EA ./maps/desert-cracked-tile.xpm
 F 0, 127, 255
 C 255, 127, 0
 

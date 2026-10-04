@@ -1,6 +1,6 @@
 NO minilibx/test/does-not-exist.xpm
-SO minilibx/test/open.xpm
-WE minilibx/test/open.xpm
-EA minilibx/test/open.xpm
+SO ./maps/brick-tile-red.xpm
+WE ./maps/brick-tile-red.xpm
+EA ./maps/brick-tile-red.xpm
 F 1,2,3
 C 4,5,6

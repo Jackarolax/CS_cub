@@ -1,7 +1,7 @@
-NO ./include/cub.h
-SO ./include/cub.h
-WE ./include/cub.h
-EA ./include/cub.h
+NO ./maps/flagstone-tile-gray.xpm
+SO ./maps/flagstone-tile-gray.xpm
+WE ./maps/flagstone-tile-gray.xpm
+EA ./maps/flagstone-tile-gray.xpm
 
 F 220,100,10
 C 225,30,2

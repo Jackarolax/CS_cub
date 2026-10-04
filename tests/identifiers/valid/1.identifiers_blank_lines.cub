@@ -1,10 +1,10 @@
 
-NO minilibx/test/open.xpm
+NO ./maps/desert-cracked-tile.xpm
 
-SO minilibx/test/open.xpm
-WE minilibx/test/open.xpm
+SO ./maps/desert-cracked-tile.xpm
+WE ./maps/desert-cracked-tile.xpm
 
-EA minilibx/test/open.xpm
+EA ./maps/brick-tile-red.xpm
 F 1,2,3
 C 4,5,6
 111111111

@@ -1,5 +1,5 @@
-SO minilibx/test/open.xpm
-WE minilibx/test/open.xpm
-EA minilibx/test/open.xpm
+SO ./maps/brick-tile-red.xpm
+WE ./maps/brick-tile-red.xpm
+EA ./maps/brick-tile-red.xpm
 F 220,100,0
 C 225,30,0
