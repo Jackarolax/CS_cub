@@ -1,9 +1,9 @@
 C 12,34,56
-EA minilibx/test/open.xpm
+EA ./maps/desert-cracked-tile.xpm
 F 0,255,128
-NO minilibx/test/open.xpm
-WE minilibx/test/open.xpm
-SO minilibx/test/open.xpm
+NO ./maps/desert-cracked-tile.xpm
+WE ./maps/desert-cracked-tile.xpm
+SO ./maps/desert-cracked-tile.xpm
 
 111111111
 100000001

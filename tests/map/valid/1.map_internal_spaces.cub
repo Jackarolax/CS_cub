@@ -1,7 +1,7 @@
-NO minilibx/test/open.xpm
-SO minilibx/test/open.xpm
-WE minilibx/test/open.xpm
-EA minilibx/test/open.xpm
+NO ./maps/desert-cracked-tile.xpm
+SO ./maps/dune-tile-golden.xpm
+WE ./maps/desert-cracked-tile.xpm
+EA ./maps/dune-tile-golden.xpm
 F 1,2,3
 C 252,253,254
 
