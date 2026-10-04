@@ -22,9 +22,11 @@ static double	calculate_new_x(t_mlx_data *env_p)
 	if (env_p->mv_bck_pressed)
 		new_x -= MOVING_SPEED * cos(env_p->map_info->player_direction);
 	if (env_p->mv_l_pressed)
-		new_x -= MOVING_SPEED * cos(env_p->map_info->player_direction - M_PI / 2);
+		new_x -= MOVING_SPEED
+			* cos(env_p->map_info->player_direction - M_PI / 2);
 	if (env_p->mv_r_pressed)
-		new_x -= MOVING_SPEED * cos(env_p->map_info->player_direction + M_PI / 2);
+		new_x -= MOVING_SPEED
+			* cos(env_p->map_info->player_direction + M_PI / 2);
 	return (new_x);
 }
 
@@ -38,9 +40,11 @@ static double	calculate_new_y(t_mlx_data *env_p)
 	if (env_p->mv_bck_pressed)
 		new_y -= MOVING_SPEED * sin(env_p->map_info->player_direction);
 	if (env_p->mv_l_pressed)
-		new_y -= MOVING_SPEED * sin(env_p->map_info->player_direction - M_PI / 2);
+		new_y -= MOVING_SPEED
+			* sin(env_p->map_info->player_direction - M_PI / 2);
 	if (env_p->mv_r_pressed)
-		new_y -= MOVING_SPEED * sin(env_p->map_info->player_direction + M_PI / 2);
+		new_y -= MOVING_SPEED
+			* sin(env_p->map_info->player_direction + M_PI / 2);
 	return (new_y);
 }
 
