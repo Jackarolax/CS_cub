@@ -6,7 +6,7 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/02 13:01:50 by anematol          #+#    #+#             */
-/*   Updated: 2026/10/04 11:02:15 by anematol         ###   ########.fr       */
+/*   Updated: 2026/10/04 12:47:13 by anematol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,8 @@ typedef struct s_3points
 	t_coords	p3;
 }	t_3points;
 
-typedef struct s_id {
+typedef struct s_id
+{
 	char	*line_start;
 	char	**tokens;
 	char	*no;

@@ -6,7 +6,7 @@
 /*   By: anematol <anematol@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/03 18:20:30 by ssin              #+#    #+#             */
-/*   Updated: 2026/10/03 19:32:43 by anematol         ###   ########.fr       */
+/*   Updated: 2026/10/04 12:30:34 by anematol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,18 +61,22 @@ void	load_images(t_mlx_data *env_p)
 		MINI_PLAYER_EDGE_POINT, MINI_PLAYER_EDGE_POINT);
 	create_image(env_p, &env_p->background_img, WIN_WIDTH, WIN_HEIGHT);
 	create_image(env_p, &env_p->background_buffer_img, WIN_WIDTH, WIN_HEIGHT);
-	load_sprite(env_p, &env_p->sprite_n_img, "./flagstone-tile-gray.xpm");
-	load_sprite(env_p, &env_p->sprite_e_img, "./flagstone-tile-gray.xpm");
-	load_sprite(env_p, &env_p->sprite_s_img, "./flagstone-tile-gray.xpm");
-	load_sprite(env_p, &env_p->sprite_w_img, "./flagstone-tile-gray.xpm");
+	load_sprite(env_p, &env_p->sprite_n_img, env_p->identifiers->no);
+	load_sprite(env_p, &env_p->sprite_e_img, env_p->identifiers->so);
+	load_sprite(env_p, &env_p->sprite_s_img, env_p->identifiers->we);
+	load_sprite(env_p, &env_p->sprite_w_img, env_p->identifiers->ea);
 }
 
 void	set_minilibx(t_mlx_data *env_p)
 {
 	env_p->mlx = mlx_init();
 	env_p->block_size = BLOCK_SIZE;
-	env_p->ceil_color = GREY;
-	env_p->floor_color = DARK_GREY;
+	env_p->ceil_color = ((env_p->identifiers->c_r << 16)
+			| (env_p->identifiers->c_g << 8)
+			| env_p->identifiers->c_b);
+	env_p->floor_color = ((env_p->identifiers->f_r << 16)
+			| (env_p->identifiers->f_g << 8)
+			| env_p->identifiers->f_b);
 	env_p->width = env_p->map_info->map_width * env_p->block_size;
 	env_p->height = env_p->map_info->map_height * env_p->block_size;
 	env_p->win = mlx_new_window(env_p->mlx, WIN_WIDTH, WIN_HEIGHT, "CUB 3D");
